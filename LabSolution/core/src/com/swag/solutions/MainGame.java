@@ -1,15 +1,16 @@
 package com.swag.solutions;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public class MainGame extends ApplicationAdapter implements ApplicationListener, InputProcessor {
 	SpriteBatch batch;
@@ -17,9 +18,12 @@ public class MainGame extends ApplicationAdapter implements ApplicationListener,
     int imgX=0, imgY=0;
     float omjerY,omjerX,omjer;
     private OrthographicCamera camera;
-	
+
+    ShapeRenderer shapeRenderer;
 	@Override
 	public void create () {
+
+        shapeRenderer = new ShapeRenderer();
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
         omjerY=(float)Gdx.graphics.getHeight()/600;
@@ -28,7 +32,8 @@ public class MainGame extends ApplicationAdapter implements ApplicationListener,
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         Gdx.input.setInputProcessor(this);
         Gdx.app.log("omjer", "" + omjer);
-	}
+
+    }
 
     @Override
     public void dispose() {
@@ -43,6 +48,12 @@ public class MainGame extends ApplicationAdapter implements ApplicationListener,
 		batch.begin();
 		batch.draw(img, imgX, imgY);
 		batch.end();
+
+
+        shapeRenderer.setColor(Color.BLACK);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.circle(50, 50, 32);
+        shapeRenderer.end();
 	}
 
     @Override
