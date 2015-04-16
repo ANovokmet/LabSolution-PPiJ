@@ -1,9 +1,14 @@
 package com.swag.solutions.Objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -20,6 +25,8 @@ public class Molecule extends Actor {
     boolean collided = false;
     final Molecule mol;
     Circle bounds;
+    float rotacija=0;  //posebni param za rotaciju zbog načina izračuna odmaka translacije
+    float brzina_rotacije=0;
 
     public Molecule(float x, float y){
         setX(x);
@@ -28,6 +35,9 @@ public class Molecule extends Actor {
         setHeight(100);
         mol = this;
         texture = textureoff;
+
+        setOrigin(getWidth()/2,getHeight()/2);
+        brzina_rotacije=MathUtils.random(-15,15);
 
         this.addListener(new DragListener() {
             public void drag(InputEvent event, float x, float y, int pointer) {
@@ -44,9 +54,8 @@ public class Molecule extends Actor {
         }else {
             texture = textureoff;
         }
-
-        batch.draw(texture, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
-                this.getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
+        batch.draw(texture, getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
+                this.getHeight(), this.getScaleX(), this.getScaleY(), rotacija, 0, 0,
                 texture.getWidth(), texture.getHeight(), false, false);
     }
 
@@ -54,6 +63,11 @@ public class Molecule extends Actor {
     public void act(float delta){
         super.act(delta);
         bounds.set(getX()+getWidth()/2, getY()+getHeight()/2, getWidth()/2);
+
+
+        rotacija+=brzina_rotacije*delta;
+        //setRotation(getRotation()+10*delta);
+        //Gdx.app.error("brojevi2",""+getOriginX()+" "+getOriginY()+" "+getX()+" "+getY()+" "+getRotation());
     }
 
     public Circle getBounds() {

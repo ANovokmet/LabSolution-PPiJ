@@ -3,6 +3,8 @@ package com.swag.solutions.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
@@ -10,6 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.RotateToAction;
 import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ScalingViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.swag.solutions.InputHandler;
 import com.swag.solutions.Objects.Molecule;
 import com.swag.solutions.Objects.ReactionArea;
@@ -33,6 +39,17 @@ public class GameScreen implements Screen {
         float screenHeight = Gdx.graphics.getHeight();
 
         gameStage = new Stage();
+
+        final OrthographicCamera camera = (OrthographicCamera) gameStage.getCamera();
+        gameStage.addListener(new DragListener() {
+            public void drag(InputEvent event, float x, float y, int pointer) {
+                if(!event.isHandled()){
+                    /*camera.translate(x,y);   popraviti pomicanje kamere
+                    camera.update();*/
+                }
+            }
+        });
+
         final Molecule molekula1 = new Molecule(250,250);
         Molecule molekula2 = new Molecule(500,500);
 
