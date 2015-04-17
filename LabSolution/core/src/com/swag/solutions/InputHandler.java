@@ -16,8 +16,8 @@ public class InputHandler implements InputProcessor {
 
     private Array<Molecule> actors;
 
-    public InputHandler(Array<Molecule> actors){
-        this.actors = actors;
+    public InputHandler(){
+
     }
 
     @Override
@@ -47,14 +47,8 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        Gdx.app.log("aa","");
-        for(Molecule actor : actors){
-            if(actor.isInside(screenX, Gdx.graphics.getHeight()-screenY)){
-                //actor.setCenter(screenX, Gdx.graphics.getHeight()-screenY);
-            }
 
-        }
-        return true;
+        return false;
     }
 
     @Override
