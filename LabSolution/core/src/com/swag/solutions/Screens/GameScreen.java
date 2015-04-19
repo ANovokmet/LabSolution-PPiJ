@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Scaling;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.ScalingViewport;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
@@ -24,6 +25,7 @@ import com.swag.solutions.CameraController;
 import com.swag.solutions.InputHandler;
 import com.swag.solutions.Objects.Molecule;
 import com.swag.solutions.Objects.ReactionArea;
+import com.swag.solutions.World;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
@@ -62,17 +64,20 @@ public class GameScreen implements Screen {
 
 
         final Molecule molekula1 = new Molecule(250,250);
-        Molecule molekula2 = new Molecule(500,500);
+        Molecule molekula2 = new Molecule(400,400);
 
         Array<Molecule> a = new Array<Molecule>();
         a.add(molekula1);
         a.add(molekula2);
 
-        gameStage.addActor(new ReactionArea(50,50,a));
+        ReactionArea b = new ReactionArea(a, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        World world = new World(1000,1000,a,b);
+        gameStage.addActor(b);
         gameStage.addActor(molekula1);
         gameStage.addActor(molekula2);
+        gameStage.addActor(world);
 
-        controller = new CameraController(camera);
+        controller = new CameraController(camera, world);
         //molekula.addAction(parallel(moveTo(200,0,5),rotateBy(90,5)));
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(gameStage);

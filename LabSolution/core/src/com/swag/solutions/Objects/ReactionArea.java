@@ -19,10 +19,10 @@ public class ReactionArea extends Actor {
     Rectangle bounds;
     Array<Molecule> molecules;
 
-    public ReactionArea(float x, float y, Array<Molecule> molecules){
-        setX(x);
-        setY(y);
-        setWidth(500);
+    public ReactionArea(Array<Molecule> molecules, float screenWidth, float screenHeight){
+        setX(50);
+        setY(40);
+        setWidth(screenWidth-100);
         setHeight(100);
         bounds=new Rectangle((int)getX(), (int)getY(), (int)getWidth(), (int)getHeight());
         this.molecules = molecules;

@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -28,6 +29,11 @@ public class Molecule extends Actor {
     float rotacija=0;  //posebni param za rotaciju zbog načina izračuna odmaka translacije
     float brzina_rotacije=0;
 
+    public boolean van_kutije=true;  //bitno za update pananja i random pomicanja
+    public boolean korisnik_mice=false;
+
+    public Vector2 movement;
+
     public Molecule(float x, float y){
         setX(x);
         setY(y);
@@ -38,10 +44,15 @@ public class Molecule extends Actor {
 
         setOrigin(getWidth()/2,getHeight()/2);
         brzina_rotacije=MathUtils.random(-15,15);
+        movement = new Vector2(MathUtils.random((float)-2,2), MathUtils.random((float)-2,2));
 
         this.addListener(new DragListener() {
             public void drag(InputEvent event, float x, float y, int pointer) {
+                korisnik_mice=true;
                 mol.moveBy(x - mol.getWidth() / 2, y - mol.getHeight() / 2);
+            }
+            public void dragStop(InputEvent event, float x, float y, int pointer){
+                korisnik_mice=false;
             }
         });
         bounds = new Circle(getX()+getWidth()/2, getY()+getHeight()/2, getWidth()/2);
@@ -49,7 +60,7 @@ public class Molecule extends Actor {
 
     @Override
     public void draw(Batch batch, float alpha){
-        if(collided){
+        if(!van_kutije){
             texture = textureon;
         }else {
             texture = textureoff;
@@ -64,6 +75,10 @@ public class Molecule extends Actor {
         super.act(delta);
         bounds.set(getX()+getWidth()/2, getY()+getHeight()/2, getWidth()/2);
 
+        if(van_kutije){
+            setX(getX()+movement.x);
+            setY(getY()+movement.y);
+        }
 
         rotacija+=brzina_rotacije*delta;
         //setRotation(getRotation()+10*delta);
@@ -91,6 +106,12 @@ public class Molecule extends Actor {
     }
 
     public void signalCollision(boolean b) {
-        this.collided = b;
+        if(korisnik_mice) {
+            if (b) {
+                van_kutije = false;
+            } else {
+                van_kutije = true;
+            }
+        }
     }
 }

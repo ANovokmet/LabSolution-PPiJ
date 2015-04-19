@@ -13,9 +13,11 @@ public class CameraController implements GestureDetector.GestureListener {
     boolean flinging = false;
     float initialScale = 1;
     OrthographicCamera camera;
+    private World world;
 
-    public CameraController(OrthographicCamera camera){
+    public CameraController(OrthographicCamera camera, World w){
         this.camera = camera;
+        world=w;
     }
 
     public boolean touchDown (float x, float y, int pointer, int button) {
@@ -49,6 +51,7 @@ public class CameraController implements GestureDetector.GestureListener {
     public boolean pan (float x, float y, float deltaX, float deltaY) {
         // Gdx.app.log("GestureDetectorTest", "pan at " + x + ", " + y);
         camera.position.add(-deltaX * camera.zoom, deltaY * camera.zoom, 0);
+        world.updateReactionArea(deltaX * camera.zoom, deltaY * camera.zoom);
         return false;
     }
 
@@ -73,12 +76,15 @@ public class CameraController implements GestureDetector.GestureListener {
 
     public void update () {
         if (flinging) {
-            Gdx.app.log("trenutno","flingam");
+            //Gdx.app.log("trenutno","flingam");
             velX *= 0.9f;
             velY *= 0.9f;
             camera.position.add(-velX * Gdx.graphics.getDeltaTime(), velY * Gdx.graphics.getDeltaTime(), 0);
+            world.updateReactionArea(velX * Gdx.graphics.getDeltaTime(), velY * Gdx.graphics.getDeltaTime());
             if (Math.abs(velX) < 0.01f) velX = 0;
             if (Math.abs(velY) < 0.01f) velY = 0;
+            if(velX==0 && velY==0)
+                flinging=false;
         }
     }
 }
