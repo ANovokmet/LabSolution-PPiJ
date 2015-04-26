@@ -14,10 +14,26 @@ public class CameraController implements GestureDetector.GestureListener {
     float initialScale = 1;
     OrthographicCamera camera;
     private World world;
+    Vector2 lastGoodCamera;
 
     public CameraController(OrthographicCamera camera, World w){
         this.camera = camera;
+        lastGoodCamera = new Vector2(camera.position.x, camera.position.y);
         world=w;
+    }
+
+    public boolean checkInsideBounds(){
+        boolean out = true;
+
+        if(camera.position.x-camera.viewportWidth/2 > world.left_x && camera.position.x+camera.viewportWidth/2 < world.right_x){
+            lastGoodCamera.x = camera.position.x;
+            out =  false;
+        }
+        if(camera.position.y+camera.viewportHeight/2 < world.top_y && camera.position.y-camera.viewportHeight/2 > world.bottom_y){
+            lastGoodCamera.y = camera.position.y;
+            out =  false;
+        }
+        return out;
     }
 
     public boolean touchDown (float x, float y, int pointer, int button) {
@@ -86,5 +102,10 @@ public class CameraController implements GestureDetector.GestureListener {
             if(velX==0 && velY==0)
                 flinging=false;
         }
+
+        checkInsideBounds();
+        camera.position.set(lastGoodCamera, camera.position.z);
+        //world.updateReactionArea(lastGoodCamera.x, lastGoodCamera.y);
+
     }
 }

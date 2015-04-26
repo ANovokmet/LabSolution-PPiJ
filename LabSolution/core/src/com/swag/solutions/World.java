@@ -15,7 +15,7 @@ import com.swag.solutions.Objects.ReactionArea;
  */
 public class World extends Actor {
 
-    private float left_x, right_x, top_y, bottom_y, size_x, size_y;
+    public float left_x, right_x, top_y, bottom_y, size_x, size_y;
     private Array<Molecule> molecules;
     private ReactionArea area;
     Texture texture = new Texture("badlogic.jpg");
