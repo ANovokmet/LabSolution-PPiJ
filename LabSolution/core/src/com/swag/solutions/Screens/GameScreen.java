@@ -1,5 +1,6 @@
 package com.swag.solutions.Screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
@@ -35,18 +36,18 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
  */
 public class GameScreen implements Screen {
 
+    Game main_game;  //referenca na igru zbog mijenjanja screenova
     Stage gameStage;
+
     CameraController controller;
-    public GameScreen(){
+    public GameScreen(Game main){
 
-
+        main_game=main;
 
         final float screenWidth = Gdx.graphics.getWidth();
         final float screenHeight = Gdx.graphics.getHeight();
 
         gameStage = new Stage();
-        //gameStage.setViewport(new StretchViewport(640, 1024));
-        //gameStage.setViewport(new FitViewport(screenWidth, screenHeight));
 
 
         final OrthographicCamera camera = (OrthographicCamera) gameStage.getCamera();
@@ -62,19 +63,15 @@ public class GameScreen implements Screen {
         });*/
 
 
-        final Molecule molekula1 = new Molecule(250,250);
-        Molecule molekula2 = new Molecule(400,400);
 
-        Array<Molecule> a = new Array<Molecule>();
-        a.add(molekula1);
-        a.add(molekula2);
-
-        ReactionArea b = new ReactionArea(a, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        World world = new World(1000,1000,a,b);
+        ReactionArea b = new ReactionArea(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        World world = new World(1000,1000,b);
+        world.generateMolecules("");
         gameStage.addActor(b);
-        gameStage.addActor(molekula1);
-        gameStage.addActor(molekula2);
         gameStage.addActor(world);
+        for(Molecule a : world.getFreeMolecules()){
+            gameStage.addActor(a);
+        }
 
         controller = new CameraController(camera, world);
         //molekula.addAction(parallel(moveTo(200,0,5),rotateBy(90,5)));

@@ -6,6 +6,7 @@ import android.widget.Button;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.swag.solutions.LabGame;
 import com.swag.solutions.MainGame;
 
 public class AndroidLauncher extends AndroidApplication {
@@ -13,6 +14,6 @@ public class AndroidLauncher extends AndroidApplication {
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-        initialize(new MainGame(), config);
+        initialize(new LabGame(), config);
 	}
 }

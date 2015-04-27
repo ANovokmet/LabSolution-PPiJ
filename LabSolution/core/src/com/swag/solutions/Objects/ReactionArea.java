@@ -17,15 +17,15 @@ public class ReactionArea extends Actor {
 
     Texture texture = new Texture("badlogic.jpg");
     Rectangle bounds;
-    Array<Molecule> molecules;
+    Array<Molecule> closed_molecules;
 
-    public ReactionArea(Array<Molecule> molecules, float screenWidth, float screenHeight){
+    public ReactionArea(float screenWidth, float screenHeight){
         setX(50);
         setY(40);
         setWidth(screenWidth-100);
         setHeight(100);
         bounds=new Rectangle((int)getX(), (int)getY(), (int)getWidth(), (int)getHeight());
-        this.molecules = molecules;
+        closed_molecules = new Array<Molecule>();
     }
 
     public Rectangle getBounds() {
@@ -44,15 +44,14 @@ public class ReactionArea extends Actor {
     public void act(float delta){
         super.act(delta);
         bounds.set(getX(), getY(), getWidth(), getHeight());
-
-        for(Molecule molecule : molecules){
-            if(Intersector.overlaps(molecule.getBounds(), bounds)){
-                Gdx.app.log("REEE", (1/delta) + "");
-                molecule.signalCollision(true);
-            }
-            else{
-                molecule.signalCollision(false);
-            }
-        }
+    }
+    public void addMoleculeToReaction(Molecule a){
+        closed_molecules.add(a);
+    }
+    public void removeMoleculeFromReaction(Molecule a){
+        closed_molecules.removeValue(a,true);
+    }
+    public Array<Molecule> getReactionMolecules(){
+        return closed_molecules;
     }
 }

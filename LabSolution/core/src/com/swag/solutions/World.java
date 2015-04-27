@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 import com.swag.solutions.Objects.Molecule;
@@ -16,11 +17,11 @@ import com.swag.solutions.Objects.ReactionArea;
 public class World extends Actor {
 
     public float left_x, right_x, top_y, bottom_y, size_x, size_y;
-    private Array<Molecule> molecules;
+    private Array<Molecule> free_molecules;
     private ReactionArea area;
     Texture texture = new Texture("badlogic.jpg");
 
-    public World(float sizex, float sizey, Array<Molecule> molekule, ReactionArea podrucje){
+    public World(float sizex, float sizey, ReactionArea podrucje){
         float offsetx = Gdx.graphics.getWidth();
         float offsety = Gdx.graphics.getHeight();
         size_x=sizex+offsetx;
@@ -29,20 +30,18 @@ public class World extends Actor {
         right_x=sizex/2+offsetx;
         top_y=sizey/2+offsety;
         bottom_y=-sizey/2;
-        molecules=molekule;
+        free_molecules= new Array<Molecule>();
         area=podrucje;
     }
 
     @Override
     public void act(float delta) {
-        for(Molecule molecule : molecules){
-            Gdx.app.error("world",left_x+" "+right_x+" "+top_y+" "+bottom_y+" "+molecule.getX()+" "+molecule.getX());
-            if(molecule.getX()<left_x || molecule.getX()>right_x)
-                molecule.movement.x*=-1;
-            if(molecule.getY()<bottom_y || molecule.getY()>top_y)
-                molecule.movement.y*=-1;
+        Rectangle area_bounds = area.getBounds();
+        for(Molecule molecule : free_molecules){
+            molecule.setReactionAreaBounds(area_bounds);  //podesavanje granica da bi molekule mogle provjeriti da li su u reakciji
         }
     }
+
 
     @Override
     public void draw(Batch batch, float alpha){
@@ -52,12 +51,51 @@ public class World extends Actor {
         batch.draw(texture, left_x, bottom_y , size_x, 10);
     }
 
+    public void generateMolecules(String param){   //string param moze biti neki json, logika za loadanje u game screenu
+        Molecule molekula1 = new Molecule(250,250, this);
+        Molecule molekula2 = new Molecule(400,400, this);
+        free_molecules.add(molekula1);
+        free_molecules.add(molekula2);
+    }
+
+    /**
+     *
+     * @return molekule koje lete naokolo
+     */
+    public Array<Molecule> getFreeMolecules(){
+        return free_molecules;
+    }
+
+    /**
+     * Dodaje u popis molekula reakcije i mice iz slobodnih molekula
+     * @param a molekula koja je u kutiji
+     */
+    public void addMoleculeToReaction(Molecule a){
+        if(!area.getReactionMolecules().contains(a,true))
+            area.addMoleculeToReaction(a);
+        free_molecules.removeValue(a,true);
+    }
+
+    /**
+     * Dodaje u popis slobodnih molekula i mice iz liste molekula reakcije
+     * @param a molekula koja je izvadjena iz kutije
+     */
+    public void removeMoleculeFromReaction(Molecule a){
+        area.removeMoleculeFromReaction(a);
+        if(!free_molecules.contains(a,true))
+            free_molecules.add(a);
+    }
+
+    /**
+     * Azuriranje polozaja svih staticnih objekata na ekranu, trenutacno kutije i molekula u kutiji
+     * @param xmov
+     * @param ymov
+     */
     public void updateReactionArea(float xmov, float ymov){
         area.setPosition(area.getX()-xmov, area.getY()+ymov);
-        for(Molecule molecule : molecules){
-            if(!molecule.van_kutije){
-                molecule.setPosition(molecule.getX()-xmov, molecule.getY()+ymov);
-            }
+        for(Molecule molecule : area.getReactionMolecules()){
+            Gdx.app.error("world",""+area.getReactionMolecules());
+            molecule.setPosition(molecule.getX()-xmov, molecule.getY()+ymov);
         }
     }
 }

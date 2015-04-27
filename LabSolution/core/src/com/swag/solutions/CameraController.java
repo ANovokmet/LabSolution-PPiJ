@@ -17,23 +17,19 @@ public class CameraController implements GestureDetector.GestureListener {
     Vector2 lastGoodCamera;
 
     public CameraController(OrthographicCamera camera, World w){
-        this.camera = camera;
-        lastGoodCamera = new Vector2(camera.position.x, camera.position.y);
+        this.camera = camera;   //glavna kamera
+        lastGoodCamera = new Vector2(camera.position.x, camera.position.y);   //pozicija u slucaju pomicanja van okvira svijeta
         world=w;
     }
 
-    public boolean checkInsideBounds(){
-        boolean out = true;
-
-        if(camera.position.x-camera.viewportWidth/2 > world.left_x && camera.position.x+camera.viewportWidth/2 < world.right_x){
+    public boolean isInsideBounds(){
+        if(camera.position.x-camera.viewportWidth/2 > world.left_x && camera.position.x+camera.viewportWidth/2 < world.right_x &&
+                camera.position.y+camera.viewportHeight/2 < world.top_y && camera.position.y-camera.viewportHeight/2 > world.bottom_y ){
             lastGoodCamera.x = camera.position.x;
-            out =  false;
-        }
-        if(camera.position.y+camera.viewportHeight/2 < world.top_y && camera.position.y-camera.viewportHeight/2 > world.bottom_y){
             lastGoodCamera.y = camera.position.y;
-            out =  false;
+            return true;
         }
-        return out;
+        return false;
     }
 
     public boolean touchDown (float x, float y, int pointer, int button) {
@@ -67,7 +63,8 @@ public class CameraController implements GestureDetector.GestureListener {
     public boolean pan (float x, float y, float deltaX, float deltaY) {
         // Gdx.app.log("GestureDetectorTest", "pan at " + x + ", " + y);
         camera.position.add(-deltaX * camera.zoom, deltaY * camera.zoom, 0);
-        world.updateReactionArea(deltaX * camera.zoom, deltaY * camera.zoom);
+        if(isInsideBounds())
+            world.updateReactionArea(deltaX * camera.zoom, deltaY * camera.zoom);
         return false;
     }
 
@@ -96,14 +93,15 @@ public class CameraController implements GestureDetector.GestureListener {
             velX *= 0.9f;
             velY *= 0.9f;
             camera.position.add(-velX * Gdx.graphics.getDeltaTime(), velY * Gdx.graphics.getDeltaTime(), 0);
-            world.updateReactionArea(velX * Gdx.graphics.getDeltaTime(), velY * Gdx.graphics.getDeltaTime());
+            if(isInsideBounds())
+                world.updateReactionArea(velX * Gdx.graphics.getDeltaTime(), velY * Gdx.graphics.getDeltaTime());
             if (Math.abs(velX) < 0.01f) velX = 0;
             if (Math.abs(velY) < 0.01f) velY = 0;
             if(velX==0 && velY==0)
                 flinging=false;
         }
 
-        checkInsideBounds();
+
         camera.position.set(lastGoodCamera, camera.position.z);
         //world.updateReactionArea(lastGoodCamera.x, lastGoodCamera.y);
 
