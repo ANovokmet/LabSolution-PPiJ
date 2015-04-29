@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.swag.solutions.CameraController;
+import com.swag.solutions.Objects.HudElement;
 import com.swag.solutions.Objects.Molecule;
 import com.swag.solutions.Objects.ReactionArea;
 import com.swag.solutions.World;
@@ -38,7 +39,7 @@ public class GameScreen implements Screen {
 
     Game main_game;  //referenca na igru zbog mijenjanja screenova
     Stage gameStage;
-
+    HudElement h;
     CameraController controller;
     public GameScreen(Game main){
 
@@ -66,12 +67,17 @@ public class GameScreen implements Screen {
 
         ReactionArea b = new ReactionArea(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         World world = new World(1000,1000,b);
+        h = new HudElement(camera);
+
         world.generateMolecules("");
         gameStage.addActor(b);
+
         gameStage.addActor(world);
         for(Molecule a : world.getFreeMolecules()){
             gameStage.addActor(a);
         }
+        gameStage.addActor(h);
+
 
         controller = new CameraController(camera, world);
         //molekula.addAction(parallel(moveTo(200,0,5),rotateBy(90,5)));
@@ -97,6 +103,7 @@ public class GameScreen implements Screen {
         //renderer.render(actors)
         controller.update();
         gameStage.act(delta);
+        h.act(delta);
         gameStage.draw();
 
     }
