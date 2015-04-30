@@ -2,6 +2,7 @@ package com.swag.solutions.Objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -9,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 /**
  * Created by Ante on 29.4.2015..
@@ -33,18 +36,20 @@ public class HudElement extends Actor {
     float targetPercentFilled = 0.7f;
 
     private OrthographicCamera camera;
+    Table formulaTable;
 
     public HudElement (OrthographicCamera camera){
         setWidth(100);
         setHeight(100);
         this.camera= camera;
         createFonts();
+        formulaTable = renderString(moleculeFormula);
     }
 
 
-    BitmapFont titleFont;
-    BitmapFont textFont;
-    String moleculeFormula = "H2O2";
+    static BitmapFont titleFont;
+    static BitmapFont textFont;
+    String moleculeFormula = "H2O2Ar2";//CILJNA MOLEKULA
 
     private void createFonts() {
         FileHandle fontFile = Gdx.files.internal("04B_30__.ttf");
@@ -97,7 +102,34 @@ public class HudElement extends Actor {
                 target.getWidth(), target.getHeight(), false, false);
 
         textFont.draw(batch, (int)(BAR_HEIGHT*percentFilled)+"", BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT*percentFilled+18);
-        titleFont.draw(batch, moleculeFormula, getX()-80, getY()+camera.viewportWidth/2+40);
+        //titleFont.draw(batch, moleculeFormula, getX()-80, getY()+camera.viewportWidth/2+40);
         textFont.draw(batch, "KJ/MOL", 16+getX()-camera.viewportWidth/2, 16+getY()-camera.viewportHeight/2+18);
+
+        //potrebno za subscript brojeva
+        formulaTable.setPosition(getX(), getY()+camera.viewportWidth/2);
+        formulaTable.draw(batch,alpha);
     }
+
+    static Skin skin = new Skin();
+    private static final float PADDING = 30;
+    public static Table renderString(String string){
+
+        skin.add("normal",titleFont);
+        skin.add("subscript",textFont);
+        Table table = new Table(skin);
+        for (int i = 0; i < string.length(); i++){
+            char c = string.charAt(i);
+            if(c >= '0' && c <= '9'){
+                table.add(c+"","subscript", Color.WHITE).padTop(PADDING);
+            }
+            else{
+                table.add(c+"","normal", Color.WHITE);
+            }
+            table.add();
+        }
+
+        return table;
+    }
+
+
 }
