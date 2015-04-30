@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -41,6 +42,8 @@ public class GameScreen implements Screen {
     Stage gameStage;
     HudElement h;
     CameraController controller;
+    OrthographicCamera camera;
+
     public GameScreen(Game main){
 
         main_game=main;
@@ -49,23 +52,10 @@ public class GameScreen implements Screen {
         final float screenHeight = Gdx.graphics.getHeight();
 
         gameStage = new Stage();
+        this.camera = (OrthographicCamera) gameStage.getCamera();
 
 
-        final OrthographicCamera camera = (OrthographicCamera) gameStage.getCamera();
-        /*gameStage.addListener(new DragListener() {
-            public void drag(InputEvent event, float x, float y, int pointer) {
-                if(!event.isHandled()){
-                    //camera.translate((camera.position.x-x)/10, (camera.position.y-y)/10);   //popraviti pomicanje kamere
-
-                    camera.position.set((camera.position.x-x)+screenWidth/2, (camera.position.y-y)+screenHeight/2, camera.position.z);
-                    camera.update();
-                }
-            }
-        });*/
-
-
-
-        ReactionArea b = new ReactionArea(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        ReactionArea b = new ReactionArea(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
         World world = new World(1000,1000,b);
         h = new HudElement(camera);
 
@@ -107,6 +97,7 @@ public class GameScreen implements Screen {
         gameStage.draw();
 
     }
+
 
     @Override
     public void resize(int width, int height) {

@@ -1,10 +1,12 @@
 package com.swag.solutions.Objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
@@ -19,11 +21,20 @@ public class ReactionArea extends Actor {
     Rectangle bounds;
     Array<Molecule> closed_molecules;
 
-    public ReactionArea(float screenWidth, float screenHeight){
-        setX(50);
-        setY(40);
+    OrthographicCamera camera;
+
+    static float REAREA_X = 50;
+    static float REAREA_Y = 40;
+    static float REAREA_WIDTH = 200;
+    static float REAREA_HEIGHT = 100;
+
+    public ReactionArea(float screenWidth, float screenHeight, OrthographicCamera camera){
+        this.camera=camera;
+        Vector2 botLeftCorner = new Vector2(camera.position.x-camera.viewportWidth/2, camera.position.y-camera.viewportHeight/2);
+        setX(botLeftCorner.x+REAREA_X);
+        setY(botLeftCorner.y+REAREA_Y);
         setWidth(screenWidth-100);
-        setHeight(100);
+        setHeight(REAREA_HEIGHT);
         bounds=new Rectangle((int)getX(), (int)getY(), (int)getWidth(), (int)getHeight());
         closed_molecules = new Array<Molecule>();
     }
@@ -43,6 +54,8 @@ public class ReactionArea extends Actor {
     @Override
     public void act(float delta){
         super.act(delta);
+
+        setPosition(camera.position.x-camera.viewportWidth/2+REAREA_X, camera.position.y-camera.viewportHeight/2+REAREA_Y);
         bounds.set(getX(), getY(), getWidth(), getHeight());
     }
     public void addMoleculeToReaction(Molecule a){

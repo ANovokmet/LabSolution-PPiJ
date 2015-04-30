@@ -2,6 +2,7 @@ package com.swag.solutions.Objects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -35,6 +36,7 @@ public class Molecule extends Actor {
     boolean korisnik_mice=false;
 
     public Vector2 movement;
+
 
     public Molecule(float x, float y, World world){
         setX(x);
@@ -78,6 +80,7 @@ public class Molecule extends Actor {
         if(korisnik_mice) {
             if (Intersector.overlaps(bounds, reaction_area)) {
                 van_kutije = false;
+                izracunajRelPolozaj();
                 world.addMoleculeToReaction(this);
             } else {
                 van_kutije = true;
@@ -93,13 +96,20 @@ public class Molecule extends Actor {
             setX(getX() + movement.x);
             setY(getY() + movement.y);
         }
-
+        else{//unutar kutije
+            setX(reaction_area.x+relPolozaj.x);
+            setY(reaction_area.y+relPolozaj.y);
+        }
 
         rotacija+=brzina_rotacije*delta;
         //setRotation(getRotation()+10*delta);
         //Gdx.app.error("brojevi2",""+getOriginX()+" "+getOriginY()+" "+getX()+" "+getY()+" "+getRotation());
     }
 
+    Vector2 relPolozaj = new Vector2();
+    private void izracunajRelPolozaj(){
+        relPolozaj.set(getX()-reaction_area.x, getY()-reaction_area.y);
+    }
 
     @Override
     public Actor hit(float x, float y, boolean touchable){
