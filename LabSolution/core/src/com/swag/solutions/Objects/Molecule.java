@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
+import com.badlogic.gdx.utils.JsonValue;
 import com.swag.solutions.World;
 
 /**
@@ -38,12 +39,12 @@ public class Molecule extends Actor {
     public Vector2 movement;
 
 
-    public Molecule(float x, float y, World world){
+    public Molecule(float x, float y, World world, JsonValue params){
         setX(x);
         setY(y);
-        setWidth(100);
-        setHeight(100);
-        texture = textureoff;
+        setWidth(params.get("width").asInt());
+        setHeight(params.get("height").asInt());
+        texture = new Texture(params.get("path").asString());
         this.world = world;
         setOrigin(getWidth()/2,getHeight()/2);
         brzina_rotacije=MathUtils.random(-15,15);
@@ -63,11 +64,11 @@ public class Molecule extends Actor {
 
     @Override
     public void draw(Batch batch, float alpha){
-        if(!van_kutije){
+        /*if(!van_kutije){
             texture = textureon;
         }else {
             texture = textureoff;
-        }
+        }*/
         batch.draw(texture, getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
                 this.getHeight(), this.getScaleX(), this.getScaleY(), rotacija, 0, 0,
                 texture.getWidth(), texture.getHeight(), false, false);

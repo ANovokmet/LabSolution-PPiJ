@@ -1,13 +1,18 @@
 package com.swag.solutions;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.swag.solutions.Objects.Molecule;
 import com.swag.solutions.Objects.ReactionArea;
 
@@ -52,10 +57,14 @@ public class World extends Actor {
     }
 
     public void generateMolecules(String param){   //string param moze biti neki json, logika za loadanje u game screenu
-        Molecule molekula1 = new Molecule(250,250, this);
-        Molecule molekula2 = new Molecule(400,400, this);
-        free_molecules.add(molekula1);
-        free_molecules.add(molekula2);
+        FileHandle file = Gdx.files.internal("data/all.json");
+        JsonValue main = new JsonReader().parse(file.readString());
+        JsonValue prva = main.get(0);
+        Molecule molekula;
+        for(int i=0;i<20;i++){
+            molekula = new Molecule(MathUtils.random(left_x+100, right_x-100), MathUtils.random(bottom_y+100, top_y-100), this, prva);
+            free_molecules.add(molekula);
+        }
     }
 
     /**
