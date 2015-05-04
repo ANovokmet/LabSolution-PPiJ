@@ -97,7 +97,7 @@ public class CameraController implements GestureDetector.GestureListener {
 
 
         if (flinging) {
-            Gdx.app.log("trenutno","flingam");
+            //Gdx.app.log("trenutno","flingam");
             velX *= 0.9f;
             velY *= 0.9f;
             camera.position.add(-velX * Gdx.graphics.getDeltaTime(), velY * Gdx.graphics.getDeltaTime(), 0);

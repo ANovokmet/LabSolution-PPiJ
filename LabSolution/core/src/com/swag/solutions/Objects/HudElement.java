@@ -72,7 +72,7 @@ public class HudElement extends Actor {
         super.act(delta);
         setX(camera.position.x);
         setY(camera.position.y);
-        percentFilled+=0.0005;//test za "animaciju"
+        //percentFilled+=0.0005;//test za "animaciju"
     }
 
     public void draw(Batch batch, float alpha){
@@ -131,5 +131,13 @@ public class HudElement extends Actor {
         return table;
     }
 
-
+    public void setPercentFilled(float percent) {
+        percentFilled = percent/5;
+        if (percentFilled < 0) {
+            percentFilled = 0;
+        }
+        if (percentFilled > 70) {
+            percentFilled = 70;
+        }
+    }
 }
