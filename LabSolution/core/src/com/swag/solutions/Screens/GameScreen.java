@@ -7,27 +7,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.RotateToAction;
-import com.badlogic.gdx.scenes.scene2d.actions.ScaleToAction;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Scaling;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.ScalingViewport;
-import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.swag.solutions.CameraController;
 import com.swag.solutions.Objects.HudElement;
 import com.swag.solutions.Objects.Molecule;
 import com.swag.solutions.Objects.ReactionArea;
 import com.swag.solutions.World;
+import com.swag.solutions.input.ShakeDetector;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
@@ -40,9 +26,10 @@ public class GameScreen implements Screen {
 
     Game main_game;  //referenca na igru zbog mijenjanja screenova
     Stage gameStage;
-    HudElement h;
+    HudElement hud;
     CameraController controller;
     OrthographicCamera camera;
+    ShakeDetector shakeDetector;
 
     public GameScreen(Game main){
 
@@ -54,19 +41,21 @@ public class GameScreen implements Screen {
         gameStage = new Stage();
         this.camera = (OrthographicCamera) gameStage.getCamera();
 
+        shakeDetector = new ShakeDetector();
+        gameStage.addActor(shakeDetector);
 
-        ReactionArea b = new ReactionArea(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
-        World world = new World(1000,1000,b);
-        h = new HudElement(camera);
+        ReactionArea rxnArea = new ReactionArea(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+        World world = new World(1000,1000,rxnArea);
+        hud = new HudElement(camera);
 
         world.generateMolecules("");
-        gameStage.addActor(b);
+        gameStage.addActor(rxnArea);
 
         gameStage.addActor(world);
         for(Molecule a : world.getFreeMolecules()){
             gameStage.addActor(a);
         }
-        gameStage.addActor(h);
+        gameStage.addActor(hud);
 
 
         controller = new CameraController(camera, world);
@@ -93,9 +82,10 @@ public class GameScreen implements Screen {
         //renderer.render(actors)
         controller.update();
         gameStage.act(delta);
-        h.act(delta);
-        gameStage.draw();
+        hud.act(delta);
+        hud.setPercentFilled(shakeDetector.deviceBeingShaken() ? 50.f : 0.f);
 
+        gameStage.draw();
     }
 
 
