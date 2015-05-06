@@ -1,21 +1,18 @@
 package com.swag.solutions.Objects;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+import static com.badlogic.gdx.math.Interpolation.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Touchable;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.JsonValue;
 import com.swag.solutions.World;
@@ -35,9 +32,12 @@ public class Molecule extends Actor {
 
     boolean van_kutije=true;  //bitno za update pananja i random pomicanja
     boolean korisnik_mice=false;
+    boolean dira_se = false;
 
     public Vector2 movement;
 
+    static float TOUCH_SCALE = 2f;
+    static float TOUCH_SCALETIME = 0.1f;
 
     public Molecule(float x, float y, World world, JsonValue params){
         setX(x);
@@ -55,8 +55,25 @@ public class Molecule extends Actor {
                 korisnik_mice=true;
                 Molecule.this.moveBy(x -  Molecule.this.getWidth() / 2, y -  Molecule.this.getHeight() / 2);
             }
+
             public void dragStop(InputEvent event, float x, float y, int pointer){
                 korisnik_mice=false;
+            }
+        });
+        final Molecule p = this;
+
+        this.addListener(new ClickListener(){
+            public boolean touchDown(InputEvent event,float x,float y,int pointer,int button){
+                dira_se = true;
+                Gdx.app.error("touchDown","");
+                p.addAction(scaleTo(TOUCH_SCALE, TOUCH_SCALE, TOUCH_SCALETIME));
+                return true;
+            }
+
+            public void touchUp(InputEvent event,float x,float y,int pointer,int button){
+                dira_se = false;
+                p.addAction(scaleTo(1, 1, TOUCH_SCALETIME));
+                Gdx.app.error("touchUp","");
             }
         });
         bounds = new Circle(getX()+getWidth()/2, getY()+getHeight()/2, getWidth()/2);
@@ -88,16 +105,18 @@ public class Molecule extends Actor {
                 world.removeMoleculeFromReaction(this);
             }
         }
-        if(this.getX()<world.left_x || this.getX()>world.right_x)
-            this.movement.x*=-1;
-        if(this.getY()<world.bottom_y || this.getY()>world.top_y)
-            this.movement.y*=-1;
 
-        if (van_kutije) {
+        //odbijanje
+        if (this.getX() < world.left_x || this.getX() > world.right_x)
+            this.movement.x *= -1;
+        if (this.getY() < world.bottom_y || this.getY() > world.top_y)
+            this.movement.y *= -1;
+
+        if (van_kutije && !dira_se) {
             setX(getX() + movement.x);
             setY(getY() + movement.y);
         }
-        else{//unutar kutije
+        else if(!dira_se){//unutar kutije
             setX(reaction_area.x+relPolozaj.x);
             setY(reaction_area.y+relPolozaj.y);
         }
