@@ -1,7 +1,7 @@
 package com.swag.solutions;
 
 import com.badlogic.gdx.Game;
-import com.swag.solutions.Screens.GameScreen;
+import com.swag.solutions.Screens.MainMenu;
 
 /**
  * Created by Ante on 15.4.2015..
@@ -9,6 +9,6 @@ import com.swag.solutions.Screens.GameScreen;
 public class LabGame extends Game {
     @Override
     public void create() {
-        setScreen(new GameScreen(this));
+        setScreen(new MainMenu(this));
     }
 }
