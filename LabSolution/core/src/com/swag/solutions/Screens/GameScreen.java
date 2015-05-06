@@ -9,10 +9,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.swag.solutions.CameraController;
+import com.swag.solutions.Objects.EnergyContainer;
 import com.swag.solutions.Objects.HudElement;
 import com.swag.solutions.Objects.Molecule;
 import com.swag.solutions.Objects.ReactionArea;
 import com.swag.solutions.World;
+import com.swag.solutions.input.BadShakeDetector;
+import com.swag.solutions.input.MyShakeDetector;
 import com.swag.solutions.input.ShakeDetector;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
@@ -26,10 +29,9 @@ public class GameScreen implements Screen {
 
     Game main_game;  //referenca na igru zbog mijenjanja screenova
     Stage gameStage;
-    HudElement hud;
+    //HudElement hud; //zašto je ovdje i dodan u gameStage u isto vrijeme?
     CameraController controller;
     OrthographicCamera camera;
-    ShakeDetector shakeDetector;
 
     public GameScreen(Game main){
 
@@ -41,12 +43,18 @@ public class GameScreen implements Screen {
         gameStage = new Stage();
         this.camera = (OrthographicCamera) gameStage.getCamera();
 
-        shakeDetector = new ShakeDetector();
+        ShakeDetector shakeDetector = new MyShakeDetector();
         gameStage.addActor(shakeDetector);
+
+        EnergyContainer enContainer =
+                new EnergyContainer(0.8f, 1.f, 0.05f, shakeDetector);
+        gameStage.addActor(enContainer);
+
+        HudElement hud = new HudElement(camera, enContainer);
+        gameStage.addActor(hud);
 
         ReactionArea rxnArea = new ReactionArea(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
         World world = new World(1000,1000,rxnArea);
-        hud = new HudElement(camera);
 
         world.generateMolecules("");
         gameStage.addActor(rxnArea);
@@ -55,8 +63,6 @@ public class GameScreen implements Screen {
         for(Molecule a : world.getFreeMolecules()){
             gameStage.addActor(a);
         }
-        gameStage.addActor(hud);
-
 
         controller = new CameraController(camera, world);
         //molekula.addAction(parallel(moveTo(200,0,5),rotateBy(90,5)));
@@ -82,8 +88,8 @@ public class GameScreen implements Screen {
         //renderer.render(actors)
         controller.update();
         gameStage.act(delta);
-        hud.act(delta);
-        hud.setPercentFilled(shakeDetector.deviceBeingShaken() ? 50.f : 0.f);
+        //hud.act(delta); //zašto je ovo potrebno?
+        //hud.setPercentFilled(shakeDetector.deviceBeingShaken() ? 20.f : 0.f);
 
         gameStage.draw();
     }

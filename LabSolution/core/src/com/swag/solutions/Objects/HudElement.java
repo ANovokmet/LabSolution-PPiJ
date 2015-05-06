@@ -37,6 +37,7 @@ public class HudElement extends Actor {
 
     private OrthographicCamera camera;
     Table formulaTable;
+    EnergyContainer energyContainer;
 
     public HudElement (OrthographicCamera camera){
         setWidth(100);
@@ -50,6 +51,15 @@ public class HudElement extends Actor {
     static BitmapFont titleFont;
     static BitmapFont textFont;
     String moleculeFormula = "H2O2Ar2";//CILJNA MOLEKULA
+
+    public HudElement(OrthographicCamera camera, EnergyContainer enContainer) {
+        setWidth(100);
+        setHeight(100);
+        this.camera= camera;
+        createFonts();
+        formulaTable = renderString(moleculeFormula);
+        energyContainer = enContainer;
+    }
 
     private void createFonts() {
         FileHandle fontFile = Gdx.files.internal("04B_30__.TTF");
@@ -73,6 +83,7 @@ public class HudElement extends Actor {
         setX(camera.position.x);
         setY(camera.position.y);
         //percentFilled+=0.0005;//test za "animaciju"
+        percentFilled = energyContainer.percentFilled();
     }
 
     public void draw(Batch batch, float alpha){
@@ -129,15 +140,5 @@ public class HudElement extends Actor {
         }
 
         return table;
-    }
-
-    public void setPercentFilled(float percent) {
-        percentFilled = percent/5;
-        if (percentFilled < 0) {
-            percentFilled = 0;
-        }
-        if (percentFilled > 70) {
-            percentFilled = 70;
-        }
     }
 }
