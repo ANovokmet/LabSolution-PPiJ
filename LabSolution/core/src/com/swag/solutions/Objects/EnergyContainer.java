@@ -7,28 +7,21 @@ import com.swag.solutions.input.ShakeDetector;
 /**
  * Created by Branimir on 6.5.2015..
  * Stvoren da se odvoji crtanje GUI-a i sl. od upravljanja količinom energije.
- * Ne znam još hoće li se mijenjati u postotcima ili određenim vrijednostima.
- * Ne znam još hoće li imati fiksnu ili promijenjivu stopu pada/rasta.
- * Ne znam još hoće li energija biti izražena u postotcima ili vrijednostima.
+ * Maksimalna i trenutna energija izražene u određenim vrijednostima.
+ * Energija se mijenja u određenim vrijednostima.
+ * Stopa pada i rasta trešnjom je izražena u fiksnim postotcima.
  */
 public class EnergyContainer extends Actor {
-    float currentEnergy;
-    float maxEnergy;
-    float dissipationRate; // u sekundi
-    static final float SHAKE_INCREASE_RATE = 0.2f;
-    ShakeDetector shakeDetector;
+    private float currentEnergy;
+    private float maxEnergy;
+    private static final float SHAKE_INCREASE_RATE = 0.2f;
+    private static final float DISSIPATION_RATE = 0.05f;
+    private static final float START_PERCENT_FILLED = 0.8f;
+    private ShakeDetector shakeDetector;
 
-    public EnergyContainer(
-            float percentFilled, float maxEnergy, float dissipationRate,
-            ShakeDetector shakeDetector) {
-        this.maxEnergy = (maxEnergy > 0.f) ? maxEnergy : 1.f;
-
-        boolean validPercentage =
-                (0.f < percentFilled) && (percentFilled < 1.f);
-        currentEnergy = validPercentage ? (maxEnergy * percentFilled) : 0.5f;
-
-        this.dissipationRate = (dissipationRate > 0.f) ? dissipationRate : 5.f;
-
+    public EnergyContainer(float maxEnergy, ShakeDetector shakeDetector) {
+        this.maxEnergy = (maxEnergy > 0.f) ? maxEnergy : 1000.f;
+        currentEnergy = this.maxEnergy * START_PERCENT_FILLED;
         this.shakeDetector = shakeDetector;
     }
 
@@ -56,9 +49,9 @@ public class EnergyContainer extends Actor {
 
     @Override
     public void act(float delta) {
-        decreaseEnergyBy(dissipationRate * delta);
+        decreaseEnergyBy(maxEnergy * DISSIPATION_RATE * delta);
         if (shakeDetector.deviceBeingShaken()) {
-            increaseEnergyBy(SHAKE_INCREASE_RATE * delta);
+            increaseEnergyBy(maxEnergy * SHAKE_INCREASE_RATE * delta);
         }
     }
 }

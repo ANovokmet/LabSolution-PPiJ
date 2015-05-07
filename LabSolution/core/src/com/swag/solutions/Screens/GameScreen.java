@@ -47,7 +47,7 @@ public class GameScreen implements Screen {
         gameStage.addActor(shakeDetector);
 
         EnergyContainer enContainer =
-                new EnergyContainer(0.8f, 1.f, 0.05f, shakeDetector);
+                new EnergyContainer(1000.f, shakeDetector);
         gameStage.addActor(enContainer);
 
         HudElement hud = new HudElement(camera, enContainer);
@@ -89,7 +89,6 @@ public class GameScreen implements Screen {
         controller.update();
         gameStage.act(delta);
         //hud.act(delta); //zašto je ovo potrebno?
-        //hud.setPercentFilled(shakeDetector.deviceBeingShaken() ? 20.f : 0.f);
 
         gameStage.draw();
     }

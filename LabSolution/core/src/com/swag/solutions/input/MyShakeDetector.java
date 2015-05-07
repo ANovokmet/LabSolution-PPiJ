@@ -15,6 +15,7 @@ public class MyShakeDetector extends ShakeDetector {
 
     public MyShakeDetector() {
         timeOfLastUpdate = System.currentTimeMillis();
+        deviceBeingShaken = false;
         shakeInertia = 0;
     }
 
