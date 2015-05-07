@@ -50,7 +50,7 @@ public class HudElement extends Actor {
 
     static BitmapFont titleFont;
     static BitmapFont textFont;
-    String moleculeFormula = "H2O2Ar2";//CILJNA MOLEKULA
+    String moleculeFormula = "H2O";//CILJNA MOLEKULA
 
     public HudElement(OrthographicCamera camera, EnergyContainer enContainer) {
         setWidth(100);

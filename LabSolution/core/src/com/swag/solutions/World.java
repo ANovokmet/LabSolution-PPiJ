@@ -59,9 +59,10 @@ public class World extends Actor {
     public void generateMolecules(String param){   //string param moze biti neki json, logika za loadanje u game screenu
         FileHandle file = Gdx.files.internal("data/all.json");
         JsonValue main = new JsonReader().parse(file.readString());
-        JsonValue prva = main.get(0);
+        JsonValue prva;
         Molecule molekula;
         for(int i=0;i<20;i++){
+            prva = main.get(MathUtils.random(0, 2));
             molekula = new Molecule(MathUtils.random(left_x+100, right_x-100), MathUtils.random(bottom_y+100, top_y-100), this, prva);
             free_molecules.add(molekula);
         }
