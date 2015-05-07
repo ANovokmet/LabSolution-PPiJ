@@ -10,9 +10,10 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 /**
  * Created by Ante on 29.4.2015..
  */
@@ -35,6 +36,7 @@ public class HudElement extends Actor {
     float currentEnergy = 0;
     float targetPercentFilled = 0.7f;
 
+    private Professor professor;
     private OrthographicCamera camera;
     Table formulaTable;
     EnergyContainer energyContainer;
@@ -59,6 +61,7 @@ public class HudElement extends Actor {
         createFonts();
         formulaTable = renderString(moleculeFormula);
         energyContainer = enContainer;
+        professor = new Professor(camera);
     }
 
     private void createFonts() {
@@ -84,6 +87,13 @@ public class HudElement extends Actor {
         setY(camera.position.y);
         //percentFilled+=0.0005;//test za "animaciju"
         percentFilled = energyContainer.percentFilled();
+
+        professor.act(delta);
+        //formulaTable.act(delta);
+    }
+
+    public void tellHint(String hint){
+        professor.tellHint(hint);
     }
 
     public void draw(Batch batch, float alpha){
@@ -119,6 +129,8 @@ public class HudElement extends Actor {
         //potrebno za subscript brojeva
         formulaTable.setPosition(getX(), getY()+camera.viewportWidth/2);
         formulaTable.draw(batch,alpha);
+
+        professor.draw(batch, alpha);
     }
 
     static Skin skin = new Skin();
@@ -137,8 +149,8 @@ public class HudElement extends Actor {
                 table.add(c+"","normal", Color.WHITE);
             }
             table.add();
-        }
 
+        }
         return table;
     }
 }
