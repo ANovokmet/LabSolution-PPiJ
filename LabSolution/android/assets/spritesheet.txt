@@ -1,0 +1,18 @@
+spritesheet.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+menu_pozadina
+  rotate: true
+  xy: 2, 2
+  size: 640, 800
+  orig: 640, 800
+  offset: 0, 0
+  index: -1
+naslov
+  rotate: true
+  xy: 2, 644
+  size: 1360, 659
+  orig: 1360, 800
+  offset: 0, 92
+  index: -1

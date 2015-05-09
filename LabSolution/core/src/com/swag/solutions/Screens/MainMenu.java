@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -20,6 +21,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -41,9 +43,12 @@ public class MainMenu implements com.badlogic.gdx.Screen {
     private BitmapFont font;
     private SpriteBatch batch;
     private Texture texture;
+    private Texture slikaNaslov;
+    private TextureRegion naslovRegija;
     private TextureRegion region;
     private Camera camera;
     private Sprite sprite;
+    private Sprite naslovSprite;
 
     public MainMenu(Game game) {
         create();
@@ -56,22 +61,35 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         float h = Gdx.graphics.getHeight();
         camera = new OrthographicCamera(1, h / w);
 
-        //slika u pozadini
-        texture = new Texture(Gdx.files.internal("menu_pozadina.png"));
-        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        region = new TextureRegion(texture, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        //ucitavanje spritesheeta
+        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("spritesheet.txt"));
 
-        sprite = new Sprite(region);
+        //ucitavanje pozadine
+        sprite = textureAtlas.createSprite("menu_pozadina");
         sprite.setSize(1f,
-                1f * sprite.getHeight() / sprite.getWidth() );
+                1f * sprite.getHeight() / sprite.getWidth());
         sprite.setOrigin(sprite.getWidth() / 2,
                 sprite.getHeight() / 2);
         sprite.setPosition(-sprite.getWidth() / 2,
                 -sprite.getHeight() / 2);
 
+
+        //ucitavanje naslova
+        naslovSprite = textureAtlas.createSprite("naslov");
+        naslovSprite.setRotation(10);
+        naslovSprite.setSize(1.1f,
+                1f * naslovSprite.getHeight() / naslovSprite.getWidth());
+        naslovSprite.setOrigin(sprite.getWidth() / 2,
+                sprite.getHeight() / 2);
+        System.out.println(naslovSprite.getWidth());
+        naslovSprite.setPosition(-naslovSprite.getWidth() / 2 - 0.07f,
+                -naslovSprite.getHeight() / 2 + 0.31f);
+
         batch = new SpriteBatch();
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
+
+
 
         //proba123
         Table table = new Table();
@@ -141,6 +159,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         final TextButton highScoresButton=new TextButton("HIGH SCORES",textButtonStyle);
         table.row();
         table.add(highScoresButton);
+        table.align(Align.bottom).padBottom(40);
         highScoresButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -161,15 +180,14 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         sprite.draw(batch);
+        naslovSprite.draw(batch);
         batch.end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();
-        //Table.drawDebug(stage);
     }
 
     @Override
     public void resize(int width, int height){
-        //stage.setViewport(width, height, false);
     }
 
     @Override
