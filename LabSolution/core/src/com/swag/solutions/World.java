@@ -37,6 +37,9 @@ public class World extends Actor {
         bottom_y=-sizey/2;
         free_molecules= new Array<Molecule>();
         area=podrucje;
+
+
+
     }
 
     @Override

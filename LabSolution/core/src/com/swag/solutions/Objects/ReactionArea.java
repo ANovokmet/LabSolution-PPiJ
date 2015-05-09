@@ -12,6 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.HashMap;
+
 /**
  * Created by Ante on 15.4.2015..
  */
@@ -58,13 +60,12 @@ public class ReactionArea extends Actor {
         setPosition(camera.position.x-camera.viewportWidth/2+REAREA_X, camera.position.y-camera.viewportHeight/2+REAREA_Y);
         bounds.set(getX(), getY(), getWidth(), getHeight());
     }
-    public void addMoleculeToReaction(Molecule a){
-        closed_molecules.add(a);
-    }
+    public void addMoleculeToReaction(Molecule a){ closed_molecules.add(a); }
     public void removeMoleculeFromReaction(Molecule a){
         closed_molecules.removeValue(a,true);
     }
     public Array<Molecule> getReactionMolecules(){
         return closed_molecules;
     }
+
 }

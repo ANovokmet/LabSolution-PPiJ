@@ -4,10 +4,14 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.swag.solutions.CameraController;
 import com.swag.solutions.Objects.EnergyContainer;
 import com.swag.solutions.Objects.HudElement;
@@ -17,6 +21,9 @@ import com.swag.solutions.World;
 import com.swag.solutions.input.BadShakeDetector;
 import com.swag.solutions.input.MyShakeDetector;
 import com.swag.solutions.input.ShakeDetector;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
@@ -32,6 +39,12 @@ public class GameScreen implements Screen {
     //HudElement hud; //zašto je ovdje i dodan u gameStage u isto vrijeme?
     CameraController controller;
     OrthographicCamera camera;
+    HudElement hudElement;
+    ReactionArea reactionArea;
+
+    HashMap<Integer,Integer> targetReaction;
+
+    float targetEnergy;
 
     public GameScreen(Game main){
 
@@ -50,10 +63,11 @@ public class GameScreen implements Screen {
                 new EnergyContainer(1000.f, shakeDetector);
         gameStage.addActor(enContainer);
 
-        HudElement hud = new HudElement(camera, enContainer);
-        gameStage.addActor(hud);
+        hudElement = new HudElement(camera, enContainer);
+        gameStage.addActor(hudElement);
 
         ReactionArea rxnArea = new ReactionArea(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
+        reactionArea = rxnArea;
         World world = new World(1000,1000,rxnArea);
 
         world.generateMolecules("");
@@ -73,7 +87,62 @@ public class GameScreen implements Screen {
 
         //Gdx.input.setInputProcessor(gameStage);
 
+        loadJson();
     }
+
+    private void loadJson(){
+        FileHandle file = Gdx.files.internal("data/levels.json");
+        JsonValue levels = new JsonReader().parse(file.readString());
+        JsonValue prvi = levels.get(0);
+
+        JsonValue reactants = prvi.get("reactants");
+        int len = levels.size;
+        targetReaction = new HashMap<Integer,Integer>();
+
+        for (int i = 0; i < len+1; i++)
+        {
+            JsonValue reactant = reactants.get(i);
+            targetReaction.put(reactant.get("id").asInt(),reactant.get("quantity").asInt());
+        }
+
+        targetEnergy = prvi.get("energy_needed").asFloat();
+        hudElement.setTargetEnergy(targetEnergy);
+
+        JsonValue result =  prvi.get("result");
+        int idResult = result.get("id").asInt();
+
+        FileHandle file2 = Gdx.files.internal("data/all.json");
+        JsonValue molecules = new JsonReader().parse(file2.readString());
+        JsonValue molecule = molecules.get(idResult);
+        hudElement.setMoleculeTitle(molecule.get("formula").asString());
+    }
+
+    public boolean isReactionFulfilled(){
+        HashMap<Integer,Integer> h = new HashMap<Integer,Integer>();
+        Array<Molecule> molecules = reactionArea.getReactionMolecules();
+
+
+        for(Molecule m : molecules){
+            int id = m.getId();
+            if(h.containsKey(id)){
+                h.put(id,h.get(id)+1);
+            }
+            else{
+                h.put(id,1);
+            }
+
+        }
+        /*Gdx.app.log("ReactionArea",  ""); //test ispis hashmapi
+        for(Integer key : h.keySet()){
+            Gdx.app.log("m", key+":"+h.get(key));
+        }
+        Gdx.app.log("Target", "");
+        for(Integer key : targetReaction.keySet()){
+            Gdx.app.log("m", key+":"+targetReaction.get(key));
+        }*/
+        return h.equals(targetReaction);
+    }
+
 
     @Override
     public void show() {
@@ -89,7 +158,11 @@ public class GameScreen implements Screen {
         controller.update();
         gameStage.act(delta);
         //hud.act(delta); //zašto je ovo potrebno?
-
+        if(hudElement.getEnergy() >= targetEnergy) {
+            if (isReactionFulfilled()) {
+                main_game.setScreen(new MainMenu(main_game));
+            }
+        }
         gameStage.draw();
     }
 

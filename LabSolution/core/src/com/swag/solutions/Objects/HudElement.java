@@ -52,14 +52,14 @@ public class HudElement extends Actor {
 
     static BitmapFont titleFont;
     static BitmapFont textFont;
-    String moleculeFormula = "H2O";//CILJNA MOLEKULA
+    String moleculeFormula = "";//CILJNA MOLEKULA
 
     public HudElement(OrthographicCamera camera, EnergyContainer enContainer) {
         setWidth(100);
         setHeight(100);
         this.camera= camera;
         createFonts();
-        formulaTable = renderString(moleculeFormula);
+        //formulaTable = renderString(moleculeFormula);
         energyContainer = enContainer;
         professor = new Professor(camera);
     }
@@ -79,6 +79,7 @@ public class HudElement extends Actor {
 
     public void setMoleculeTitle(String formula){
         moleculeFormula = formula;
+        formulaTable = renderString(moleculeFormula);
     }
 
     public void act(float delta){
@@ -125,12 +126,20 @@ public class HudElement extends Actor {
         textFont.draw(batch, (int)(BAR_HEIGHT*percentFilled)+"", BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT*percentFilled+18);
         //titleFont.draw(batch, moleculeFormula, getX()-80, getY()+camera.viewportWidth/2+40);
         textFont.draw(batch, "KJ/MOL", 16+getX()-camera.viewportWidth/2, 16+getY()-camera.viewportHeight/2+18);
-
+        textFont.draw(batch, BAR_HEIGHT/50+"", 16+getX()-camera.viewportWidth/2+150, 16+getY()-camera.viewportHeight/2+18);
         //potrebno za subscript brojeva
         formulaTable.setPosition(getX(), getY()+camera.viewportWidth/2);
         formulaTable.draw(batch,alpha);
 
         professor.draw(batch, alpha);
+    }
+
+    public void setTargetEnergy(float energy){
+        targetPercentFilled = energy/BAR_HEIGHT;
+    }
+
+    public float getEnergy(){
+        return (BAR_HEIGHT*percentFilled);
     }
 
     static Skin skin = new Skin();

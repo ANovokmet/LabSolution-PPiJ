@@ -21,8 +21,6 @@ import com.swag.solutions.World;
  * Created by Ante on 15.4.2015..
  */
 public class Molecule extends Actor {
-    Texture textureoff = new Texture("badlogic.jpg");
-    Texture textureon = new Texture("goodlogic.jpg");
     Texture texture;
     World world;
     Circle bounds;
@@ -39,11 +37,16 @@ public class Molecule extends Actor {
     static float TOUCH_SCALE = 2f;
     static float TOUCH_SCALETIME = 0.1f;
 
+    public JsonValue params;
+    private int id;
+
     public Molecule(float x, float y, World world, JsonValue params){
         setX(x);
         setY(y);
+        this.params = params;
         setWidth(params.get("width").asInt());
         setHeight(params.get("height").asInt());
+        id = (params.get("id").asInt());
         texture = new Texture(params.get("path").asString());
         this.world = world;
         setOrigin(getWidth()/2,getHeight()/2);
@@ -79,13 +82,13 @@ public class Molecule extends Actor {
         bounds = new Circle(getX()+getWidth()/2, getY()+getHeight()/2, getWidth()/2);
     }
 
+    public int getId(){
+        return id;
+    }
+
     @Override
     public void draw(Batch batch, float alpha){
-        /*if(!van_kutije){
-            texture = textureon;
-        }else {
-            texture = textureoff;
-        }*/
+
         batch.draw(texture, getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
                 this.getHeight(), this.getScaleX(), this.getScaleY(), rotacija, 0, 0,
                 texture.getWidth(), texture.getHeight(), false, false);

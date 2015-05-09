@@ -47,14 +47,6 @@ public class Professor extends Actor {
 
         PROFESSOR_X = camera.viewportWidth;
         PROFESSOR_Y = camera.viewportHeight-getHeight();
-
-        tellHint("Jebote ppij!Jebote ppij!Jebote ppij!Jebote ppij!Jebote ppij!Jebote ppij!Jebote ppij!Jebote ppij!Jebote ppij!Jebote ppij!Jebote ppij!Jebote ppij!");
-
-        tellHint("e da i jebote rppp");
-
-        tellHint("jos citas ovo?");
-
-        tellHint("panju");
     }
 
     public void tellHint(String s){
