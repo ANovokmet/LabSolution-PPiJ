@@ -2,7 +2,6 @@ package com.swag.solutions.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
@@ -24,12 +23,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.viewport.Viewport;
-
-import java.awt.Font;
-
-import static com.badlogic.gdx.scenes.scene2d.ui.Table.*;
 
 
 /**
@@ -39,6 +32,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
     private Game game;
     private Skin skin;
+    private Skin buttonSkin;
     private Stage stage;
     private BitmapFont font;
     private SpriteBatch batch;
@@ -47,7 +41,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
     private TextureRegion naslovRegija;
     private TextureRegion region;
     private Camera camera;
-    private Sprite sprite;
+    private Sprite pozadinaSprite;
     private Sprite naslovSprite;
 
     public MainMenu(Game game) {
@@ -65,13 +59,13 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("spritesheet.txt"));
 
         //ucitavanje pozadine
-        sprite = textureAtlas.createSprite("menu_pozadina");
-        sprite.setSize(1f,
-                1f * sprite.getHeight() / sprite.getWidth());
-        sprite.setOrigin(sprite.getWidth() / 2,
-                sprite.getHeight() / 2);
-        sprite.setPosition(-sprite.getWidth() / 2,
-                -sprite.getHeight() / 2);
+        pozadinaSprite = textureAtlas.createSprite("menu_pozadina");
+        pozadinaSprite.setSize(1f,
+                1f * pozadinaSprite.getHeight() / pozadinaSprite.getWidth());
+        pozadinaSprite.setOrigin(pozadinaSprite.getWidth() / 2,
+                pozadinaSprite.getHeight() / 2);
+        pozadinaSprite.setPosition(-pozadinaSprite.getWidth() / 2,
+                -pozadinaSprite.getHeight() / 2);
 
 
         //ucitavanje naslova
@@ -79,8 +73,8 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         naslovSprite.setRotation(10);
         naslovSprite.setSize(1.1f,
                 1f * naslovSprite.getHeight() / naslovSprite.getWidth());
-        naslovSprite.setOrigin(sprite.getWidth() / 2,
-                sprite.getHeight() / 2);
+        naslovSprite.setOrigin(pozadinaSprite.getWidth() / 2,
+                pozadinaSprite.getHeight() / 2);
         System.out.println(naslovSprite.getWidth());
         naslovSprite.setPosition(-naslovSprite.getWidth() / 2 - 0.07f,
                 -naslovSprite.getHeight() / 2 + 0.31f);
@@ -97,39 +91,46 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         stage.addActor(table);
         //
 
-        // A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
-        // recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
-        skin = new Skin();
-        // Generate a 1x1 white texture and store it in the skin named "white".
-        Pixmap pixmap = new Pixmap(300, 100, Format.RGBA8888);
-        pixmap.setColor(106, 149, 105, (float) 0.8);
-        pixmap.fill();
 
-        skin.add("white", new Texture(pixmap));
+        //test slike za gumbe
+        buttonSkin = new Skin();
+        buttonSkin.addRegions(textureAtlas);
 
-        // Font za glavni menu
+
+        // font za glavni menu
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("sf-atarian-system.extended-bold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size =  Math.round(28 * Gdx.graphics.getDensity());
+        parameter.size =  Math.round(32 * Gdx.graphics.getDensity());
         BitmapFont bfont = generator.generateFont(parameter);
-        skin.add("default",bfont);
+        buttonSkin.add("default",bfont);
 
         // Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
         TextButtonStyle textButtonStyle = new TextButtonStyle();
-        textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
+        TextButtonStyle textButtonStyleObrnuto = new TextButtonStyle();
+        /*textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
         textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
         textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-        textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
+        textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);*/
+        textButtonStyle.up = buttonSkin.getDrawable("gumb_menu");
+        textButtonStyle.down = buttonSkin.getDrawable("gumb_menu");
+        textButtonStyle.checked = buttonSkin.getDrawable("gumb_menu");
+        textButtonStyle.over = buttonSkin.getDrawable("gumb_menu_oznaceno");
 
-        textButtonStyle.font = skin.getFont("default");
+        textButtonStyleObrnuto.up = buttonSkin.getDrawable("gumb_menu_obrnuto");
+        textButtonStyleObrnuto.down = buttonSkin.getDrawable("gumb_menu_obrnuto");
+        textButtonStyleObrnuto.checked = buttonSkin.getDrawable("gumb_menu_obrnuto");
+        textButtonStyleObrnuto.over = buttonSkin.getDrawable("gumb_menu_obrnuto_oznaceno");
+
+        textButtonStyle.font = buttonSkin.getFont("default");
+        textButtonStyleObrnuto.font = buttonSkin.getFont("default");
         //textButtonStyle.font.setScale(1); //ne baš sretno rješenje
 
-        skin.add("default", textButtonStyle);
+        buttonSkin.add("default", textButtonStyle);
 
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final TextButton startGameButton=new TextButton("PLAY",textButtonStyle);
         //startGameButton.setPosition(200, 200);
-        table.add(startGameButton).padBottom(10);
+        table.add(startGameButton).height(150).width(450).padBottom(-35);;
         //stage.addActor(startGameButton);
 
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
@@ -146,9 +147,11 @@ public class MainMenu implements com.badlogic.gdx.Screen {
        });
 
 
-        final TextButton optionsButton=new TextButton("OPTIONS",textButtonStyle);
+        final TextButton optionsButton=new TextButton("OPTIONS",textButtonStyleObrnuto);
+        optionsButton.getLabel().setColor(125f, 131f, 125f, 1f);
+        optionsButton.setWidth(400);
         table.row();
-        table.add(optionsButton).padBottom(10);
+        table.add(optionsButton).height(150).width(450).padBottom(-35);
         optionsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -157,9 +160,11 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         });
 
         final TextButton highScoresButton=new TextButton("HIGH SCORES",textButtonStyle);
+        highScoresButton.setHeight(150);
+        highScoresButton.setWidth(400);
         table.row();
-        table.add(highScoresButton);
-        table.align(Align.bottom).padBottom(40);
+        table.add(highScoresButton).height(150).width(450);
+        table.align(Align.bottom);
         highScoresButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -179,7 +184,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
-        sprite.draw(batch);
+        pozadinaSprite.draw(batch);
         naslovSprite.draw(batch);
         batch.end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
