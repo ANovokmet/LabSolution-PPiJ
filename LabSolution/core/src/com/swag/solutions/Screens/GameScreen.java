@@ -13,6 +13,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.swag.solutions.CameraController;
+import com.swag.solutions.LabGame;
+import com.swag.solutions.Objects.EndDialog;
 import com.swag.solutions.Objects.EnergyContainer;
 import com.swag.solutions.Objects.HudElement;
 import com.swag.solutions.Objects.Molecule;
@@ -34,7 +36,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
  */
 public class GameScreen implements Screen {
 
-    Game main_game;  //referenca na igru zbog mijenjanja screenova
+    LabGame main_game;  //referenca na igru zbog mijenjanja screenova
     Stage gameStage;
     //HudElement hud; //zašto je ovdje i dodan u gameStage u isto vrijeme?
     CameraController controller;
@@ -44,11 +46,17 @@ public class GameScreen implements Screen {
 
     HashMap<Integer,Integer> targetReaction;
 
+
+
     float targetEnergy;
 
-    public GameScreen(Game main){
+    EndDialog endDialog;
+
+    public GameScreen(LabGame main){
 
         main_game=main;
+
+        main_game.currentState = LabGame.GameState.PLAYING;
 
         final float screenWidth = Gdx.graphics.getWidth();
         final float screenHeight = Gdx.graphics.getHeight();
@@ -65,7 +73,8 @@ public class GameScreen implements Screen {
                 new EnergyContainer(1000.f, shakeDetector);
         gameStage.addActor(enContainer);
 
-
+        endDialog = new EndDialog(camera, main_game);
+        gameStage.addActor(endDialog);
 
         ReactionArea rxnArea = new ReactionArea(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
         reactionArea = rxnArea;
@@ -159,12 +168,15 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Gdx.app.log("GameScreen FPS", (1/delta) + "");
         //renderer.render(actors)
+        //hud.act(delta); //zašto je ovo potrebno?
+
         controller.update();
         gameStage.act(delta);
-        //hud.act(delta); //zašto je ovo potrebno?
+
         if(hudElement.getEnergy() >= targetEnergy) {
             if (isReactionFulfilled()) {
-                main_game.setScreen(new MainMenu(main_game));
+                main_game.currentState = LabGame.GameState.ENDGAME;
+                //main_game.setScreen(new MainMenu(main_game));
             }
         }
         gameStage.draw();

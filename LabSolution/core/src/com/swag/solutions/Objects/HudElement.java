@@ -5,8 +5,11 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -66,6 +69,7 @@ public class HudElement extends Actor {
         //formulaTable = renderString(moleculeFormula);
         energyContainer = enContainer;
         professor = new Professor(camera);
+
     }
 
     private void createFonts() {
@@ -99,6 +103,7 @@ public class HudElement extends Actor {
     public void tellHint(String hint){
         professor.tellHint(hint);
     }
+
 
 
 
@@ -136,6 +141,7 @@ public class HudElement extends Actor {
         formulaTable.draw(batch,alpha);
 
         professor.draw(batch, alpha);
+
     }
 
     // 0: sredina ekrana, +-1 vrh i dno

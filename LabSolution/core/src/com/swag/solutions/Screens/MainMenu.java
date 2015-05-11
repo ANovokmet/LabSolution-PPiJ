@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.swag.solutions.LabGame;
 
 
 /**
@@ -30,7 +31,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 public class MainMenu implements com.badlogic.gdx.Screen {
 
-    private Game game;
+    private LabGame game;
     private Skin skin;
     private Skin buttonSkin;
     private Stage stage;
@@ -44,7 +45,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
     private Sprite pozadinaSprite;
     private Sprite naslovSprite;
 
-    public MainMenu(Game game) {
+    public MainMenu(LabGame game) {
         create();
         this.game = game;
     }
@@ -66,7 +67,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
                 new TextureRegion(texture, 0, 0, 420, 800);
         pozadinaSprite = new Sprite(region);*/
         pozadinaSprite.setSize(1f,
-                1f * h/w);
+                1f * h / w);
         pozadinaSprite.setOrigin(pozadinaSprite.getWidth() / 2,
                 pozadinaSprite.getHeight() / 2);
         pozadinaSprite.setPosition(-pozadinaSprite.getWidth() / 2,
@@ -130,7 +131,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         textButtonStyleObrnuto.font = buttonSkin.getFont("default");
         textButtonStyle.fontColor = Color.BLACK;
         textButtonStyleObrnuto.fontColor = Color.BLACK;
-        //textButtonStyle.font.setScale(1); //ne baš sretno rješenje
+        //textButtonStyle.font.setScale(1); //ne baï¿½ sretno rjeï¿½enje
 
         buttonSkin.add("default", textButtonStyle);
 
