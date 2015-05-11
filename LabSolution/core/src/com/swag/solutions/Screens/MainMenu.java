@@ -142,7 +142,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final TextButton startGameButton=new TextButton("PLAY",textButtonStyle);
         //startGameButton.setPosition(200, 200);
-        table.add(startGameButton).height(150).width(450).padBottom(-35);
+        table.add(startGameButton).height(170).width(500).padBottom(-35);
         //stage.addActor(startGameButton);
 
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
@@ -161,7 +161,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
         final TextButton optionsButton=new TextButton("OPTIONS",textButtonStyleObrnuto);
         table.row();
-        table.add(optionsButton).height(150).width(450).padBottom(-35);
+        table.add(optionsButton).height(170).width(500).padBottom(-35);
         optionsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -174,7 +174,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         highScoresButton.setHeight(150);
         highScoresButton.setWidth(400);
         table.row();
-        table.add(highScoresButton).height(150).width(450);
+        table.add(highScoresButton).height(170).width(500);
         table.align(Align.bottom);
         highScoresButton.addListener(new ChangeListener() {
             @Override
