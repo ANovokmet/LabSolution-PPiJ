@@ -145,7 +145,7 @@ public class HudElement extends Actor {
     }
 
     public float getEnergy(){
-        return (energyContainer.currentEnergy*percentFilled);
+        return (energyContainer.currentEnergy);
     }
 
     static Skin skin = new Skin();
