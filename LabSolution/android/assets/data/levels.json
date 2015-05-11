@@ -1,2 +1,10 @@
-[{reactants:[{id: 0, quantity: 2}, {id: 1, quantity: 1}], result: {id: 2, quantity: 2}, energy_needed: 400, energy_released: 285, hint_free: "Oxygen (O2) is colored red",
-hints:["Hydrogen (H2) is colored white", "Every oxygen atom needs two electrons, while every hydrogen atom gives one"]}]
+[
+  {
+    reactants: [{id: 0, quantity: 2}, {id: 1, quantity: 1}],
+    result: {id: 2, quantity: 2},
+    energy_needed: 400,
+    energy_released: 285,
+    hint_free: "Oxygen (O2) is colored red",
+    hints:["Hydrogen (H2) is colored white", "Every oxygen atom needs two electrons, while every hydrogen atom gives one"]
+  }
+]

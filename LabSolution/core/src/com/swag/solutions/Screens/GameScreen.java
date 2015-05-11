@@ -43,7 +43,6 @@ public class GameScreen implements Screen {
 
     LabGame main_game;  //referenca na igru zbog mijenjanja screenova
     GameStage gameStage;
-    //HudElement hud; //zašto je ovdje i dodan u gameStage u isto vrijeme?
     CameraController controller;
     OrthographicCamera camera;
     HudElement hudElement;
@@ -54,9 +53,6 @@ public class GameScreen implements Screen {
 
     HashMap<Integer,Integer> targetReaction;
     private final Sound reactionSuccessSound;
-
-
-    float targetEnergy;
 
     EndDialog endDialog;
 
@@ -129,8 +125,9 @@ public class GameScreen implements Screen {
             targetReaction.put(reactant.get("id").asInt(),reactant.get("quantity").asInt());
         }
 
-        targetEnergy = prvi.get("energy_needed").asFloat();
-        hudElement.setTargetEnergy(targetEnergy);
+        float neededEnergy = prvi.get("energy_needed").asFloat();
+        enContainer.setNeededEnergy(neededEnergy);
+        //hudElement.setTargetEnergy(targetEnergy);
 
         JsonValue result =  prvi.get("result");
         int idResult = result.get("id").asInt();
@@ -179,12 +176,12 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Gdx.app.log("GameScreen FPS", (1/delta) + "");
         //renderer.render(actors)
-        //hud.act(delta); //zašto je ovo potrebno?
 
         controller.update();
         gameStage.act(delta);
 
-        if(hudElement.getEnergy() >= targetEnergy) {
+        //if(enContainer.getCurrentEnergy() >= targetEnergy) {
+        if (enContainer.enoughEnergyForReaction()) {
             if (isReactionFulfilled()) {
                 reactionSuccessSound.play();
                 main_game.currentState = LabGame.GameState.ENDGAME;
@@ -212,12 +209,9 @@ public class GameScreen implements Screen {
             for(Molecule m : world.getFreeMolecules()){
                 m.draw(batch,1);
             }
-            enContainer.draw(batch,1);
-            shakeDetector.draw(batch,1);
             batch.end();
         }
     }
-
 
     @Override
     public void resize(int width, int height) {

@@ -35,13 +35,6 @@ public class HudElement extends Actor {
     float BAR_WIDTH = 32;
     float BAR_HEIGHT = 512;
 
-    float percentFilled = 0;
-
-    float maxEnergy = 800;
-    float currentEnergy = 0;
-
-    float targetPercentFilled = 0.7f;
-
     private Professor professor;
     private OrthographicCamera camera;
     Table formulaTable;
@@ -94,8 +87,6 @@ public class HudElement extends Actor {
         super.act(delta);
         setX(camera.position.x);
         setY(camera.position.y);
-        //percentFilled+=0.0005;//test za "animaciju"
-        percentFilled = energyContainer.percentFilled();
         professor.act(delta);
         //formulaTable.act(delta);
     }
@@ -104,10 +95,11 @@ public class HudElement extends Actor {
         professor.tellHint(hint);
     }
 
-
-
-
     public void draw(Batch batch, float alpha){
+        float percentFilled = energyContainer.percentFilled();
+        float neededPercentFilled = energyContainer.neededEnergyPercentage();
+
+        // prazna epruveta od energije
         batch.draw(emptybot, BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2, this.getOriginX(), this.getOriginY(), BAR_WIDTH,
                 HEIGHT_OF_EDGE, this.getScaleX(), this.getScaleY(), 0, 0, 0,
                 emptybot.getWidth(), emptybot.getHeight(), false, false);
@@ -118,41 +110,38 @@ public class HudElement extends Actor {
                 HEIGHT_OF_EDGE, this.getScaleX(), this.getScaleY(), 0, 0, 0,
                 emptytop.getWidth(), emptytop.getHeight(), false, false);
 
-
-        batch.draw(filledbot, BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2, this.getOriginX(), this.getOriginY(), BAR_WIDTH,
+        // puni dio epruvete od energije
+        batch.draw(filledbot, BAR_X + getX() - camera.viewportWidth / 2, BAR_Y + getY() - camera.viewportHeight / 2, this.getOriginX(), this.getOriginY(), BAR_WIDTH,
                 HEIGHT_OF_EDGE, this.getScaleX(), this.getScaleY(), 0, 0, 0,
                 filledbot.getWidth(), filledbot.getHeight(), false, false);
         batch.draw(filledmid, BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+HEIGHT_OF_EDGE, this.getOriginX(), this.getOriginY(), BAR_WIDTH,
-                BAR_HEIGHT*percentFilled, this.getScaleX(), this.getScaleY(), 0, 0, 0,
+                BAR_HEIGHT* percentFilled, this.getScaleX(), this.getScaleY(), 0, 0, 0,
                 filledmid.getWidth(), filledmid.getHeight(), false, false);
-        batch.draw(filledtop, BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT*percentFilled+HEIGHT_OF_EDGE, this.getOriginX(), this.getOriginY(), BAR_WIDTH,
+        batch.draw(filledtop, BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT* percentFilled +HEIGHT_OF_EDGE, this.getOriginX(), this.getOriginY(), BAR_WIDTH,
                 HEIGHT_OF_EDGE, this.getScaleX(), this.getScaleY(), 0, 0, 0,
                 filledtop.getWidth(), filledtop.getHeight(), false, false);
 
-        batch.draw(target, BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT*targetPercentFilled+HEIGHT_OF_EDGE, this.getOriginX(), this.getOriginY(), BAR_WIDTH,
+        // oznaka koja pokazuje količinu energije potrebne za zadanu reakciju
+        batch.draw(target, BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT*neededPercentFilled+HEIGHT_OF_EDGE, this.getOriginX(), this.getOriginY(), BAR_WIDTH,
                 9, this.getScaleX(), this.getScaleY(), 0, 0, 0,
                 target.getWidth(), target.getHeight(), false, false);
 
-        textFont.draw(batch, (int)(energyContainer.getCurrentEnergy())+"", BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT*percentFilled+18);
+        // količina trenutne energije (broj)
+        textFont.draw(batch, (int)(energyContainer.getCurrentEnergy())+"", BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT* percentFilled +18);
         //titleFont.draw(batch, moleculeFormula, getX()-80, getY()+camera.viewportWidth/2+40);
+
+        // KJ/MOL na dnu
         textFont.draw(batch, "KJ/MOL", 16+getX()-camera.viewportWidth/2, 16+getY()-camera.viewportHeight/2+18);
+
+        // zadana reakcija
         //potrebno za subscript brojeva
         formulaTable.setPosition(getX(), getY()+camera.viewportHeight/2*FORMULA_POSITION_Y_PERCENTAGE);
         formulaTable.draw(batch,alpha);
 
         professor.draw(batch, alpha);
-
     }
 
     // 0: sredina ekrana, +-1 vrh i dno
-
-    public void setTargetEnergy(float energy){
-        targetPercentFilled = energy/energyContainer.getMaxEnergy();
-    }
-
-    public float getEnergy(){
-        return (energyContainer.getCurrentEnergy());
-    }
 
     static Skin skin = new Skin();
     private static final float PADDING = 30;

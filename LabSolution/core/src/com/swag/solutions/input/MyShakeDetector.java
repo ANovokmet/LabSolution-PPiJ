@@ -6,9 +6,9 @@ import com.badlogic.gdx.Gdx;
  * Created by Branimir on 6.5.2015..
  */
 public class MyShakeDetector extends ShakeDetector {
-    long timeOfLastUpdate;
-    boolean deviceBeingShaken;
-    int shakeInertia;
+    private long timeOfLastUpdate;
+    private boolean deviceBeingShaken;
+    private int shakeInertia;
     private static final int INERTIA_START_VALUE = 3;
     private static final int SHAKE_THRESHOLD = 20;
     private static final int TIME_DIFFERENCE_THRESHOLD = 100;
