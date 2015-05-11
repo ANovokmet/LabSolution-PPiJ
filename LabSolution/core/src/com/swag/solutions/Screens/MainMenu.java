@@ -60,8 +60,13 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
         //ucitavanje pozadine
         pozadinaSprite = textureAtlas.createSprite("menu_pozadina");
+        /*texture = new Texture(Gdx.files.internal("menu_pozadina.png"));
+        texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        TextureRegion region =
+                new TextureRegion(texture, 0, 0, 420, 800);
+        pozadinaSprite = new Sprite(region);*/
         pozadinaSprite.setSize(1f,
-                1f * pozadinaSprite.getHeight() / pozadinaSprite.getWidth());
+                1f * h/w);
         pozadinaSprite.setOrigin(pozadinaSprite.getWidth() / 2,
                 pozadinaSprite.getHeight() / 2);
         pozadinaSprite.setPosition(-pozadinaSprite.getWidth() / 2,
@@ -71,7 +76,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         //ucitavanje naslova
         naslovSprite = textureAtlas.createSprite("naslov");
         naslovSprite.setRotation(10);
-        naslovSprite.setSize(1.1f,
+        naslovSprite.setSize(1.2f,
                 1f * naslovSprite.getHeight() / naslovSprite.getWidth());
         naslovSprite.setOrigin(pozadinaSprite.getWidth() / 2,
                 pozadinaSprite.getHeight() / 2);
@@ -123,6 +128,8 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
         textButtonStyle.font = buttonSkin.getFont("default");
         textButtonStyleObrnuto.font = buttonSkin.getFont("default");
+        textButtonStyle.fontColor = Color.BLACK;
+        textButtonStyleObrnuto.fontColor = Color.BLACK;
         //textButtonStyle.font.setScale(1); //ne baš sretno rješenje
 
         buttonSkin.add("default", textButtonStyle);
@@ -148,8 +155,6 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
 
         final TextButton optionsButton=new TextButton("OPTIONS",textButtonStyleObrnuto);
-        optionsButton.getLabel().setColor(125f, 131f, 125f, 1f);
-        optionsButton.setWidth(400);
         table.row();
         table.add(optionsButton).height(150).width(450).padBottom(-35);
         optionsButton.addListener(new ChangeListener() {
