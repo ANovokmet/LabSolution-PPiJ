@@ -1,25 +1,20 @@
 package com.swag.solutions.Objects;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.Array;
-
-import java.util.HashMap;
 
 /**
  * Created by Ante on 15.4.2015..
  */
 public class ReactionArea extends Actor {
 
-    Texture texture = new Texture("badlogic.jpg");
+    Texture texture_top = new Texture("reaction_area_top.png");
+    Texture texture_bot = new Texture("reaction_area_bot.png");
     Rectangle bounds;
     Array<Molecule> closed_molecules;
 
@@ -29,6 +24,9 @@ public class ReactionArea extends Actor {
     static float REAREA_Y = 40;
     static float REAREA_WIDTH_PERCENTAGE = 0.85f;
     static float REAREA_HEIGHT_PERCENTAGE = 0.15f;
+
+    float BOUND_WIDTH_PERCENTAGE = 0.7f;
+    float BOUND_HEIGHT_PERCENTAGE = 0.7f;
 
     public ReactionArea(float screenWidth, float screenHeight, OrthographicCamera camera){
         this.camera=camera;
@@ -42,7 +40,7 @@ public class ReactionArea extends Actor {
         setX(botLeftCorner.x+REAREA_X);
         setY(botLeftCorner.y+REAREA_Y);
 
-        bounds=new Rectangle((int)getX(), (int)getY(), (int)getWidth(), (int)getHeight());
+        bounds=new Rectangle((int)getX()+(int)getWidth()*(1-BOUND_WIDTH_PERCENTAGE)/2, (int)getY()+(int)getHeight()*(1-BOUND_HEIGHT_PERCENTAGE)/2, (int)getWidth()*BOUND_WIDTH_PERCENTAGE, (int)getHeight()*BOUND_HEIGHT_PERCENTAGE);
         closed_molecules = new Array<Molecule>();
     }
 
@@ -53,9 +51,18 @@ public class ReactionArea extends Actor {
 
     @Override
     public void draw(Batch batch, float alpha){
-        batch.draw(texture,this.getX(),getY(),this.getOriginX(),this.getOriginY(),this.getWidth(),
-                this.getHeight(),this.getScaleX(), this.getScaleY(),this.getRotation(),0,0,
-                texture.getWidth(),texture.getHeight(),false,false);
+        batch.draw(texture_bot, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
+                this.getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
+                texture_bot.getWidth(), texture_bot.getHeight(), false, false);
+
+        for(Molecule m : closed_molecules){
+            m.draw(batch,alpha);
+        }
+
+        batch.draw(texture_top, this.getX(), getY(), this.getOriginX(), this.getOriginY(), this.getWidth(),
+                this.getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
+                texture_top.getWidth(), texture_top.getHeight(), false, false);
+
     }
 
     @Override
@@ -63,7 +70,11 @@ public class ReactionArea extends Actor {
         super.act(delta);
 
         setPosition(camera.position.x-camera.viewportWidth/2+REAREA_X, camera.position.y-camera.viewportHeight/2+REAREA_Y);
-        bounds.set(getX(), getY(), getWidth(), getHeight());
+        bounds.setPosition((int)getX()+(int)getWidth()*(1-BOUND_WIDTH_PERCENTAGE)/2, (int)getY()+(int)getHeight()*(1-BOUND_HEIGHT_PERCENTAGE)/2);
+
+        for(Molecule m : closed_molecules){
+            m.act(delta);
+        }
     }
     public void addMoleculeToReaction(Molecule a){ closed_molecules.add(a); }
     public void removeMoleculeFromReaction(Molecule a){
