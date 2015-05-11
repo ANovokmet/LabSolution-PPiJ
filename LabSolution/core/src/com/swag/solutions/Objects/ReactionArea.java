@@ -27,16 +27,21 @@ public class ReactionArea extends Actor {
 
     static float REAREA_X = 50;
     static float REAREA_Y = 40;
-    static float REAREA_WIDTH = 200;
-    static float REAREA_HEIGHT = 100;
+    static float REAREA_WIDTH_PERCENTAGE = 0.85f;
+    static float REAREA_HEIGHT_PERCENTAGE = 0.15f;
 
     public ReactionArea(float screenWidth, float screenHeight, OrthographicCamera camera){
         this.camera=camera;
         Vector2 botLeftCorner = new Vector2(camera.position.x-camera.viewportWidth/2, camera.position.y-camera.viewportHeight/2);
+
+        setWidth(screenWidth*REAREA_WIDTH_PERCENTAGE);
+        setHeight(screenHeight*REAREA_HEIGHT_PERCENTAGE);
+
+        REAREA_X = (camera.viewportWidth-this.getWidth())/2f;
+
         setX(botLeftCorner.x+REAREA_X);
         setY(botLeftCorner.y+REAREA_Y);
-        setWidth(screenWidth-100);
-        setHeight(REAREA_HEIGHT);
+
         bounds=new Rectangle((int)getX(), (int)getY(), (int)getWidth(), (int)getHeight());
         closed_molecules = new Array<Molecule>();
     }

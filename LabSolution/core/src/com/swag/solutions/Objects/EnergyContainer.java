@@ -12,8 +12,8 @@ import com.swag.solutions.input.ShakeDetector;
  * Stopa pada i rasta trešnjom je izražena u fiksnim postotcima.
  */
 public class EnergyContainer extends Actor {
-    private float currentEnergy;
-    private float maxEnergy;
+    float currentEnergy;
+    float maxEnergy;
     private static final float SHAKE_INCREASE_RATE = 0.2f;
     private static final float DISSIPATION_RATE = 0.05f;
     private static final float START_PERCENT_FILLED = 0.8f;

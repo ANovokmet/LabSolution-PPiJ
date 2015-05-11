@@ -56,6 +56,8 @@ public class GameScreen implements Screen {
         gameStage = new Stage();
         this.camera = (OrthographicCamera) gameStage.getCamera();
 
+        camera.setToOrtho(false, screenWidth,screenHeight);//OVDJE JE DI SE NAMJESTI OMJER, ostali djelovi se prilagođavaju viewportwidth i height
+
         ShakeDetector shakeDetector = new MyShakeDetector();
         gameStage.addActor(shakeDetector);
 
@@ -63,8 +65,7 @@ public class GameScreen implements Screen {
                 new EnergyContainer(1000.f, shakeDetector);
         gameStage.addActor(enContainer);
 
-        hudElement = new HudElement(camera, enContainer);
-        gameStage.addActor(hudElement);
+
 
         ReactionArea rxnArea = new ReactionArea(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
         reactionArea = rxnArea;
@@ -72,6 +73,9 @@ public class GameScreen implements Screen {
 
         world.generateMolecules("");
         gameStage.addActor(rxnArea);
+
+        hudElement = new HudElement(camera, enContainer);
+        gameStage.addActor(hudElement);
 
         gameStage.addActor(world);
         for(Molecule a : world.getFreeMolecules()){
