@@ -1,9 +1,9 @@
 package com.swag.solutions.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -20,11 +20,9 @@ import com.swag.solutions.Objects.HudElement;
 import com.swag.solutions.Objects.Molecule;
 import com.swag.solutions.Objects.ReactionArea;
 import com.swag.solutions.World;
-import com.swag.solutions.input.BadShakeDetector;
 import com.swag.solutions.input.MyShakeDetector;
 import com.swag.solutions.input.ShakeDetector;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
@@ -45,6 +43,9 @@ public class GameScreen implements Screen {
     ReactionArea reactionArea;
 
     HashMap<Integer,Integer> targetReaction;
+
+    private final Sound reactionSuccessSound;
+
 
 
 
@@ -101,6 +102,9 @@ public class GameScreen implements Screen {
         //Gdx.input.setInputProcessor(gameStage);
 
         loadJson();
+
+        reactionSuccessSound = Gdx.audio.newSound(
+                Gdx.files.internal("sounds/reaction_success.wav"));
     }
 
     private void loadJson(){
@@ -130,10 +134,11 @@ public class GameScreen implements Screen {
         hudElement.setMoleculeTitle(molecule.get("formula").asString());
     }
 
+
+
     public boolean isReactionFulfilled(){
         HashMap<Integer,Integer> h = new HashMap<Integer,Integer>();
         Array<Molecule> molecules = reactionArea.getReactionMolecules();
-
 
         for(Molecule m : molecules){
             int id = m.getId();
@@ -175,6 +180,7 @@ public class GameScreen implements Screen {
 
         if(hudElement.getEnergy() >= targetEnergy) {
             if (isReactionFulfilled()) {
+                reactionSuccessSound.play();
                 main_game.currentState = LabGame.GameState.ENDGAME;
                 //main_game.setScreen(new MainMenu(main_game));
             }

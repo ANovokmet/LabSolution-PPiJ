@@ -2,6 +2,7 @@ package com.swag.solutions.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Color;
@@ -135,10 +136,13 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
         buttonSkin.add("default", textButtonStyle);
 
+        final Sound clickSound =
+                Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
+
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final TextButton startGameButton=new TextButton("PLAY",textButtonStyle);
         //startGameButton.setPosition(200, 200);
-        table.add(startGameButton).height(150).width(450).padBottom(-35);;
+        table.add(startGameButton).height(150).width(450).padBottom(-35);
         //stage.addActor(startGameButton);
 
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
@@ -149,8 +153,8 @@ public class MainMenu implements com.badlogic.gdx.Screen {
            public void changed(ChangeEvent event, Actor actor) {
                //System.out.println("Clicked! Is checked: " + button.isChecked());
                startGameButton.setText("Starting new game");
+               clickSound.play();
                game.setScreen(new GameScreen(game));
-
            }
        });
 
@@ -162,6 +166,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 optionsButton.setText("U izradi");
+                clickSound.play();
             }
         });
 
@@ -175,6 +180,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 highScoresButton.setText("U izradi");
+                clickSound.play();
             }
         });
     }
