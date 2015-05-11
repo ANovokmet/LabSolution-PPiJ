@@ -1,6 +1,7 @@
 package com.swag.solutions.Objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Circle;
@@ -65,18 +66,27 @@ public class Molecule extends Actor {
         });
         final Molecule p = this;
 
+        final Sound moleculePickUpSound =
+                Gdx.audio.newSound(
+                        Gdx.files.internal("sounds/molecule_pick_up.wav"));
+        final Sound moleculePutDownSound =
+                Gdx.audio.newSound(
+                        Gdx.files.internal("sounds/molecule_put_down.wav"));
+
         this.addListener(new ClickListener(){
             public boolean touchDown(InputEvent event,float x,float y,int pointer,int button){
                 dira_se = true;
-                Gdx.app.error("touchDown","");
+                Gdx.app.error("touchDown", "");
                 p.addAction(scaleTo(TOUCH_SCALE, TOUCH_SCALE, TOUCH_SCALETIME));
+                moleculePutDownSound.play();
                 return true;
             }
 
             public void touchUp(InputEvent event,float x,float y,int pointer,int button){
                 dira_se = false;
                 p.addAction(scaleTo(1, 1, TOUCH_SCALETIME));
-                Gdx.app.error("touchUp","");
+                Gdx.app.error("touchUp", "");
+                moleculePickUpSound.play();
             }
         });
         bounds = new Circle(getX()+getWidth()/2, getY()+getHeight()/2, getWidth()/2);

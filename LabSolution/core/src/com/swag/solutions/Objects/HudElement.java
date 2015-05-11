@@ -133,7 +133,7 @@ public class HudElement extends Actor {
                 9, this.getScaleX(), this.getScaleY(), 0, 0, 0,
                 target.getWidth(), target.getHeight(), false, false);
 
-        textFont.draw(batch, (int)(energyContainer.currentEnergy)+"", BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT*percentFilled+18);
+        textFont.draw(batch, (int)(energyContainer.getCurrentEnergy())+"", BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT*percentFilled+18);
         //titleFont.draw(batch, moleculeFormula, getX()-80, getY()+camera.viewportWidth/2+40);
         textFont.draw(batch, "KJ/MOL", 16+getX()-camera.viewportWidth/2, 16+getY()-camera.viewportHeight/2+18);
         //potrebno za subscript brojeva
@@ -147,11 +147,11 @@ public class HudElement extends Actor {
     // 0: sredina ekrana, +-1 vrh i dno
 
     public void setTargetEnergy(float energy){
-        targetPercentFilled = energy/energyContainer.maxEnergy;
+        targetPercentFilled = energy/energyContainer.getMaxEnergy();
     }
 
     public float getEnergy(){
-        return (energyContainer.currentEnergy);
+        return (energyContainer.getCurrentEnergy());
     }
 
     static Skin skin = new Skin();
