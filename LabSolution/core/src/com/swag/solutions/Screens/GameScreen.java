@@ -23,6 +23,7 @@ import com.swag.solutions.Objects.EndDialog;
 import com.swag.solutions.Objects.EnergyContainer;
 import com.swag.solutions.Objects.HudElement;
 import com.swag.solutions.Objects.Molecule;
+import com.swag.solutions.Objects.Professor;
 import com.swag.solutions.Objects.ReactionArea;
 import com.swag.solutions.World;
 import com.swag.solutions.input.BadShakeDetector;
@@ -50,6 +51,8 @@ public class GameScreen implements Screen {
     World world;
     EnergyContainer enContainer;
     ShakeDetector shakeDetector;
+    Professor professor;
+
 
     HashMap<Integer,Integer> targetReaction;
     private final Sound reactionSuccessSound;
@@ -95,6 +98,11 @@ public class GameScreen implements Screen {
             gameStage.addActor(m);
         }
 
+        professor = new Professor(camera);
+        gameStage.addActor(professor);
+
+        professor.tellHint("yole");professor.tellHint("yole");
+
         controller = new CameraController(camera, world);
         //molekula.addAction(parallel(moveTo(200,0,5),rotateBy(90,5)));
         InputMultiplexer multiplexer = new InputMultiplexer();
@@ -102,34 +110,26 @@ public class GameScreen implements Screen {
         multiplexer.addProcessor(new GestureDetector(20, 0.5f, 2, 0.15f, controller));
         Gdx.input.setInputProcessor(multiplexer);
 
-        //Gdx.input.setInputProcessor(gameStage);
-
-        loadJson();
+        loadLevelFromJson(0);
 
         reactionSuccessSound = Gdx.audio.newSound(
                                Gdx.files.internal("sounds/reaction_success.wav"));
     }
 
-    private void loadJson(){
+    private void loadLevelFromJson(int levelId){
+
         FileHandle file = Gdx.files.internal("data/levels.json");
-        JsonValue levels = new JsonReader().parse(file.readString());
-        JsonValue prvi = levels.get(0);
+        JsonValue allLevels = new JsonReader().parse(file.readString());
+        JsonValue level = allLevels.get(levelId);
 
-        JsonValue reactants = prvi.get("reactants");
-        int len = levels.size;
-        targetReaction = new HashMap<Integer,Integer>();
+        reactionArea.setReaction(level.get("reactants"));
 
-        for (int i = 0; i < len+1; i++)
-        {
-            JsonValue reactant = reactants.get(i);
-            targetReaction.put(reactant.get("id").asInt(),reactant.get("quantity").asInt());
-        }
 
-        float neededEnergy = prvi.get("energy_needed").asFloat();
+        float neededEnergy = level.get("energy_needed").asFloat();
         enContainer.setNeededEnergy(neededEnergy);
         //hudElement.setTargetEnergy(targetEnergy);
 
-        JsonValue result =  prvi.get("result");
+        JsonValue result =  level.get("result");
         int idResult = result.get("id").asInt();
 
         FileHandle file2 = Gdx.files.internal("data/all.json");
@@ -138,31 +138,7 @@ public class GameScreen implements Screen {
         hudElement.setMoleculeTitle(molecule.get("formula").asString());
     }
 
-    public boolean isReactionFulfilled(){
-        HashMap<Integer,Integer> h = new HashMap<Integer,Integer>();
-        Array<Molecule> molecules = reactionArea.getReactionMolecules();
 
-
-        for(Molecule m : molecules){
-            int id = m.getId();
-            if(h.containsKey(id)){
-                h.put(id,h.get(id)+1);
-            }
-            else{
-                h.put(id,1);
-            }
-
-        }
-        /*Gdx.app.log("ReactionArea",  ""); //test ispis hashmapi
-        for(Integer key : h.keySet()){
-            Gdx.app.log("m", key+":"+h.get(key));
-        }
-        Gdx.app.log("Target", "");
-        for(Integer key : targetReaction.keySet()){
-            Gdx.app.log("m", key+":"+targetReaction.get(key));
-        }*/
-        return h.equals(targetReaction);
-    }
 
 
     @Override
@@ -182,10 +158,11 @@ public class GameScreen implements Screen {
 
         //if(enContainer.getCurrentEnergy() >= targetEnergy) {
         if (enContainer.enoughEnergyForReaction()) {
-            if (isReactionFulfilled()) {
+            if (reactionArea.isReactionFulfilled() /*&& main_game.currentState != LabGame.GameState.ENDGAME*/) {
                 reactionSuccessSound.play();
-                main_game.currentState = LabGame.GameState.ENDGAME;
+                //main_game.currentState = LabGame.GameState.ENDGAME;
                 //main_game.setScreen(new MainMenu(main_game));
+                reactionArea.doReaction();
             }
         }
         drawStage();
@@ -204,6 +181,8 @@ public class GameScreen implements Screen {
 
             reactionArea.draw(batch,1);
             hudElement.draw(batch,1); //zatočene molekule se crtaju u ovoj metodi
+            professor.draw(batch, 1);
+            endDialog.draw(batch,1);
 
             world.draw(batch,1);
             for(Molecule m : world.getFreeMolecules()){

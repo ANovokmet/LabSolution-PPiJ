@@ -1,5 +1,7 @@
 package com.swag.solutions.Objects;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -7,6 +9,10 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+
+import java.util.HashMap;
 
 /**
  * Created by Ante on 15.4.2015..
@@ -17,6 +23,7 @@ public class ReactionArea extends Actor {
     Texture texture_bot = new Texture("reaction_area_bot.png");
     Rectangle bounds;
     Array<Molecule> closed_molecules;
+    HashMap<Integer,Integer> targetReaction;
 
     OrthographicCamera camera;
 
@@ -76,6 +83,52 @@ public class ReactionArea extends Actor {
             m.act(delta);
         }
     }
+
+    public void setReaction(JsonValue reactants){
+
+        int len = reactants.size;
+        targetReaction = new HashMap<Integer,Integer>();
+
+        for (int i = 0; i < len; i++)
+        {
+            JsonValue reactant = reactants.get(i);
+            targetReaction.put(reactant.get("id").asInt(),reactant.get("quantity").asInt());
+        }
+    }
+
+    public boolean isReactionFulfilled(){
+        HashMap<Integer,Integer> h = new HashMap<Integer,Integer>();
+
+        for(Molecule m : closed_molecules){
+            int id = m.getId();
+            if(h.containsKey(id)){
+                h.put(id,h.get(id)+1);
+            }
+            else{
+                h.put(id,1);
+            }
+
+        }
+        Gdx.app.log("ReactionArea",  ""); //test ispis hashmapi
+        for(Integer key : h.keySet()){
+            Gdx.app.log("m", key+":"+h.get(key));
+        }
+        Gdx.app.log("Target", "");
+        for(Integer key : targetReaction.keySet()){
+            Gdx.app.log("m", key+":"+targetReaction.get(key));
+        }
+        return h.equals(targetReaction);
+    }
+
+    public void doReaction(){
+        for(Molecule m: closed_molecules){
+            m.remove();
+        }
+
+        closed_molecules.removeRange(0,closed_molecules.size-1);
+    }
+
+
     public void addMoleculeToReaction(Molecule a){ closed_molecules.add(a); }
     public void removeMoleculeFromReaction(Molecule a){
         closed_molecules.removeValue(a,true);

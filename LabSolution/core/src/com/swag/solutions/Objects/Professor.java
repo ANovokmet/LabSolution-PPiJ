@@ -1,6 +1,7 @@
 package com.swag.solutions.Objects;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -35,6 +36,7 @@ public class Professor extends Actor {
     LinkedList<String> hintQueue = new LinkedList<String>();
 
     private Bubble bubble;
+    private final Sound tellHintSound;
 
     private float HINT_DURATION = 2f;
 
@@ -47,10 +49,15 @@ public class Professor extends Actor {
 
         PROFESSOR_X = camera.viewportWidth;
         PROFESSOR_Y = camera.viewportHeight-getHeight();
+
+        tellHintSound = Gdx.audio.newSound(
+                Gdx.files.internal("sounds/mumbling.ogg"));
+
     }
 
     public void tellHint(String s){
         if(!bubble.isHinting()){
+            tellHintSound.play();
             bubble.hinting = true;
             this.addAction(sequence(Actions.rotateTo(30f, 2f), delay(HINT_DURATION), Actions.rotateTo(0f, 0.5f)));
             bubble.setHintText(s);
@@ -61,6 +68,7 @@ public class Professor extends Actor {
         }
     }
 
+    @Override
     public void act(float delta){
         super.act(delta);
         setX(camera.position.x);
@@ -73,6 +81,7 @@ public class Professor extends Actor {
         }
     }
 
+    @Override
     public void draw(Batch batch, float alpha){
         batch.draw(image, PROFESSOR_X+getX()-camera.viewportWidth/2, PROFESSOR_Y+getY()-camera.viewportHeight/2, this.getOriginX(), this.getOriginY(), getWidth(),
                 getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
