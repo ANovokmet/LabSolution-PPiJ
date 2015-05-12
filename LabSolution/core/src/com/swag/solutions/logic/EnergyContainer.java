@@ -30,10 +30,6 @@ public class EnergyContainer extends Actor {
         return currentEnergy;
     }
 
-    public float getMaxEnergy() {
-        return maxEnergy;
-    }
-
     public void setNeededEnergy(float neededEnergy) {
         this.neededEnergy = neededEnergy;
     }
@@ -64,8 +60,8 @@ public class EnergyContainer extends Actor {
         return currentEnergy >= neededEnergy;
     }
 
-    public boolean isEmpty() {
-        return (currentEnergy == 0.f);
+    public void useNeededEnergy() {
+        decreaseEnergyBy(neededEnergy);
     }
 
     @Override
@@ -73,6 +69,9 @@ public class EnergyContainer extends Actor {
         decreaseEnergyBy(maxEnergy * DISSIPATION_RATE * delta);
         if (shakeDetector.deviceBeingShaken()) {
             increaseEnergyBy(maxEnergy * SHAKE_INCREASE_RATE * delta);
+        }
+        if (currentEnergy == 0.f) {
+            // stavit game over screen ili nešto
         }
     }
 }

@@ -59,7 +59,7 @@ public class GameScreen implements Screen {
         ShakeDetector shakeDetector = new MyShakeDetector();
         EnergyContainer enContainer = new EnergyContainer(1000.f, shakeDetector);
         hudElement = new HudElement(camera, enContainer);
-        LevelHandler levelHandler = new LevelHandler(enContainer, hudElement/*, reactionArea*/);
+        LevelHandler levelHandler = new LevelHandler(enContainer, hudElement);
         reactionArea = new ReactionArea(Gdx.graphics.getWidth(),
                 Gdx.graphics.getHeight(), camera, enContainer, levelHandler);
 
@@ -68,17 +68,17 @@ public class GameScreen implements Screen {
         gameStage.addActor(reactionArea);
         gameStage.addActor(hudElement);
 
+        professor = new Professor(camera);
+        gameStage.addActor(professor);
+        professor.tellHint("yole");
+        professor.tellHint("yole");
+
         solution = new Solution(1000,1000,reactionArea);
         solution.generateMolecules(levelHandler.getMolecules());
         gameStage.addActor(solution);
         for (Molecule m: solution.getFreeMolecules()){
             gameStage.addActor(m);
         }
-
-        professor = new Professor(camera);
-        gameStage.addActor(professor);
-        professor.tellHint("yole");
-        professor.tellHint("yole");
 
         controller = new CameraController(camera, solution);
         //molekula.addAction(parallel(moveTo(200,0,5),rotateBy(90,5)));

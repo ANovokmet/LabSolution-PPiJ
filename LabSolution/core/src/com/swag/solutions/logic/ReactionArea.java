@@ -40,7 +40,8 @@ public class ReactionArea extends Actor {
     private Map<Integer, Integer> neededReactants;
 
     public ReactionArea(float screenWidth, float screenHeight,
-                        OrthographicCamera camera, EnergyContainer enContainer, LevelHandler levelHandler){
+                        OrthographicCamera camera, EnergyContainer enContainer,
+                        LevelHandler levelHandler){
         this.camera = camera;
         this.energyContainer = enContainer;
         this.levelHandler = levelHandler; // za mijenjanje levela kada se provede reakcija
@@ -85,7 +86,7 @@ public class ReactionArea extends Actor {
         return closedMolecules;
     }
 
-    public Map<Integer, Integer> getCurrentReactants() {
+    private Map<Integer, Integer> getCurrentReactants() {
         Map<Integer,Integer> currReactants = new HashMap<Integer,Integer>();
         for (Molecule molecule : closedMolecules) {
             int molecId = molecule.getId();
@@ -98,22 +99,22 @@ public class ReactionArea extends Actor {
         return currReactants;
     }
 
-    public boolean isReactionFulfilled(){
+    private boolean isReactionFulfilled(){
         Map<Integer,Integer> currentReactants = getCurrentReactants();
 
-        Gdx.app.log("ReactionArea",  ""); //test ispis hashmapi
+        /*Gdx.app.log("ReactionArea",  ""); //test ispis hashmapi
         for(Integer key : currentReactants.keySet()){
             Gdx.app.log("m", key+":"+currentReactants.get(key));
         }
         Gdx.app.log("Target", "");
         for(Integer key : neededReactants.keySet()){
             Gdx.app.log("m", key+":"+ neededReactants.get(key));
-        }
+        }*/
 
         return currentReactants.equals(neededReactants);
     }
 
-    public void doReaction(){
+    private void doReaction(){
         for(Molecule molecule : closedMolecules){
             molecule.remove();
         }
@@ -147,8 +148,8 @@ public class ReactionArea extends Actor {
                 camera.position.y - camera.viewportHeight / 2 + REAREA_Y);
 
         bounds.setPosition(
-                (int) getX() + (int) getWidth() * (1 - BOUND_WIDTH_PERCENTAGE) / 2,
-                (int) getY() + (int) getHeight() * (1 - BOUND_HEIGHT_PERCENTAGE) / 2);
+                (int)getX() + (int)getWidth()*(1 - BOUND_WIDTH_PERCENTAGE)/2,
+                (int)getY() + (int)getHeight()*(1 - BOUND_HEIGHT_PERCENTAGE)/2);
 
         for(Molecule m : closedMolecules){
             m.act(delta);
@@ -160,7 +161,8 @@ public class ReactionArea extends Actor {
                 //main_game.currentState = LabGame.GameState.ENDGAME;
                 //main_game.setScreen(new MainMenu(main_game));
                 doReaction();
-                //levelHandler.nextLevel();
+                levelHandler.nextLevel();
+                neededReactants = levelHandler.getNeededReactants();
             }
         }
     }

@@ -11,6 +11,8 @@ import java.util.Map;
 
 /**
  * Created by Branimir on 12.5.2015..
+ * Učitava levele i proslijeđuje bitne informacije ostalim objektima ili
+ * objekti te informacije uzimaju od njega.
  */
 public class LevelHandler {
     private int currentLevel;
@@ -21,14 +23,11 @@ public class LevelHandler {
 
     private EnergyContainer energyContainer;
     private HudElement hudElement;
-    //private ReactionArea reactionArea;
 
-    public LevelHandler(EnergyContainer enContainer, HudElement hudElement/*,
-                        ReactionArea reactionArea*/) {
+    public LevelHandler(EnergyContainer enContainer, HudElement hudElement) {
         this.currentLevel = 0;
         this.energyContainer = enContainer;
         this.hudElement = hudElement;
-        //this.reactionArea = reactionArea;
 
         JsonReader jsonReader = new JsonReader();
         FileHandle levelsFile = Gdx.files.internal("data/levels.json");
@@ -43,29 +42,27 @@ public class LevelHandler {
         loadLevel();
     }
 
-    public void loadLevel() {
-        JsonValue level = levels.get(currentLevel);
-        JsonValue reactants = level.get("reactants");
-        neededReactants.clear();
-        //for (int i = 0; i < (levels.size + 1); i++) {
-        for (int i = 0; i < reactants.size; ++i) {
-            JsonValue reactant = reactants.get(i);
-            neededReactants.put(
-                    reactant.get("id").asInt(),
-                    reactant.get("quantity").asInt());
-        }
+   public void loadLevel() {
+       JsonValue level = levels.get(currentLevel);
+       JsonValue reactants = level.get("reactants");
+       neededReactants.clear();
+       //for (int i = 0; i < (levels.size + 1); i++) {
+       for (int i = 0; i < reactants.size; ++i) {
+           JsonValue reactant = reactants.get(i);
+           neededReactants.put(
+                   reactant.get("id").asInt(),
+                   reactant.get("quantity").asInt());
+       }
 
-        JsonValue result = level.get("result");
-        resultMolecule.clear();
-        resultMolecule.put(
-                result.get("id").asInt(), result.get("quantity").asInt());
+       JsonValue result = level.get("result");
+       resultMolecule.clear();
+       resultMolecule.put(
+               result.get("id").asInt(), result.get("quantity").asInt());
 
-        energyContainer.setNeededEnergy(level.get("energy_needed").asFloat());
+       energyContainer.setNeededEnergy(level.get("energy_needed").asFloat());
 
-        JsonValue molecule = molecules.get(result.get("id").asInt());
-        hudElement.setMoleculeTitle(molecule.get("formula").asString());
-
-        //reactionArea.setNeededReactants(neededReactants);
+       JsonValue molecule = molecules.get(result.get("id").asInt());
+       hudElement.setMoleculeTitle(molecule.get("formula").asString());
     }
 
     public JsonValue getMolecules() {
@@ -74,5 +71,17 @@ public class LevelHandler {
 
     public Map<Integer, Integer> getNeededReactants() {
         return neededReactants;
+    }
+
+    public void nextLevel() {
+        energyContainer.useNeededEnergy();
+        energyContainer.increaseEnergyBy(
+                levels.get(currentLevel).get("energy_released").asInt());
+        ++currentLevel;
+        if (currentLevel >= levels.size) {
+            // bacit će exception negdje u loadLeve()
+            // treba stavit game over screen ili nešto
+        }
+        loadLevel();
     }
 }

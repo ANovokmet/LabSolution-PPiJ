@@ -6,5 +6,13 @@
     energy_released: 285,
     hint_free: "Oxygen (O2) is colored red",
     hints:["Hydrogen (H2) is colored white", "Every oxygen atom needs two electrons, while every hydrogen atom gives one"]
+  },
+  {
+    reactants: [{id: 0, quantity: 1}, {id: 1, quantity: 2}],
+    result: {id: 1, quantity: 10},
+    energy_needed: 400,
+    energy_released: 285,
+    hint_free: "Oxygen (O2) is colored red",
+    hints:["Hydrogen (H2) is colored white", "Every oxygen atom needs two electrons, while every hydrogen atom gives one"]
   }
 ]
