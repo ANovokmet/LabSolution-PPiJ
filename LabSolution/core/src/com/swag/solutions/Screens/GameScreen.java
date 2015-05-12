@@ -1,38 +1,27 @@
-package com.swag.solutions.Screens;
+package com.swag.solutions.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
 import com.swag.solutions.CameraController;
 import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
-import com.swag.solutions.Objects.EndDialog;
+import com.swag.solutions.hud.EndDialog;
 import com.swag.solutions.logic.EnergyContainer;
-import com.swag.solutions.Objects.HudElement;
-import com.swag.solutions.Objects.Molecule;
-import com.swag.solutions.Objects.Professor;
-import com.swag.solutions.Objects.ReactionArea;
-import com.swag.solutions.World;
-import com.swag.solutions.input.BadShakeDetector;
+import com.swag.solutions.hud.HudElement;
+import com.swag.solutions.logic.Molecule;
+import com.swag.solutions.hud.Professor;
+import com.swag.solutions.logic.ReactionArea;
+import com.swag.solutions.logic.Solution;
 import com.swag.solutions.input.MyShakeDetector;
 import com.swag.solutions.input.ShakeDetector;
 import com.swag.solutions.logic.LevelHandler;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
@@ -49,7 +38,7 @@ public class GameScreen implements Screen {
     OrthographicCamera camera;
     HudElement hudElement;
     ReactionArea reactionArea;
-    World world;
+    Solution solution;
     EnergyContainer enContainer;
     Professor professor;
     
@@ -86,10 +75,15 @@ public class GameScreen implements Screen {
                 Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
         gameStage.addActor(reactionArea);
 
-        world = new World(1000,1000,reactionArea);
-        world.generateMolecules("");
-        gameStage.addActor(world);
-        for (Molecule m: world.getFreeMolecules()){
+        hudElement = new HudElement(camera, enContainer);
+        gameStage.addActor(hudElement);
+
+        levelHandler = new LevelHandler(enContainer, hudElement, reactionArea);
+
+        solution = new Solution(1000,1000,reactionArea);
+        solution.generateMolecules(levelHandler.getMolecules());
+        gameStage.addActor(solution);
+        for (Molecule m: solution.getFreeMolecules()){
             gameStage.addActor(m);
         }
 
@@ -98,17 +92,12 @@ public class GameScreen implements Screen {
 
         professor.tellHint("yole");professor.tellHint("yole");
 
-        hudElement = new HudElement(camera, enContainer);
-        gameStage.addActor(hudElement);
-
-        controller = new CameraController(camera, world);
+        controller = new CameraController(camera, solution);
         //molekula.addAction(parallel(moveTo(200,0,5),rotateBy(90,5)));
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(gameStage);
         multiplexer.addProcessor(new GestureDetector(20, 0.5f, 2, 0.15f, controller));
         Gdx.input.setInputProcessor(multiplexer);
-
-        levelHandler = new LevelHandler(enContainer, hudElement, reactionArea);
 
         reactionSuccessSound = Gdx.audio.newSound(
                 Gdx.files.internal("sounds/reaction_success.wav"));
@@ -156,8 +145,8 @@ public class GameScreen implements Screen {
             professor.draw(batch, 1);
             endDialog.draw(batch,1);
 
-            world.draw(batch,1);
-            for(Molecule m : world.getFreeMolecules()){
+            solution.draw(batch,1);
+            for(Molecule m : solution.getFreeMolecules()){
                 m.draw(batch,1);
             }
             batch.end();
