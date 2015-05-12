@@ -40,8 +40,6 @@ public class LevelHandler {
 
         neededReactants = new HashMap<Integer, Integer>();
         resultMolecules = new HashMap<Integer, Integer>();
-
-        loadLevel();
     }
 
     public void setSolution(Solution solution) {
@@ -49,7 +47,7 @@ public class LevelHandler {
         solution.generateMolecules(molecules);
     }
 
-    private void loadLevel() {
+    public void loadLevel() {
         JsonValue level = levels.get(currentLevel);
         JsonValue reactants = level.get("reactants");
         neededReactants.clear();
@@ -70,6 +68,8 @@ public class LevelHandler {
 
         JsonValue molecule = molecules.get(result.get("id").asInt());
         hudElement.setMoleculeTitle(molecule.get("formula").asString());
+
+        solution.ensureReactionSatisfiability(neededReactants, molecules);
     }
 
     public Map<Integer, Integer> getNeededReactants() {
@@ -81,7 +81,7 @@ public class LevelHandler {
         energyContainer.increaseEnergyBy(
                 levels.get(currentLevel).get("energy_released").asInt());
 
-        solution.updateFreeMolecules(resultMolecules, molecules);
+        solution.addResultMolecules(resultMolecules, molecules);
 
         ++currentLevel;
         if (currentLevel >= levels.size) {

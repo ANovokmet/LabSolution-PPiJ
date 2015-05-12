@@ -9,10 +9,16 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+//import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import com.swag.solutions.GameStage;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -144,11 +150,11 @@ public class Solution extends Actor {
             freeMolecules.add(a);
     }
 
-    public void updateFreeMolecules(Map<Integer, Integer> resultMolecules,
-                                    JsonValue molecules) {
+    public void addResultMolecules(Map<Integer, Integer> resultMolecules,
+                                   JsonValue molecules) {
         for (Map.Entry<Integer, Integer> entry : resultMolecules.entrySet()) {
             JsonValue moleculeInfo = molecules.get(entry.getKey());
-            for(int i=0; i<entry.getValue(); i++) {
+            for (int i=0; i < entry.getValue(); i++) {
                 Molecule molecule = new Molecule(
                         reactionArea.getReactionMolecules().first().getX(),
                         reactionArea.getReactionMolecules().first().getY(),
@@ -158,6 +164,43 @@ public class Solution extends Actor {
                 stage.addActor(molecule);
             }
         }
+    }
+
+    public void ensureReactionSatisfiability(
+            Map<Integer, Integer> neededReactants, JsonValue molecules) {
+        Map<Integer, Integer> reactantOccurences =
+                getReactantOccurences(neededReactants);
+        for (Map.Entry<Integer, Integer> entry : neededReactants.entrySet()) {
+            int occurencesOfReactant = reactantOccurences.get(entry.getKey());
+            for (int i = occurencesOfReactant; i < entry.getValue()*2; ++i) {
+                JsonValue moleculeInfo = molecules.get(entry.getKey());
+                Molecule molecule = new Molecule(
+                        MathUtils.random(left_x + 100, right_x - 100),
+                        MathUtils.random(bottom_y + 100, top_y - 100),
+                        this, moleculeInfo);
+
+                freeMolecules.add(molecule);
+                stage.addActor(molecule);
+            }
+        }
+    }
+
+    private Map<Integer, Integer> getReactantOccurences(
+            Map<Integer, Integer> neededReactants) {
+        Map<Integer, Integer> reactantOccurences =
+                new HashMap<Integer, Integer>();
+        List<Integer> reactantIds = new ArrayList<Integer>();
+        for (Map.Entry<Integer, Integer> entry : neededReactants.entrySet()) {
+            reactantOccurences.put(entry.getKey(), 0);
+            reactantIds.add(entry.getKey());
+        }
+        for (Molecule molecule : freeMolecules) {
+            if (reactantIds.contains(molecule.getId())) {
+                reactantOccurences.put(molecule.getId(),
+                        reactantOccurences.get(molecule.getId()) + 1);
+            }
+        }
+        return reactantOccurences;
     }
 
     /**
