@@ -54,10 +54,10 @@ public class LevelHandler {
                    reactant.get("quantity").asInt());
        }
 
-       JsonValue result = level.get("result");
-       resultMolecule.clear();
-       resultMolecule.put(
-               result.get("id").asInt(), result.get("quantity").asInt());
+        JsonValue result = level.get("results").get(0);  //vise produkata, prvi je glavni
+        resultMolecule.clear();
+        resultMolecule.put(
+                result.get("id").asInt(), result.get("quantity").asInt());
 
        energyContainer.setNeededEnergy(level.get("energy_needed").asFloat());
 

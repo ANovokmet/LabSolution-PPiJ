@@ -1,18 +1,42 @@
 [
   {
     reactants: [{id: 0, quantity: 2}, {id: 1, quantity: 1}],
-    result: {id: 2, quantity: 2},
+    results: [{id: 2, quantity: 2}],
     energy_needed: 400,
     energy_released: 285,
     hint_free: "Oxygen (O2) is colored red",
     hints:["Hydrogen (H2) is colored white", "Every oxygen atom needs two electrons, while every hydrogen atom gives one"]
   },
   {
-    reactants: [{id: 0, quantity: 1}, {id: 1, quantity: 2}],
-    result: {id: 1, quantity: 10},
-    energy_needed: 400,
-    energy_released: 285,
-    hint_free: "Oxygen (O2) is colored red",
-    hints:["Hydrogen (H2) is colored white", "Every oxygen atom needs two electrons, while every hydrogen atom gives one"]
+      reactants: [{id: 3, quantity: 2}, {id: 4, quantity: 1}],
+      results: [{id: 5, quantity: 2}],
+      energy_needed: 400,
+      energy_released: 407,
+      hint_free: "Sodium (Na) is colored purple",
+      hints:["Chlorine (Cl2) is colored light green", "Sodium atom has a 'spare' electron which he gladly gives to one chlorine atom"]
+  },
+  {
+      reactants: [{id: 0, quantity: 1}, {id: 4, quantity: 1}],
+      results: [{id: 6, quantity: 2}],
+      energy_needed: 400,
+      energy_released: 92,
+      hint_free: "Hydrogen lents his only electron to chlorine",
+      hints:["Every chlorine atom needs only one hydrogen", "FUN FACT: when dissolved in water, this gas forms very strong acid"]
+  },
+  {
+      reactants: [{id: 7, quantity: 1}, {id: 1, quantity: 1}],
+      results: [{id: 8, quantity: 1}],
+      energy_needed: 400,
+      energy_released: 394,
+      hint_free: "Carbon (C) is colored grey",
+      hints:["Carbon needs 4 electrons", "Oxygen gives 2 electrons"]
+  },
+  {
+      reactants: [{id: 9, quantity: 1}, {id: 0, quantity: 3}],
+      results: [{id: 10, quantity: 2}],
+      energy_needed: 400,
+      energy_released: 80,
+      hint_free: "Nitrogen (N2) is colored dark blue",
+      hints:["Nitrogen needs 3 electrons", ""]
   }
 ]
