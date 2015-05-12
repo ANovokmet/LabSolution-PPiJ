@@ -1,5 +1,6 @@
 package com.swag.solutions.Objects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -8,6 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by Ante on 15.4.2015..
  */
@@ -15,10 +19,6 @@ public class ReactionArea extends Actor {
 
     Texture texture_top = new Texture("reaction_area_top.png");
     Texture texture_bot = new Texture("reaction_area_bot.png");
-    Rectangle bounds;
-    Array<Molecule> closed_molecules;
-
-    OrthographicCamera camera;
 
     static float REAREA_X = 50;
     static float REAREA_Y = 40;
@@ -27,6 +27,12 @@ public class ReactionArea extends Actor {
 
     float BOUND_WIDTH_PERCENTAGE = 0.7f;
     float BOUND_HEIGHT_PERCENTAGE = 0.7f;
+
+    Rectangle bounds;
+    OrthographicCamera camera;
+
+    Array<Molecule> closedMolecules;
+    private Map<Integer, Integer> neededReactants;
 
     public ReactionArea(float screenWidth, float screenHeight,
                         OrthographicCamera camera){
@@ -49,7 +55,7 @@ public class ReactionArea extends Actor {
                 (int)getWidth()*BOUND_WIDTH_PERCENTAGE,
                 (int)getHeight()*BOUND_HEIGHT_PERCENTAGE);
 
-        closed_molecules = new Array<>();
+        closedMolecules = new Array<Molecule>();
     }
 
     public Rectangle getBounds() {
@@ -57,20 +63,24 @@ public class ReactionArea extends Actor {
     }
 
     public void addMoleculeToReaction(Molecule a){
-        closed_molecules.add(a);
+        closedMolecules.add(a);
     }
 
     public void removeMoleculeFromReaction(Molecule a){
-        closed_molecules.removeValue(a, true);
+        closedMolecules.removeValue(a, true);
     }
 
     public Array<Molecule> getReactionMolecules(){
-        return closed_molecules;
+        return closedMolecules;
+    }
+
+    public void setNeededReactants(Map<Integer, Integer> neededReactants) {
+        this.neededReactants = neededReactants;
     }
 
     public Map<Integer, Integer> getCurrentReactants() {
-        Map<Integer,Integer> currReactants = new HashMap<>();
-        for (Molecule molecule : closed_molecules) {
+        Map<Integer,Integer> currReactants = new HashMap<Integer,Integer>();
+        for (Molecule molecule : closedMolecules) {
             int molecId = molecule.getId();
             if (currReactants.containsKey(molecId)) {
                 currReactants.put(molecId, currReactants.get(molecId) + 1);
@@ -79,6 +89,28 @@ public class ReactionArea extends Actor {
             }
         }
         return currReactants;
+    }
+
+    public boolean isReactionFulfilled(){
+        Map<Integer,Integer> currentReactants = getCurrentReactants();
+
+        Gdx.app.log("ReactionArea",  ""); //test ispis hashmapi
+        for(Integer key : currentReactants.keySet()){
+            Gdx.app.log("m", key+":"+currentReactants.get(key));
+        }
+        Gdx.app.log("Target", "");
+        for(Integer key : neededReactants.keySet()){
+            Gdx.app.log("m", key+":"+ neededReactants.get(key));
+        }
+
+        return currentReactants.equals(neededReactants);
+    }
+
+    public void doReaction(){
+        for(Molecule molecule : closedMolecules){
+            molecule.remove();
+        }
+        closedMolecules.removeRange(0, closedMolecules.size-1);
     }
 
     @Override
@@ -95,8 +127,8 @@ public class ReactionArea extends Actor {
                 this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
                 texture_top.getWidth(), texture_top.getHeight(), false, false);
 
-        for(Molecule m : closed_molecules){
-            m.draw(batch,alpha);
+        for(Molecule m : closedMolecules){
+            m.draw(batch, alpha);
         }
     }
 
@@ -105,68 +137,14 @@ public class ReactionArea extends Actor {
         super.act(delta);
 
         setPosition(camera.position.x - camera.viewportWidth / 2 + REAREA_X,
-                    camera.position.y - camera.viewportHeight / 2 + REAREA_Y);
+                camera.position.y - camera.viewportHeight / 2 + REAREA_Y);
 
         bounds.setPosition(
-                (int)getX() + (int)getWidth()*(1 - BOUND_WIDTH_PERCENTAGE)/2,
-                (int)getY() + (int)getHeight()*(1 - BOUND_HEIGHT_PERCENTAGE)/2);
+                (int) getX() + (int) getWidth() * (1 - BOUND_WIDTH_PERCENTAGE) / 2,
+                (int) getY() + (int) getHeight() * (1 - BOUND_HEIGHT_PERCENTAGE) / 2);
 
-        for(Molecule m : closed_molecules){
+        for(Molecule m : closedMolecules){
             m.act(delta);
         }
     }
-
-    public void setReaction(JsonValue reactants){
-
-        int len = reactants.size;
-        targetReaction = new HashMap<Integer,Integer>();
-
-        for (int i = 0; i < len; i++)
-        {
-            JsonValue reactant = reactants.get(i);
-            targetReaction.put(reactant.get("id").asInt(),reactant.get("quantity").asInt());
-        }
-    }
-
-    public boolean isReactionFulfilled(){
-        HashMap<Integer,Integer> h = new HashMap<Integer,Integer>();
-
-        for(Molecule m : closed_molecules){
-            int id = m.getId();
-            if(h.containsKey(id)){
-                h.put(id,h.get(id)+1);
-            }
-            else{
-                h.put(id,1);
-            }
-
-        }
-        Gdx.app.log("ReactionArea",  ""); //test ispis hashmapi
-        for(Integer key : h.keySet()){
-            Gdx.app.log("m", key+":"+h.get(key));
-        }
-        Gdx.app.log("Target", "");
-        for(Integer key : targetReaction.keySet()){
-            Gdx.app.log("m", key+":"+targetReaction.get(key));
-        }
-        return h.equals(targetReaction);
-    }
-
-    public void doReaction(){
-        for(Molecule m: closed_molecules){
-            m.remove();
-        }
-
-        closed_molecules.removeRange(0,closed_molecules.size-1);
-    }
-
-
-    public void addMoleculeToReaction(Molecule a){ closed_molecules.add(a); }
-    public void removeMoleculeFromReaction(Molecule a){
-        closed_molecules.removeValue(a,true);
-    }
-    public Array<Molecule> getReactionMolecules(){
-        return closed_molecules;
-    }
-
 }

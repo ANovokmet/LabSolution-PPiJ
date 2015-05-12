@@ -53,7 +53,6 @@ public class GameScreen implements Screen {
     EnergyContainer enContainer;
     Professor professor;
     
-    HashMap<Integer,Integer> targetReaction;
     private final Sound reactionSuccessSound;
 
     EndDialog endDialog;
@@ -109,38 +108,11 @@ public class GameScreen implements Screen {
         multiplexer.addProcessor(new GestureDetector(20, 0.5f, 2, 0.15f, controller));
         Gdx.input.setInputProcessor(multiplexer);
 
-        loadLevelFromJson(0);
-
         levelHandler = new LevelHandler(enContainer, hudElement, reactionArea);
 
         reactionSuccessSound = Gdx.audio.newSound(
                 Gdx.files.internal("sounds/reaction_success.wav"));
     }
-
-    private void loadLevelFromJson(int levelId){
-
-        FileHandle file = Gdx.files.internal("data/levels.json");
-        JsonValue allLevels = new JsonReader().parse(file.readString());
-        JsonValue level = allLevels.get(levelId);
-
-        reactionArea.setReaction(level.get("reactants"));
-
-
-        float neededEnergy = level.get("energy_needed").asFloat();
-        enContainer.setNeededEnergy(neededEnergy);
-        //hudElement.setTargetEnergy(targetEnergy);
-
-        JsonValue result =  level.get("result");
-        int idResult = result.get("id").asInt();
-
-        FileHandle file2 = Gdx.files.internal("data/all.json");
-        JsonValue molecules = new JsonReader().parse(file2.readString());
-        JsonValue molecule = molecules.get(idResult);
-        hudElement.setMoleculeTitle(molecule.get("formula").asString());
-    }
-
-
-
 
     @Override
     public void show() {

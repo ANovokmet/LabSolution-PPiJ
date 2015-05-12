@@ -35,7 +35,7 @@ public class World extends Actor {
         right_x=sizex/2+offsetx;
         top_y=sizey/2+offsety;
         bottom_y=-sizey/2;
-        free_molecules= new Array<>();
+        free_molecules= new Array<Molecule>();
         area=podrucje;
     }
 
