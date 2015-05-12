@@ -1,32 +1,28 @@
-package com.swag.solutions;
+package com.swag.solutions.logic;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.swag.solutions.Objects.Molecule;
-import com.swag.solutions.Objects.ReactionArea;
 
 /**
  * Created by Goran on 19.4.2015..
  */
-public class World extends Actor {
+public class Solution extends Actor {
 
     public float left_x, right_x, top_y, bottom_y, size_x, size_y;
-    private Array<Molecule> free_molecules;
+
+    private final int NUM_FREE_MOLECULES = 30;
+
+    private Array<Molecule> freeMolecules;
     private ReactionArea area;
     Texture texture = new Texture("badlogic.jpg");
 
-    public World(float sizex, float sizey, ReactionArea podrucje){
+    public Solution(float sizex, float sizey, ReactionArea podrucje){
         float offsetx = Gdx.graphics.getWidth();
         float offsety = Gdx.graphics.getHeight();
         size_x=sizex+offsetx;
@@ -35,18 +31,17 @@ public class World extends Actor {
         right_x=sizex/2+offsetx;
         top_y=sizey/2+offsety;
         bottom_y=-sizey/2;
-        free_molecules= new Array<Molecule>();
+        freeMolecules = new Array<Molecule>();
         area=podrucje;
     }
 
     @Override
     public void act(float delta) {
         Rectangle area_bounds = area.getBounds();
-        for(Molecule molecule : free_molecules){
+        for(Molecule molecule : freeMolecules){
             molecule.setReactionAreaBounds(area_bounds);  //podesavanje granica da bi molekule mogle provjeriti da li su u reakciji
         }
     }
-
 
     @Override
     public void draw(Batch batch, float alpha){
@@ -56,15 +51,15 @@ public class World extends Actor {
         batch.draw(texture, left_x, bottom_y , size_x, 10);
     }
 
-    public void generateMolecules(String param){   //string param moze biti neki json, logika za loadanje u game screenu
-        FileHandle file = Gdx.files.internal("data/all.json");
-        JsonValue main = new JsonReader().parse(file.readString());
-        JsonValue prva;
-        Molecule molekula;
-        for(int i=0;i<20;i++){
-            prva = main.get(MathUtils.random(0, 2));
-            molekula = new Molecule(MathUtils.random(left_x+100, right_x-100), MathUtils.random(bottom_y+100, top_y-100), this, prva);
-            free_molecules.add(molekula);
+    public void generateMolecules(JsonValue molecules){
+        for (int i = 0; i < NUM_FREE_MOLECULES; ++i) {
+            JsonValue moleculeInfo =
+                    molecules.get(MathUtils.random(0, molecules.size - 1));
+            Molecule molecule = new Molecule(
+                    MathUtils.random(left_x + 100, right_x - 100),
+                    MathUtils.random(bottom_y + 100, top_y - 100),
+                    this, moleculeInfo);
+            freeMolecules.add(molecule);
         }
     }
 
@@ -73,7 +68,7 @@ public class World extends Actor {
      * @return molekule koje lete naokolo
      */
     public Array<Molecule> getFreeMolecules(){
-        return free_molecules;
+        return freeMolecules;
     }
 
     /**
@@ -83,7 +78,7 @@ public class World extends Actor {
     public void addMoleculeToReaction(Molecule a){
         if(!area.getReactionMolecules().contains(a,true))
             area.addMoleculeToReaction(a);
-        free_molecules.removeValue(a,true);
+        freeMolecules.removeValue(a, true);
     }
 
     /**
@@ -92,8 +87,8 @@ public class World extends Actor {
      */
     public void removeMoleculeFromReaction(Molecule a){
         area.removeMoleculeFromReaction(a);
-        if(!free_molecules.contains(a,true))
-            free_molecules.add(a);
+        if(!freeMolecules.contains(a,true))
+            freeMolecules.add(a);
     }
 
     /**

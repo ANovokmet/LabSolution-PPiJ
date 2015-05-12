@@ -1,8 +1,6 @@
-package com.swag.solutions.Objects;
+package com.swag.solutions.hud;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -12,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.swag.solutions.LabGame;
-import com.swag.solutions.Screens.MainMenu;
+import com.swag.solutions.screens.MainMenu;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 

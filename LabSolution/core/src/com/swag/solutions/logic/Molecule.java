@@ -1,4 +1,4 @@
-package com.swag.solutions.Objects;
+package com.swag.solutions.logic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -10,20 +10,19 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
-import static com.badlogic.gdx.math.Interpolation.*;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.JsonValue;
-import com.swag.solutions.World;
 
 /**
  * Created by Ante on 15.4.2015..
  */
 public class Molecule extends Actor {
     Texture texture;
-    World world;
+    Solution solution;
     Circle bounds;
     Rectangle reaction_area;
     float rotacija=0;  //posebni param za rotaciju zbog načina izračuna odmaka translacije
@@ -41,7 +40,7 @@ public class Molecule extends Actor {
     public JsonValue params;
     private int id;
 
-    public Molecule(float x, float y, World world, JsonValue params){
+    public Molecule(float x, float y, Solution solution, JsonValue params){
         setX(x);
         setY(y);
         this.params = params;
@@ -49,7 +48,7 @@ public class Molecule extends Actor {
         setHeight(params.get("height").asInt());
         id = (params.get("id").asInt());
         texture = new Texture(params.get("path").asString());
-        this.world = world;
+        this.solution = solution;
         setOrigin(getWidth()/2,getHeight()/2);
         brzina_rotacije=MathUtils.random(-15,15);
         movement = new Vector2(MathUtils.random((float)-2,2), MathUtils.random((float)-2,2));
@@ -98,10 +97,10 @@ public class Molecule extends Actor {
         if (Intersector.overlaps(bounds, reaction_area)) {
             van_kutije = false;
             izracunajRelPolozaj();
-            world.addMoleculeToReaction(this);
+            solution.addMoleculeToReaction(this);
         } else {
             van_kutije = true;
-            world.removeMoleculeFromReaction(this);
+            solution.removeMoleculeFromReaction(this);
         }
     }
 
@@ -125,17 +124,17 @@ public class Molecule extends Actor {
             if (Intersector.overlaps(bounds, reaction_area)) {
                 van_kutije = false;
                 izracunajRelPolozaj();
-                world.addMoleculeToReaction(this);
+                solution.addMoleculeToReaction(this);
             } else {
                 van_kutije = true;
-                world.removeMoleculeFromReaction(this);
+                solution.removeMoleculeFromReaction(this);
             }
         }*/
 
         //odbijanje
-        if (this.getX() < world.left_x || this.getX() > world.right_x)
+        if (this.getX() < solution.left_x || this.getX() > solution.right_x)
             this.movement.x *= -1;
-        if (this.getY() < world.bottom_y || this.getY() > world.top_y)
+        if (this.getY() < solution.bottom_y || this.getY() > solution.top_y)
             this.movement.y *= -1;
 
         if (van_kutije && !dira_se) {

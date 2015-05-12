@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.swag.solutions.Objects.HudElement;
-import com.swag.solutions.Objects.ReactionArea;
+import com.swag.solutions.hud.HudElement;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -67,5 +66,9 @@ public class LevelHandler {
         hudElement.setMoleculeTitle(molecule.get("formula").asString());
 
         reactionArea.setNeededReactants(neededReactants);
+    }
+
+    public JsonValue getMolecules() {
+        return molecules;
     }
 }

@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Vector2;
+import com.swag.solutions.logic.Solution;
 
 /**
  * Created by Ante on 17.4.2015..
@@ -13,17 +14,17 @@ public class CameraController implements GestureDetector.GestureListener {
     boolean flinging = false;
     float initialScale = 1;
     OrthographicCamera camera;
-    private World world;
+    private Solution solution;
     Vector2 lastGoodCamera;
 
-    public CameraController(OrthographicCamera camera, World w){
+    public CameraController(OrthographicCamera camera, Solution w){
         this.camera = camera;   //glavna kamera
         lastGoodCamera = new Vector2(camera.position.x, camera.position.y);   //pozicija u slucaju pomicanja van okvira svijeta
-        world=w;
+        solution =w;
     }
 
     private boolean xInsideBounds(){
-        if(camera.position.x-camera.viewportWidth/2 > world.left_x && camera.position.x+camera.viewportWidth/2 < world.right_x
+        if(camera.position.x-camera.viewportWidth/2 > solution.left_x && camera.position.x+camera.viewportWidth/2 < solution.right_x
                 ){
             lastGoodCamera.x = camera.position.x;
             return true;
@@ -32,7 +33,7 @@ public class CameraController implements GestureDetector.GestureListener {
     }
 
     private boolean yInsideBounds(){
-        if(camera.position.y+camera.viewportHeight/2 < world.top_y && camera.position.y-camera.viewportHeight/2 > world.bottom_y){
+        if(camera.position.y+camera.viewportHeight/2 < solution.top_y && camera.position.y-camera.viewportHeight/2 > solution.bottom_y){
 
             lastGoodCamera.y = camera.position.y;
             return true;
