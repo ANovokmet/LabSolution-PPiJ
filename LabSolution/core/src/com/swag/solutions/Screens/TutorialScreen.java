@@ -1,4 +1,4 @@
-package com.swag.solutions.screens;
+package com.swag.solutions.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;

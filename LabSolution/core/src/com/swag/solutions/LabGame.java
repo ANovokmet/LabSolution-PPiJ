@@ -1,7 +1,7 @@
 package com.swag.solutions;
 
 import com.badlogic.gdx.Game;
-import com.swag.solutions.screens.MainMenu;
+import com.swag.solutions.Screens.MainMenu;
 
 /**
  * Created by Ante on 15.4.2015..

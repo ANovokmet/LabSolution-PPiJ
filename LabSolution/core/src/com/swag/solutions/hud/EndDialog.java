@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.swag.solutions.LabGame;
-import com.swag.solutions.screens.MainMenu;
+import com.swag.solutions.Screens.MainMenu;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.scaleTo;
 
