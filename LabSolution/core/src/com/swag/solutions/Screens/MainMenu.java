@@ -22,7 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.swag.solutions.LabGame;
-import com.swag.solutions.Screens.TutorialScreen;
+import com.swag.solutions.screens.TutorialScreen;
 
 
 /**
