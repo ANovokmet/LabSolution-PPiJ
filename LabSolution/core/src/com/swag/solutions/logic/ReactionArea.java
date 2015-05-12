@@ -148,8 +148,8 @@ public class ReactionArea extends Actor {
                 camera.position.y - camera.viewportHeight / 2 + REAREA_Y);
 
         bounds.setPosition(
-                (int)getX() + (int)getWidth()*(1 - BOUND_WIDTH_PERCENTAGE)/2,
-                (int)getY() + (int)getHeight()*(1 - BOUND_HEIGHT_PERCENTAGE)/2);
+                (int) getX() + (int) getWidth() * (1 - BOUND_WIDTH_PERCENTAGE) / 2,
+                (int) getY() + (int) getHeight() * (1 - BOUND_HEIGHT_PERCENTAGE) / 2);
 
         for(Molecule m : closedMolecules){
             m.act(delta);
@@ -160,8 +160,8 @@ public class ReactionArea extends Actor {
                 reactionSuccessSound.play();
                 //main_game.currentState = LabGame.GameState.ENDGAME;
                 //main_game.setScreen(new MainMenu(main_game));
-                doReaction();
                 levelHandler.nextLevel();
+                doReaction();
                 neededReactants = levelHandler.getNeededReactants();
             }
         }

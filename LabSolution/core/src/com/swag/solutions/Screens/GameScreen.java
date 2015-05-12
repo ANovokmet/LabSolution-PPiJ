@@ -56,25 +56,32 @@ public class GameScreen implements Screen {
         endDialog = new EndDialog(camera, main_game);
         gameStage.addActor(endDialog);
 
-        ShakeDetector shakeDetector = new MyShakeDetector();
-        EnergyContainer enContainer = new EnergyContainer(1000.f, shakeDetector);
-        hudElement = new HudElement(camera, enContainer);
-        LevelHandler levelHandler = new LevelHandler(enContainer, hudElement);
-        reactionArea = new ReactionArea(Gdx.graphics.getWidth(),
-                Gdx.graphics.getHeight(), camera, enContainer, levelHandler);
-
-        gameStage.addActor(shakeDetector);
-        gameStage.addActor(enContainer);
-        gameStage.addActor(reactionArea);
-        gameStage.addActor(hudElement);
-
         professor = new Professor(camera);
         gameStage.addActor(professor);
         professor.tellHint("yole");
         professor.tellHint("yole");
 
-        solution = new Solution(1000,1000,reactionArea);
+        /*solution = new Solution(1000,1000,reactionArea);
         solution.generateMolecules(levelHandler.getMolecules());
+        gameStage.addActor(solution);
+        for (Molecule m: solution.getFreeMolecules()){
+            gameStage.addActor(m);
+        }*/
+
+        ShakeDetector shakeDetector = new MyShakeDetector();
+        EnergyContainer enContainer = new EnergyContainer(5000.f, shakeDetector);
+        hudElement = new HudElement(camera, enContainer);
+        LevelHandler levelHandler =
+                new LevelHandler(enContainer, hudElement);
+        reactionArea = new ReactionArea(Gdx.graphics.getWidth(),
+                Gdx.graphics.getHeight(), camera, enContainer, levelHandler);
+        solution = new Solution(1000, 1000, reactionArea, gameStage);
+        levelHandler.setSolution(solution);
+
+        gameStage.addActor(shakeDetector);
+        gameStage.addActor(enContainer);
+        gameStage.addActor(reactionArea);
+        gameStage.addActor(hudElement);
         gameStage.addActor(solution);
         for (Molecule m: solution.getFreeMolecules()){
             gameStage.addActor(m);

@@ -76,8 +76,8 @@ public class Bubble extends Actor {
     }
 
     public void draw(Batch batch, float alpha) {
-        Gdx.app.error("X",camera.position.x+"");
-        Gdx.app.error("Y",camera.position.y+"");
+        //Gdx.app.error("X",camera.position.x+"");
+        //Gdx.app.error("Y",camera.position.y+"");
 
 
         batch.setColor(1.0f, 1.0f, 1.0f, alpha * table.getColor().a);

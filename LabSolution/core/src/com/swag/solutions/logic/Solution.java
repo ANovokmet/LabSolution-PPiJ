@@ -6,8 +6,12 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
+import com.swag.solutions.GameStage;
+
+import java.util.Map;
 
 /**
  * Created by Goran on 19.4.2015..
@@ -19,10 +23,11 @@ public class Solution extends Actor {
     private final int NUM_FREE_MOLECULES = 30;
 
     private Array<Molecule> freeMolecules;
-    private ReactionArea area;
+    private ReactionArea reactionArea;
+    private Stage stage;
     Texture texture = new Texture("badlogic.jpg");
 
-    public Solution(float sizex, float sizey, ReactionArea podrucje){
+    public Solution(float sizex, float sizey, ReactionArea podrucje, GameStage gameStage){
         float offsetx = Gdx.graphics.getWidth();
         float offsety = Gdx.graphics.getHeight();
         size_x=sizex+offsetx;
@@ -32,12 +37,13 @@ public class Solution extends Actor {
         top_y=sizey/2+offsety;
         bottom_y=-sizey/2;
         freeMolecules = new Array<Molecule>();
-        area=podrucje;
+        reactionArea =podrucje;
+        stage = gameStage;
     }
 
     @Override
     public void act(float delta) {
-        Rectangle area_bounds = area.getBounds();
+        Rectangle area_bounds = reactionArea.getBounds();
         for(Molecule molecule : freeMolecules){
             molecule.setReactionAreaBounds(area_bounds);  //podesavanje granica da bi molekule mogle provjeriti da li su u reakciji
         }
@@ -76,8 +82,8 @@ public class Solution extends Actor {
      * @param a molekula koja je u kutiji
      */
     public void addMoleculeToReaction(Molecule a){
-        if(!area.getReactionMolecules().contains(a,true))
-            area.addMoleculeToReaction(a);
+        if(!reactionArea.getReactionMolecules().contains(a, true))
+            reactionArea.addMoleculeToReaction(a);
         freeMolecules.removeValue(a, true);
     }
 
@@ -86,9 +92,22 @@ public class Solution extends Actor {
      * @param a molekula koja je izvadjena iz kutije
      */
     public void removeMoleculeFromReaction(Molecule a){
-        area.removeMoleculeFromReaction(a);
+        reactionArea.removeMoleculeFromReaction(a);
         if(!freeMolecules.contains(a,true))
             freeMolecules.add(a);
+    }
+
+    public void updateFreeMolecules(Map<Integer, Integer> resultMolecules,
+                                    JsonValue molecules) {
+        for (Map.Entry<Integer, Integer> entry : resultMolecules.entrySet()) {
+            JsonValue moleculeInfo = molecules.get(entry.getKey());
+            Molecule molecule = new Molecule(
+                    reactionArea.getReactionMolecules().first().getX(),
+                    reactionArea.getReactionMolecules().first().getY(),
+                    this, moleculeInfo);
+            freeMolecules.add(molecule);
+            stage.addActor(molecule);
+        }
     }
 
     /**
@@ -96,12 +115,12 @@ public class Solution extends Actor {
      * @param xmov
      * @param ymov
      */
-    public void updateReactionArea(float xmov, float ymov){
-        area.setPosition(area.getX()-xmov, area.getY()+ymov);
-        for(Molecule molecule : area.getReactionMolecules()){
-            Gdx.app.error("world",""+area.getReactionMolecules());
+    /*public void updateReactionArea(float xmov, float ymov){
+        reactionArea.setPosition(reactionArea.getX() - xmov, reactionArea.getY() + ymov);
+        for(Molecule molecule : reactionArea.getReactionMolecules()){
+            Gdx.app.error("world",""+ reactionArea.getReactionMolecules());
             molecule.setPosition(molecule.getX()-xmov, molecule.getY()+ymov);
         }
-    }
+    }*/
 
 }

@@ -24,21 +24,26 @@ public class Molecule extends Actor {
     Texture texture;
     Solution solution;
     Circle bounds;
-    Rectangle reaction_area;
-    float rotacija=0;  //posebni param za rotaciju zbog načina izračuna odmaka translacije
-    float brzina_rotacije=0;
+    Rectangle reactionAreaBounds;
 
-    boolean van_kutije=true;  //bitno za update pananja i random pomicanja
-    boolean korisnik_mice=false;
+    float rotacija = 0;  //posebni param za rotaciju zbog načina izračuna odmaka translacije
+    float brzina_rotacije = 0;
+
+    boolean van_kutije = true;  //bitno za update pananja i random pomicanja
+    boolean korisnik_mice = false;
     boolean dira_se = false;
 
     public Vector2 movement;
 
-    static float TOUCH_SCALE = 2f;
-    static float TOUCH_SCALETIME = 0.1f;
+    static final float TOUCH_SCALE = 2f;
+    static final float TOUCH_SCALETIME = 0.1f;
 
     public JsonValue params;
-    private int id;
+
+    private final static Sound moleculePickUpSound = Gdx.audio.newSound(
+            Gdx.files.internal("sounds/molecule_pick_up.wav"));
+    private final static Sound moleculePutDownSound = Gdx.audio.newSound(
+            Gdx.files.internal("sounds/molecule_put_down.wav"));
 
     public Molecule(float x, float y, Solution solution, JsonValue params){
         setX(x);
@@ -46,7 +51,6 @@ public class Molecule extends Actor {
         this.params = params;
         setWidth(params.get("width").asInt());
         setHeight(params.get("height").asInt());
-        id = (params.get("id").asInt());
         texture = new Texture(params.get("path").asString());
         this.solution = solution;
         setOrigin(getWidth()/2,getHeight()/2);
@@ -56,7 +60,7 @@ public class Molecule extends Actor {
         this.addListener(new DragListener() {
             public void drag(InputEvent event, float x, float y, int pointer) {
                 korisnik_mice=true;
-                Molecule.this.moveBy(x -  Molecule.this.getWidth() / 2, y -  Molecule.this.getHeight() / 2);
+                Molecule.this.moveBy(x - Molecule.this.getWidth() / 2, y - Molecule.this.getHeight() / 2);
             }
 
             public void dragStop(InputEvent event, float x, float y, int pointer){
@@ -64,13 +68,6 @@ public class Molecule extends Actor {
             }
         });
         final Molecule p = this;
-
-        final Sound moleculePickUpSound =
-                Gdx.audio.newSound(
-                        Gdx.files.internal("sounds/molecule_pick_up.wav"));
-        final Sound moleculePutDownSound =
-                Gdx.audio.newSound(
-                        Gdx.files.internal("sounds/molecule_put_down.wav"));
 
         this.addListener(new ClickListener(){
             public boolean touchDown(InputEvent event,float x,float y,int pointer,int button){
@@ -87,14 +84,13 @@ public class Molecule extends Actor {
                 Gdx.app.error("touchUp", "");
                 moleculePickUpSound.play();
                 dropMolecule();
-
             }
         });
         bounds = new Circle(getX()+getWidth()/2, getY()+getHeight()/2, getWidth()/2);
     }
 
     private void dropMolecule(){
-        if (Intersector.overlaps(bounds, reaction_area)) {
+        if (Intersector.overlaps(bounds, reactionAreaBounds)) {
             van_kutije = false;
             izracunajRelPolozaj();
             solution.addMoleculeToReaction(this);
@@ -105,7 +101,7 @@ public class Molecule extends Actor {
     }
 
     public int getId(){
-        return id;
+        return params.get("id").asInt();
     }
 
     @Override
@@ -121,7 +117,7 @@ public class Molecule extends Actor {
         super.act(delta);
         bounds.set(getX()+getWidth()/2, getY()+getHeight()/2, getWidth()/2);
         /*if(korisnik_mice) {
-            if (Intersector.overlaps(bounds, reaction_area)) {
+            if (Intersector.overlaps(bounds, reactionAreaBounds)) {
                 van_kutije = false;
                 izracunajRelPolozaj();
                 solution.addMoleculeToReaction(this);
@@ -142,8 +138,8 @@ public class Molecule extends Actor {
             setY(getY() + movement.y);
         }
         else if(!dira_se){//unutar kutije
-            setX(reaction_area.x+relPolozaj.x);
-            setY(reaction_area.y+relPolozaj.y);
+            setX(reactionAreaBounds.x+relPolozaj.x);
+            setY(reactionAreaBounds.y+relPolozaj.y);
         }
 
         rotacija+=brzina_rotacije*delta;
@@ -153,7 +149,7 @@ public class Molecule extends Actor {
 
     Vector2 relPolozaj = new Vector2();
     private void izracunajRelPolozaj(){
-        relPolozaj.set(getX()-reaction_area.x, getY()-reaction_area.y);
+        relPolozaj.set(getX()- reactionAreaBounds.x, getY()- reactionAreaBounds.y);
     }
 
     @Override
@@ -166,9 +162,8 @@ public class Molecule extends Actor {
         super.setPosition(x-getWidth()/2, y-getHeight()/2);
     }
 
-
     public void setReactionAreaBounds(Rectangle bounds){
-        reaction_area = bounds;
+        reactionAreaBounds = bounds;
     }
 
     @Override
