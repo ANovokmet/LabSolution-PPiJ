@@ -18,8 +18,8 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
  */
 public class Professor extends Actor {
     Texture image = new Texture("professor1x0.png");
-    private float PROFESSOR_X = 0;
-    private float PROFESSOR_Y = 0;
+    private float PROFESSOR_X;
+    private float PROFESSOR_Y;
     private float PROFESSOR_WIDTH = 256;
     private float PROFESSOR_HEIGHT = 512;
 
@@ -37,8 +37,8 @@ public class Professor extends Actor {
         setHeight(PROFESSOR_HEIGHT);
         bubble = new Bubble(camera);
 
-        PROFESSOR_X = camera.viewportWidth;
-        PROFESSOR_Y = camera.viewportHeight-getHeight();
+        PROFESSOR_X = camera.viewportWidth/2;
+        PROFESSOR_Y = camera.viewportHeight/2-PROFESSOR_HEIGHT;
 
         tellHintSound = Gdx.audio.newSound(
                 Gdx.files.internal("sounds/mumbling.ogg"));
@@ -61,8 +61,8 @@ public class Professor extends Actor {
     @Override
     public void act(float delta){
         super.act(delta);
-        setX(camera.position.x);
-        setY(camera.position.y);
+        setX(camera.position.x+PROFESSOR_X);
+        setY(camera.position.y+PROFESSOR_Y);
         //percentFilled+=0.0005;//test za "animaciju"
         bubble.act(delta);
 
@@ -73,7 +73,7 @@ public class Professor extends Actor {
 
     @Override
     public void draw(Batch batch, float alpha){
-        batch.draw(image, PROFESSOR_X+getX()-camera.viewportWidth/2, PROFESSOR_Y+getY()-camera.viewportHeight/2, this.getOriginX(), this.getOriginY(), getWidth(),
+        batch.draw(image, getX(), getY(), this.getOriginX(), this.getOriginY(), getWidth(),
                 getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
                 image.getWidth(), image.getHeight(), false, false);
 
