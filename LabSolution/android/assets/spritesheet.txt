@@ -3,44 +3,72 @@ format: RGBA8888
 filter: Linear,Linear
 repeat: none
 gumb_menu
-  rotate: false
-  xy: 1325, 1598
+  rotate: true
+  xy: 1754, 890
   size: 657, 108
   orig: 800, 298
   offset: 76, 84
   index: -1
 gumb_menu_obrnuto
-  rotate: false
-  xy: 1325, 1708
+  rotate: true
+  xy: 1864, 890
   size: 657, 108
   orig: 800, 298
   offset: 67, 84
   index: -1
 gumb_menu_obrnuto_oznaceno
-  rotate: false
-  xy: 1325, 2
+  rotate: true
+  xy: 1754, 223
   size: 665, 115
   orig: 800, 298
   offset: 63, 80
   index: -1
 gumb_menu_oznaceno
-  rotate: false
-  xy: 1325, 119
+  rotate: true
+  xy: 1871, 223
   size: 665, 115
   orig: 800, 298
   offset: 72, 80
   index: -1
 menu_pozadina
-  rotate: false
+  rotate: true
   xy: 2, 2
   size: 1321, 1750
   orig: 1321, 1750
   offset: 0, 0
   index: -1
 naslov
-  rotate: true
-  xy: 1325, 236
+  rotate: false
+  xy: 2, 1325
   size: 1360, 659
   orig: 1360, 800
   offset: 0, 92
+  index: -1
+pozadina_tablice
+  rotate: true
+  xy: 1364, 1325
+  size: 800, 364
+  orig: 800, 390
+  offset: 0, 11
+  index: -1
+tutorial1
+  rotate: true
+  xy: 1754, 2
+  size: 219, 249
+  orig: 219, 249
+  offset: 0, 0
+  index: -1
+tutorial2
+  rotate: false
+  xy: 743, 1986
+  size: 482, 729
+  orig: 482, 729
+  offset: 0, 0
+  index: -1
+tutorial3
+  rotate: true
+  xy: 2, 1986
+  size: 476, 739
+  orig: 476, 739
+  offset: 0, 0
   index: -1

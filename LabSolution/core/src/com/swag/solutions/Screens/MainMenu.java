@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.swag.solutions.LabGame;
+import com.swag.solutions.Screens.TutorialScreen;
 
 
 /**
@@ -79,7 +80,6 @@ public class MainMenu implements com.badlogic.gdx.Screen {
                 1f * naslovSprite.getHeight() / naslovSprite.getWidth());
         naslovSprite.setOrigin(pozadinaSprite.getWidth() / 2,
                 pozadinaSprite.getHeight() / 2);
-        System.out.println(naslovSprite.getWidth());
         naslovSprite.setPosition(-naslovSprite.getWidth() / 2 - 0.07f,
                 -naslovSprite.getHeight() / 2 + 0.31f);
 
@@ -156,14 +156,15 @@ public class MainMenu implements com.badlogic.gdx.Screen {
        });
 
 
-        final TextButton optionsButton=new TextButton("OPTIONS",textButtonStyleObrnuto);
+        final TextButton optionsButton=new TextButton("TUTORIAL",textButtonStyleObrnuto);
         table.row();
         table.add(optionsButton).height(170).width(500).padBottom(-35);
         optionsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                optionsButton.setText("U izradi");
+                optionsButton.setText("Starting tutorial");
                 clickSound.play();
+                game.setScreen(new TutorialScreen(game));
             }
         });
 
