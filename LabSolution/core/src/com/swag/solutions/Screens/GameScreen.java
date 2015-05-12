@@ -39,46 +39,34 @@ public class GameScreen implements Screen {
     HudElement hudElement;
     ReactionArea reactionArea;
     Solution solution;
-    EnergyContainer enContainer;
     Professor professor;
-    
-    private final Sound reactionSuccessSound;
 
     EndDialog endDialog;
 
-    private final LevelHandler levelHandler;
-
     public GameScreen(LabGame main){
-
         main_game=main;
-
         main_game.currentState = LabGame.GameState.PLAYING;
-
-        final float screenWidth = Gdx.graphics.getWidth();
-        final float screenHeight = Gdx.graphics.getHeight();
 
         gameStage = new GameStage();
         this.camera = (OrthographicCamera) gameStage.getCamera();
-
+        final float screenWidth = Gdx.graphics.getWidth();
+        final float screenHeight = Gdx.graphics.getHeight();
         camera.setToOrtho(false, screenWidth, screenHeight);//OVDJE JE DI SE NAMJESTI OMJER, ostali djelovi se prilagođavaju viewportwidth i height
-
-        ShakeDetector shakeDetector = new MyShakeDetector();
-        gameStage.addActor(shakeDetector);
-
-        enContainer = new EnergyContainer(1000.f, shakeDetector);
-        gameStage.addActor(enContainer);
 
         endDialog = new EndDialog(camera, main_game);
         gameStage.addActor(endDialog);
 
-        reactionArea = new ReactionArea(
-                Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
-        gameStage.addActor(reactionArea);
-
+        ShakeDetector shakeDetector = new MyShakeDetector();
+        EnergyContainer enContainer = new EnergyContainer(1000.f, shakeDetector);
         hudElement = new HudElement(camera, enContainer);
-        gameStage.addActor(hudElement);
+        LevelHandler levelHandler = new LevelHandler(enContainer, hudElement/*, reactionArea*/);
+        reactionArea = new ReactionArea(Gdx.graphics.getWidth(),
+                Gdx.graphics.getHeight(), camera, enContainer, levelHandler);
 
-        levelHandler = new LevelHandler(enContainer, hudElement, reactionArea);
+        gameStage.addActor(shakeDetector);
+        gameStage.addActor(enContainer);
+        gameStage.addActor(reactionArea);
+        gameStage.addActor(hudElement);
 
         solution = new Solution(1000,1000,reactionArea);
         solution.generateMolecules(levelHandler.getMolecules());
@@ -89,8 +77,8 @@ public class GameScreen implements Screen {
 
         professor = new Professor(camera);
         gameStage.addActor(professor);
-
-        professor.tellHint("yole");professor.tellHint("yole");
+        professor.tellHint("yole");
+        professor.tellHint("yole");
 
         controller = new CameraController(camera, solution);
         //molekula.addAction(parallel(moveTo(200,0,5),rotateBy(90,5)));
@@ -98,9 +86,6 @@ public class GameScreen implements Screen {
         multiplexer.addProcessor(gameStage);
         multiplexer.addProcessor(new GestureDetector(20, 0.5f, 2, 0.15f, controller));
         Gdx.input.setInputProcessor(multiplexer);
-
-        reactionSuccessSound = Gdx.audio.newSound(
-                Gdx.files.internal("sounds/reaction_success.wav"));
     }
 
     @Override
@@ -118,14 +103,6 @@ public class GameScreen implements Screen {
         controller.update();
         gameStage.act(delta);
 
-        if (enContainer.enoughEnergyForReaction()) {
-            if (reactionArea.isReactionFulfilled() /*&& main_game.currentState != LabGame.GameState.ENDGAME*/) {
-                reactionSuccessSound.play();
-                //main_game.currentState = LabGame.GameState.ENDGAME;
-                //main_game.setScreen(new MainMenu(main_game));
-                reactionArea.doReaction();
-            }
-        }
         drawStage();
     }
 

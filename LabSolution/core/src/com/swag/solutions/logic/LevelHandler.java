@@ -15,20 +15,20 @@ import java.util.Map;
 public class LevelHandler {
     private int currentLevel;
     private JsonValue levels;
-    private Map<Integer, Integer> neededReactants; // ovo možda ne bude potrebno
-    private Map<Integer, Integer> resultMolecule; // ovo isto
+    private Map<Integer, Integer> neededReactants;
+    private Map<Integer, Integer> resultMolecule;
     private JsonValue molecules;
 
     private EnergyContainer energyContainer;
     private HudElement hudElement;
-    private ReactionArea reactionArea;
+    //private ReactionArea reactionArea;
 
-    public LevelHandler(EnergyContainer enContainer, HudElement hudElement,
-                        ReactionArea reactionArea) {
+    public LevelHandler(EnergyContainer enContainer, HudElement hudElement/*,
+                        ReactionArea reactionArea*/) {
         this.currentLevel = 0;
         this.energyContainer = enContainer;
         this.hudElement = hudElement;
-        this.reactionArea = reactionArea;
+        //this.reactionArea = reactionArea;
 
         JsonReader jsonReader = new JsonReader();
         FileHandle levelsFile = Gdx.files.internal("data/levels.json");
@@ -65,10 +65,14 @@ public class LevelHandler {
         JsonValue molecule = molecules.get(result.get("id").asInt());
         hudElement.setMoleculeTitle(molecule.get("formula").asString());
 
-        reactionArea.setNeededReactants(neededReactants);
+        //reactionArea.setNeededReactants(neededReactants);
     }
 
     public JsonValue getMolecules() {
         return molecules;
+    }
+
+    public Map<Integer, Integer> getNeededReactants() {
+        return neededReactants;
     }
 }

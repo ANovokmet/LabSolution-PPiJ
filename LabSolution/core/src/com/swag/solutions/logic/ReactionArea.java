@@ -1,6 +1,7 @@
 package com.swag.solutions.logic;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -20,6 +21,7 @@ public class ReactionArea extends Actor {
 
     Texture texture_top = new Texture("reaction_area_top.png");
     Texture texture_bot = new Texture("reaction_area_bot.png");
+    private Sound reactionSuccessSound;
 
     static float REAREA_X = 50;
     static float REAREA_Y = 40;
@@ -31,13 +33,20 @@ public class ReactionArea extends Actor {
 
     Rectangle bounds;
     OrthographicCamera camera;
+    EnergyContainer energyContainer;
+    LevelHandler levelHandler;
 
-    Array<Molecule> closedMolecules;
+    private Array<Molecule> closedMolecules;
     private Map<Integer, Integer> neededReactants;
 
     public ReactionArea(float screenWidth, float screenHeight,
-                        OrthographicCamera camera){
-        this.camera=camera;
+                        OrthographicCamera camera, EnergyContainer enContainer, LevelHandler levelHandler){
+        this.camera = camera;
+        this.energyContainer = enContainer;
+        this.levelHandler = levelHandler; // za mijenjanje levela kada se provede reakcija
+        reactionSuccessSound = Gdx.audio.newSound(
+                Gdx.files.internal("sounds/reaction_success.wav"));
+
         Vector2 botLeftCorner = new Vector2(
                 camera.position.x - camera.viewportWidth/2,
                 camera.position.y - camera.viewportHeight/2);
@@ -57,6 +66,7 @@ public class ReactionArea extends Actor {
                 (int)getHeight()*BOUND_HEIGHT_PERCENTAGE);
 
         closedMolecules = new Array<Molecule>();
+        neededReactants = levelHandler.getNeededReactants();
     }
 
     public Rectangle getBounds() {
@@ -73,10 +83,6 @@ public class ReactionArea extends Actor {
 
     public Array<Molecule> getReactionMolecules(){
         return closedMolecules;
-    }
-
-    public void setNeededReactants(Map<Integer, Integer> neededReactants) {
-        this.neededReactants = neededReactants;
     }
 
     public Map<Integer, Integer> getCurrentReactants() {
@@ -146,6 +152,16 @@ public class ReactionArea extends Actor {
 
         for(Molecule m : closedMolecules){
             m.act(delta);
+        }
+
+        if (energyContainer.enoughEnergyForReaction()) {
+            if (isReactionFulfilled() /*&& main_game.currentState != LabGame.GameState.ENDGAME*/) {
+                reactionSuccessSound.play();
+                //main_game.currentState = LabGame.GameState.ENDGAME;
+                //main_game.setScreen(new MainMenu(main_game));
+                doReaction();
+                //levelHandler.nextLevel();
+            }
         }
     }
 }
