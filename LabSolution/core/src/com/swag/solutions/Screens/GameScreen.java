@@ -1,35 +1,28 @@
 package com.swag.solutions.Screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
 import com.swag.solutions.CameraController;
 import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
 import com.swag.solutions.Objects.EndDialog;
-import com.swag.solutions.Objects.EnergyContainer;
+import com.swag.solutions.logic.EnergyContainer;
 import com.swag.solutions.Objects.HudElement;
 import com.swag.solutions.Objects.Molecule;
 import com.swag.solutions.Objects.ReactionArea;
 import com.swag.solutions.World;
-import com.swag.solutions.input.BadShakeDetector;
 import com.swag.solutions.input.MyShakeDetector;
 import com.swag.solutions.input.ShakeDetector;
+import com.swag.solutions.logic.LevelHandler;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
@@ -49,12 +42,12 @@ public class GameScreen implements Screen {
     ReactionArea reactionArea;
     World world;
     EnergyContainer enContainer;
-    ShakeDetector shakeDetector;
 
-    HashMap<Integer,Integer> targetReaction;
     private final Sound reactionSuccessSound;
 
     EndDialog endDialog;
+
+    private final LevelHandler levelHandler;
 
     public GameScreen(LabGame main){
 
@@ -68,32 +61,30 @@ public class GameScreen implements Screen {
         gameStage = new GameStage();
         this.camera = (OrthographicCamera) gameStage.getCamera();
 
-        camera.setToOrtho(false, screenWidth,screenHeight);//OVDJE JE DI SE NAMJESTI OMJER, ostali djelovi se prilagođavaju viewportwidth i height
+        camera.setToOrtho(false, screenWidth, screenHeight);//OVDJE JE DI SE NAMJESTI OMJER, ostali djelovi se prilagođavaju viewportwidth i height
 
-        shakeDetector = new MyShakeDetector();
+        ShakeDetector shakeDetector = new MyShakeDetector();
         gameStage.addActor(shakeDetector);
 
-        enContainer =
-                new EnergyContainer(1000.f, shakeDetector);
+        enContainer = new EnergyContainer(1000.f, shakeDetector);
         gameStage.addActor(enContainer);
 
         endDialog = new EndDialog(camera, main_game);
         gameStage.addActor(endDialog);
 
-        reactionArea = new ReactionArea(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
-
-        world = new World(1000,1000,reactionArea);
-
-        world.generateMolecules("");
+        reactionArea = new ReactionArea(
+                Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), camera);
         gameStage.addActor(reactionArea);
 
-        hudElement = new HudElement(camera, enContainer);
-        gameStage.addActor(hudElement);
-
+        world = new World(1000,1000,reactionArea);
+        world.generateMolecules("");
         gameStage.addActor(world);
         for (Molecule m: world.getFreeMolecules()){
             gameStage.addActor(m);
         }
+
+        hudElement = new HudElement(camera, enContainer);
+        gameStage.addActor(hudElement);
 
         controller = new CameraController(camera, world);
         //molekula.addAction(parallel(moveTo(200,0,5),rotateBy(90,5)));
@@ -104,66 +95,11 @@ public class GameScreen implements Screen {
 
         //Gdx.input.setInputProcessor(gameStage);
 
-        loadJson();
+        levelHandler = new LevelHandler(enContainer, hudElement, reactionArea);
 
         reactionSuccessSound = Gdx.audio.newSound(
-                               Gdx.files.internal("sounds/reaction_success.wav"));
+                Gdx.files.internal("sounds/reaction_success.wav"));
     }
-
-    private void loadJson(){
-        FileHandle file = Gdx.files.internal("data/levels.json");
-        JsonValue levels = new JsonReader().parse(file.readString());
-        JsonValue prvi = levels.get(0);
-
-        JsonValue reactants = prvi.get("reactants");
-        int len = levels.size;
-        targetReaction = new HashMap<Integer,Integer>();
-
-        for (int i = 0; i < len+1; i++)
-        {
-            JsonValue reactant = reactants.get(i);
-            targetReaction.put(reactant.get("id").asInt(),reactant.get("quantity").asInt());
-        }
-
-        float neededEnergy = prvi.get("energy_needed").asFloat();
-        enContainer.setNeededEnergy(neededEnergy);
-        //hudElement.setTargetEnergy(targetEnergy);
-
-        JsonValue result =  prvi.get("result");
-        int idResult = result.get("id").asInt();
-
-        FileHandle file2 = Gdx.files.internal("data/all.json");
-        JsonValue molecules = new JsonReader().parse(file2.readString());
-        JsonValue molecule = molecules.get(idResult);
-        hudElement.setMoleculeTitle(molecule.get("formula").asString());
-    }
-
-    public boolean isReactionFulfilled(){
-        HashMap<Integer,Integer> h = new HashMap<Integer,Integer>();
-        Array<Molecule> molecules = reactionArea.getReactionMolecules();
-
-
-        for(Molecule m : molecules){
-            int id = m.getId();
-            if(h.containsKey(id)){
-                h.put(id,h.get(id)+1);
-            }
-            else{
-                h.put(id,1);
-            }
-
-        }
-        /*Gdx.app.log("ReactionArea",  ""); //test ispis hashmapi
-        for(Integer key : h.keySet()){
-            Gdx.app.log("m", key+":"+h.get(key));
-        }
-        Gdx.app.log("Target", "");
-        for(Integer key : targetReaction.keySet()){
-            Gdx.app.log("m", key+":"+targetReaction.get(key));
-        }*/
-        return h.equals(targetReaction);
-    }
-
 
     @Override
     public void show() {
@@ -180,9 +116,8 @@ public class GameScreen implements Screen {
         controller.update();
         gameStage.act(delta);
 
-        //if(enContainer.getCurrentEnergy() >= targetEnergy) {
         if (enContainer.enoughEnergyForReaction()) {
-            if (isReactionFulfilled()) {
+            if (levelHandler.isReactionFulfilled()) {
                 reactionSuccessSound.play();
                 main_game.currentState = LabGame.GameState.ENDGAME;
                 //main_game.setScreen(new MainMenu(main_game));
