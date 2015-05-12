@@ -87,9 +87,22 @@ public class Molecule extends Actor {
                 p.addAction(scaleTo(1, 1, TOUCH_SCALETIME));
                 Gdx.app.error("touchUp", "");
                 moleculePickUpSound.play();
+                dropMolecule();
+
             }
         });
         bounds = new Circle(getX()+getWidth()/2, getY()+getHeight()/2, getWidth()/2);
+    }
+
+    private void dropMolecule(){
+        if (Intersector.overlaps(bounds, reaction_area)) {
+            van_kutije = false;
+            izracunajRelPolozaj();
+            world.addMoleculeToReaction(this);
+        } else {
+            van_kutije = true;
+            world.removeMoleculeFromReaction(this);
+        }
     }
 
     public int getId(){
@@ -108,7 +121,7 @@ public class Molecule extends Actor {
     public void act(float delta){
         super.act(delta);
         bounds.set(getX()+getWidth()/2, getY()+getHeight()/2, getWidth()/2);
-        if(korisnik_mice) {
+        /*if(korisnik_mice) {
             if (Intersector.overlaps(bounds, reaction_area)) {
                 van_kutije = false;
                 izracunajRelPolozaj();
@@ -117,7 +130,7 @@ public class Molecule extends Actor {
                 van_kutije = true;
                 world.removeMoleculeFromReaction(this);
             }
-        }
+        }*/
 
         //odbijanje
         if (this.getX() < world.left_x || this.getX() > world.right_x)

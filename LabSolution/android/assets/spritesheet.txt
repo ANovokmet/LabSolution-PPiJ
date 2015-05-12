@@ -3,43 +3,43 @@ format: RGBA8888
 filter: Linear,Linear
 repeat: none
 gumb_menu
-  rotate: true
-  xy: 663, 1311
+  rotate: false
+  xy: 1325, 1598
   size: 657, 108
   orig: 800, 298
   offset: 76, 84
   index: -1
 gumb_menu_obrnuto
-  rotate: true
-  xy: 773, 1311
+  rotate: false
+  xy: 1325, 1708
   size: 657, 108
   orig: 800, 298
   offset: 67, 84
   index: -1
 gumb_menu_obrnuto_oznaceno
-  rotate: true
-  xy: 804, 2
+  rotate: false
+  xy: 1325, 2
   size: 665, 115
   orig: 800, 298
   offset: 63, 80
   index: -1
 gumb_menu_oznaceno
-  rotate: true
-  xy: 663, 644
+  rotate: false
+  xy: 1325, 119
   size: 665, 115
   orig: 800, 298
   offset: 72, 80
   index: -1
 menu_pozadina
-  rotate: true
+  rotate: false
   xy: 2, 2
-  size: 640, 800
-  orig: 640, 800
+  size: 1321, 1750
+  orig: 1321, 1750
   offset: 0, 0
   index: -1
 naslov
   rotate: true
-  xy: 2, 644
+  xy: 1325, 236
   size: 1360, 659
   orig: 1360, 800
   offset: 0, 92

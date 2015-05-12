@@ -31,7 +31,6 @@ public class HudElement extends Actor {
     float BAR_WIDTH = 32;
     float BAR_HEIGHT = 512;
 
-    private Professor professor;
     private OrthographicCamera camera;
     Table formulaTable;
     EnergyContainer energyContainer;
@@ -57,8 +56,6 @@ public class HudElement extends Actor {
         createFonts();
         //formulaTable = renderString(moleculeFormula);
         energyContainer = enContainer;
-        professor = new Professor(camera);
-
     }
 
     private void createFonts() {
@@ -83,13 +80,9 @@ public class HudElement extends Actor {
         super.act(delta);
         setX(camera.position.x);
         setY(camera.position.y);
-        professor.act(delta);
         //formulaTable.act(delta);
     }
 
-    public void tellHint(String hint){
-        professor.tellHint(hint);
-    }
 
     public void draw(Batch batch, float alpha){
         float percentFilled = energyContainer.percentFilled();
@@ -130,11 +123,8 @@ public class HudElement extends Actor {
         textFont.draw(batch, "KJ/MOL", 16+getX()-camera.viewportWidth/2, 16+getY()-camera.viewportHeight/2+18);
 
         // zadana reakcija
-        //potrebno za subscript brojeva
         formulaTable.setPosition(getX(), getY()+camera.viewportHeight/2*FORMULA_POSITION_Y_PERCENTAGE);
         formulaTable.draw(batch,alpha);
-
-        professor.draw(batch, alpha);
     }
 
     // 0: sredina ekrana, +-1 vrh i dno
