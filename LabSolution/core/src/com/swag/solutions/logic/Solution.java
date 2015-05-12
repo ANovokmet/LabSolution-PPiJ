@@ -2,7 +2,9 @@ package com.swag.solutions.logic;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -27,6 +29,15 @@ public class Solution extends Actor {
     private Stage stage;
     Texture texture = new Texture("AzureWaters.jpg");
 
+    private static final int        FRAME_COLS = 4;         // #1
+    private static final int        FRAME_ROWS = 4;         // #2
+
+    Animation waterAnim;          // #3
+    Texture waterSheet;              // #4
+    TextureRegion[]                 waterFrames;
+    TextureRegion                   currentFrame;           // #7
+    float stateTime;
+
 
     public Solution(float sizex, float sizey, ReactionArea podrucje, GameStage gameStage){
         float offsetx = Gdx.graphics.getWidth();
@@ -40,6 +51,19 @@ public class Solution extends Actor {
         freeMolecules = new Array<Molecule>();
         reactionArea =podrucje;
         stage = gameStage;
+
+        waterSheet = new Texture(Gdx.files.internal("wateranim.png")); // #9
+        TextureRegion[][] tmp = TextureRegion.split(waterSheet, 512/FRAME_COLS, 512/FRAME_ROWS);              // #10
+        waterFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
+        int index = 0;
+        for (int i = 0; i < FRAME_ROWS; i++) {
+            for (int j = 0; j < FRAME_COLS; j++) {
+                waterFrames[index++] = tmp[i][j];
+            }
+        }
+        waterAnim = new Animation(0.05f, waterFrames);                // #12
+        stateTime = 0f;
+
 
         texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }
@@ -60,11 +84,24 @@ public class Solution extends Actor {
         batch.draw(texture, left_x, bottom_y , size_x, 10);
 
         //batch.draw(texture, left_x, bottom_y, size_x, size_y);
+        stateTime += Gdx.graphics.getDeltaTime();
+        Texture current = waterAnim.getKeyFrame(stateTime, true).getTexture();
+        current.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
         batch.draw(texture,
                 left_x, bottom_y,
                 0, 0,
                 (int)size_x, (int)size_y
         );
+
+        currentFrame = waterAnim.getKeyFrame(stateTime, true);
+
+        for(float i=left_x;i<size_x;i+=128){
+            for(float j=bottom_y;j<size_y;j+=128){
+                batch.draw(currentFrame, i, j);
+            }
+        }
+
+
     }
 
     public void generateMolecules(JsonValue molecules){
@@ -116,7 +153,7 @@ public class Solution extends Actor {
                         reactionArea.getReactionMolecules().first().getX(),
                         reactionArea.getReactionMolecules().first().getY(),
                         this, moleculeInfo);
-            
+
                 freeMolecules.add(molecule);
                 stage.addActor(molecule);
             }

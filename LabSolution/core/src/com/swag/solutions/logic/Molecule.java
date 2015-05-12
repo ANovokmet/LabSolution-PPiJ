@@ -168,7 +168,7 @@ public class Molecule extends Actor {
         return ""+getX()+" "+getY();
     }
 
-    public boolean isMoving(){
+    public boolean isMoved(){
         return dira_se;
     }
 }
