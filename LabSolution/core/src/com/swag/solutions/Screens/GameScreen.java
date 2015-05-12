@@ -124,12 +124,13 @@ public class GameScreen implements Screen {
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
 
+            solution.draw(batch,1);
+
             reactionArea.draw(batch,1);
             hudElement.draw(batch,1); //zatočene molekule se crtaju u ovoj metodi
             professor.draw(batch, 1);
             endDialog.draw(batch,1);
 
-            solution.draw(batch,1);
             for(Molecule m : solution.getFreeMolecules()){
                 m.draw(batch,1);
             }

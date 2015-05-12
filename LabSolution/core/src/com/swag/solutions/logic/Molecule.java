@@ -57,19 +57,10 @@ public class Molecule extends Actor {
         brzina_rotacije=MathUtils.random(-15,15);
         movement = new Vector2(MathUtils.random((float)-2,2), MathUtils.random((float)-2,2));
 
-        this.addListener(new DragListener() {
-            public void drag(InputEvent event, float x, float y, int pointer) {
-                korisnik_mice=true;
-                Molecule.this.moveBy(x - Molecule.this.getWidth() / 2, y - Molecule.this.getHeight() / 2);
-            }
-
-            public void dragStop(InputEvent event, float x, float y, int pointer){
-                korisnik_mice=false;
-            }
-        });
         final Molecule p = this;
 
-        this.addListener(new ClickListener(){
+        this.addListener(new DragListener() {
+
             public boolean touchDown(InputEvent event,float x,float y,int pointer,int button){
                 dira_se = true;
                 Gdx.app.error("touchDown", "");
@@ -85,7 +76,13 @@ public class Molecule extends Actor {
                 moleculePickUpSound.play();
                 dropMolecule();
             }
+
+            public void touchDragged(InputEvent event, float x, float y, int pointer){
+                Molecule.this.moveBy(x - Molecule.this.getWidth() / 2, y - Molecule.this.getHeight() / 2);
+            }
+
         });
+
         bounds = new Circle(getX()+getWidth()/2, getY()+getHeight()/2, getWidth()/2);
     }
 
@@ -169,5 +166,9 @@ public class Molecule extends Actor {
     @Override
     public String toString(){
         return ""+getX()+" "+getY();
+    }
+
+    public boolean isMoving(){
+        return dira_se;
     }
 }

@@ -25,7 +25,8 @@ public class Solution extends Actor {
     private Array<Molecule> freeMolecules;
     private ReactionArea reactionArea;
     private Stage stage;
-    Texture texture = new Texture("badlogic.jpg");
+    Texture texture = new Texture("AzureWaters.jpg");
+
 
     public Solution(float sizex, float sizey, ReactionArea podrucje, GameStage gameStage){
         float offsetx = Gdx.graphics.getWidth();
@@ -39,6 +40,8 @@ public class Solution extends Actor {
         freeMolecules = new Array<Molecule>();
         reactionArea =podrucje;
         stage = gameStage;
+
+        texture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
     }
 
     @Override
@@ -55,6 +58,13 @@ public class Solution extends Actor {
         batch.draw(texture, right_x-10, bottom_y , 10, size_y);
         batch.draw(texture, left_x, top_y-10 , size_x, 10);
         batch.draw(texture, left_x, bottom_y , size_x, 10);
+
+        //batch.draw(texture, left_x, bottom_y, size_x, size_y);
+        batch.draw(texture,
+                left_x, bottom_y,
+                0, 0,
+                (int)size_x, (int)size_y
+        );
     }
 
     public void generateMolecules(JsonValue molecules){
@@ -101,12 +111,15 @@ public class Solution extends Actor {
                                     JsonValue molecules) {
         for (Map.Entry<Integer, Integer> entry : resultMolecules.entrySet()) {
             JsonValue moleculeInfo = molecules.get(entry.getKey());
-            Molecule molecule = new Molecule(
-                    reactionArea.getReactionMolecules().first().getX(),
-                    reactionArea.getReactionMolecules().first().getY(),
-                    this, moleculeInfo);
-            freeMolecules.add(molecule);
-            stage.addActor(molecule);
+            for(int i=0; i<entry.getValue(); i++) {
+                Molecule molecule = new Molecule(
+                        reactionArea.getReactionMolecules().first().getX(),
+                        reactionArea.getReactionMolecules().first().getY(),
+                        this, moleculeInfo);
+            
+                freeMolecules.add(molecule);
+                stage.addActor(molecule);
+            }
         }
     }
 

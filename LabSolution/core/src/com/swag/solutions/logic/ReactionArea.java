@@ -129,15 +129,15 @@ public class ReactionArea extends Actor {
                 this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
                 texture_bot.getWidth(), texture_bot.getHeight(), false, false);
 
+        for(Molecule m : closedMolecules){
+            m.draw(batch, alpha);
+        }
+
         batch.draw(texture_top, this.getX(), getY(),
                 this.getOriginX(), this.getOriginY(),
                 this.getWidth(), this.getHeight(),
                 this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
                 texture_top.getWidth(), texture_top.getHeight(), false, false);
-
-        for(Molecule m : closedMolecules){
-            m.draw(batch, alpha);
-        }
     }
 
     @Override
