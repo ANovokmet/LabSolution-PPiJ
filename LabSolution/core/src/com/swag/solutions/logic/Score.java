@@ -17,7 +17,7 @@ import sun.security.provider.SHA;
 /**
  * Created by Mate on 13.5.2015..
  * Pokraden dobar dio od Branimira :)
- * Živio oblikovni obrazac Promatraè
+ * zivio oblikovni obrazac Promatrac
  */
 public class Score extends Actor implements Observer{
 

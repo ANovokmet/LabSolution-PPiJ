@@ -1,4 +1,4 @@
-package com.swag.solutions.Screens;
+package com.swag.solutions.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -46,6 +46,10 @@ public class MainMenu implements com.badlogic.gdx.Screen {
     public MainMenu(LabGame game) {
         create();
         this.game = game;
+    }
+
+    public Stage getStage(){
+        return stage;
     }
 
     public void create(){
@@ -163,7 +167,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 optionsButton.setText("Starting tutorial");
                 clickSound.play();
-                game.setScreen(new TutorialScreen(game));
+                game.setScreen(new com.swag.solutions.screens.TutorialScreen(game));
             }
         });
 

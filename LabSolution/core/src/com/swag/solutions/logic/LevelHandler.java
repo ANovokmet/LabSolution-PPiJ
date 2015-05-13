@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.swag.solutions.hud.HintButton;
 import com.swag.solutions.hud.HudElement;
 
 import java.util.HashMap;
@@ -25,12 +26,14 @@ public class LevelHandler extends Observable{
     private EnergyContainer energyContainer;
     private HudElement hudElement;
     private Solution solution;
+    private HintButton hintButton;
 
-    public LevelHandler(EnergyContainer enContainer, HudElement hudElement) {
+    public LevelHandler(EnergyContainer enContainer, HudElement hudElement, HintButton hintButton) {
         this.currentLevel = 0;
         this.energyContainer = enContainer;
         this.hudElement = hudElement;
         this.solution = null;
+        this.hintButton = hintButton;
 
         JsonReader jsonReader = new JsonReader();
         FileHandle levelsFile = Gdx.files.internal("data/levels.json");
@@ -69,6 +72,9 @@ public class LevelHandler extends Observable{
 
         JsonValue molecule = molecules.get(result.get("id").asInt());
         hudElement.setMoleculeTitle(molecule.get("formula").asString());
+
+
+        hintButton.loadHints(level.get("hints"), level.get("hint_free"));
 
         solution.ensureReactionSatisfiability(neededReactants, molecules);
     }

@@ -49,8 +49,8 @@ public class Molecule extends Actor {
         setX(x);
         setY(y);
         this.params = params;
-        setWidth(params.get("width").asInt());
-        setHeight(params.get("height").asInt());
+        setWidth(params.get("width").asInt()/360f*Gdx.graphics.getWidth());
+        setHeight(params.get("height").asInt()/360f*Gdx.graphics.getWidth());
         texture = new Texture(params.get("path").asString());
         this.solution = solution;
         setOrigin(getWidth()/2,getHeight()/2);

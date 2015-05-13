@@ -17,7 +17,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
  * Created by Ante on 6.5.2015..
  */
 public class Professor extends Actor {
-    Texture image = new Texture("professor1x0.png");
+    Texture image = new Texture(Gdx.files.internal("professor1x0.png"),true);
     private float PROFESSOR_X;
     private float PROFESSOR_Y;
     private float PROFESSOR_WIDTH = 256;
@@ -42,6 +42,8 @@ public class Professor extends Actor {
 
         tellHintSound = Gdx.audio.newSound(
                 Gdx.files.internal("sounds/mumbling.ogg"));
+
+        image.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
     }
 

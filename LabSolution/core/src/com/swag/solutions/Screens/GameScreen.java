@@ -1,9 +1,8 @@
-package com.swag.solutions.Screens;
+package com.swag.solutions.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,6 +12,7 @@ import com.swag.solutions.CameraController;
 import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
 import com.swag.solutions.hud.EndDialog;
+import com.swag.solutions.hud.HintButton;
 import com.swag.solutions.logic.EnergyContainer;
 import com.swag.solutions.hud.HudElement;
 import com.swag.solutions.logic.Molecule;
@@ -42,7 +42,7 @@ public class GameScreen implements Screen {
     Solution solution;
     Professor professor;
     Score score;
-
+    HintButton hintButton;
     EndDialog endDialog;
 
     public GameScreen(LabGame main){
@@ -60,29 +60,33 @@ public class GameScreen implements Screen {
 
         professor = new Professor(camera);
         gameStage.addActor(professor);
-        professor.tellHint("yole");
-        professor.tellHint("yole");
+        hintButton = new HintButton(camera,professor);
 
         ShakeDetector shakeDetector = new MyShakeDetector();
         EnergyContainer enContainer = new EnergyContainer(5000.f, shakeDetector);
         hudElement = new HudElement(camera, enContainer);
         LevelHandler levelHandler =
-                new LevelHandler(enContainer, hudElement);
+                new LevelHandler(enContainer, hudElement, hintButton);
         reactionArea = new ReactionArea(Gdx.graphics.getWidth(),
                 Gdx.graphics.getHeight(), camera, enContainer, levelHandler);
-        solution = new Solution(1000, 1000, reactionArea, gameStage);
+        solution = new Solution(1000/360f*Gdx.graphics.getWidth(), 1000/360f*Gdx.graphics.getWidth(), reactionArea, gameStage);
         levelHandler.setSolution(solution);
         levelHandler.loadLevel();
+
+
 
         //score
         score = new Score(camera, shakeDetector);
         levelHandler.addObserver(score);
+
+
 
         gameStage.addActor(score);
         gameStage.addActor(shakeDetector);
         gameStage.addActor(enContainer);
         gameStage.addActor(reactionArea);
         gameStage.addActor(hudElement);
+        gameStage.addActor(hintButton);
         gameStage.addActor(solution);
         for (Molecule m: solution.getFreeMolecules()){
             gameStage.addActor(m);
@@ -130,6 +134,7 @@ public class GameScreen implements Screen {
             reactionArea.draw(batch,1);
             hudElement.draw(batch,1); //zatočene molekule se crtaju u ovoj metodi
             score.draw(batch, 1);
+            hintButton.draw(batch,1);
             professor.draw(batch, 1);
             endDialog.draw(batch,1);
 
