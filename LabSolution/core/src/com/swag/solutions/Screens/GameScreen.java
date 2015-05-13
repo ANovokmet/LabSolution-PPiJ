@@ -45,9 +45,13 @@ public class GameScreen implements Screen {
     HintButton hintButton;
     EndDialog endDialog;
 
+    float SCREEN_SCALING;
+
     public GameScreen(LabGame main){
         main_game=main;
         main_game.currentState = LabGame.GameState.PLAYING;
+
+        SCREEN_SCALING = Gdx.graphics.getWidth()/360f;
 
         gameStage = new GameStage();
         this.camera = (OrthographicCamera) gameStage.getCamera();
@@ -69,7 +73,7 @@ public class GameScreen implements Screen {
                 new LevelHandler(enContainer, hudElement, hintButton);
         reactionArea = new ReactionArea(Gdx.graphics.getWidth(),
                 Gdx.graphics.getHeight(), camera, enContainer, levelHandler);
-        solution = new Solution(1000/360f*Gdx.graphics.getWidth(), 1000/360f*Gdx.graphics.getWidth(), reactionArea, gameStage);
+        solution = new Solution(1000*SCREEN_SCALING, 1000*SCREEN_SCALING, reactionArea, gameStage);
         levelHandler.setSolution(solution);
         levelHandler.loadLevel();
 

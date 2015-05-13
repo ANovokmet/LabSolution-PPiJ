@@ -37,6 +37,7 @@ public class Molecule extends Actor {
 
     static final float TOUCH_SCALE = 2f;
     static final float TOUCH_SCALETIME = 0.1f;
+    static float SCREEN_SCALING;
 
     public JsonValue params;
 
@@ -46,11 +47,12 @@ public class Molecule extends Actor {
             Gdx.files.internal("sounds/molecule_put_down.wav"));
 
     public Molecule(float x, float y, Solution solution, JsonValue params){
+        SCREEN_SCALING = Gdx.graphics.getWidth()/360f;
         setX(x);
         setY(y);
         this.params = params;
-        setWidth(params.get("width").asInt()/360f*Gdx.graphics.getWidth());
-        setHeight(params.get("height").asInt()/360f*Gdx.graphics.getWidth());
+        setWidth(params.get("width").asInt()*SCREEN_SCALING);
+        setHeight(params.get("height").asInt()*SCREEN_SCALING);
         texture = new Texture(params.get("path").asString());
         this.solution = solution;
         setOrigin(getWidth()/2,getHeight()/2);

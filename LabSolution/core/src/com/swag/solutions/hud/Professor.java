@@ -22,6 +22,8 @@ public class Professor extends Actor {
     private float PROFESSOR_Y;
     private float PROFESSOR_WIDTH = 256;
     private float PROFESSOR_HEIGHT = 512;
+    private float SCREEN_SCALING;
+
 
     LinkedList<String> hintQueue = new LinkedList<String>();
 
@@ -32,13 +34,15 @@ public class Professor extends Actor {
 
     private OrthographicCamera camera;
     public Professor (OrthographicCamera camera){
+        SCREEN_SCALING = Gdx.graphics.getWidth()/480f; //malo ipak veci ;)
+
         this.camera = camera;
-        setWidth(PROFESSOR_WIDTH);
-        setHeight(PROFESSOR_HEIGHT);
+        setWidth(PROFESSOR_WIDTH*SCREEN_SCALING);
+        setHeight(PROFESSOR_HEIGHT*SCREEN_SCALING);
         bubble = new Bubble(camera);
 
         PROFESSOR_X = camera.viewportWidth/2;
-        PROFESSOR_Y = camera.viewportHeight/2-PROFESSOR_HEIGHT;
+        PROFESSOR_Y = camera.viewportHeight/2-this.getHeight();
 
         tellHintSound = Gdx.audio.newSound(
                 Gdx.files.internal("sounds/mumbling.ogg"));
