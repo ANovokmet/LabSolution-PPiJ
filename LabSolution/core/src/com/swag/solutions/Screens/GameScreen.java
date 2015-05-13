@@ -3,7 +3,6 @@ package com.swag.solutions.Screens;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,6 +17,7 @@ import com.swag.solutions.hud.HudElement;
 import com.swag.solutions.logic.Molecule;
 import com.swag.solutions.hud.Professor;
 import com.swag.solutions.logic.ReactionArea;
+import com.swag.solutions.logic.ScoreCalculator;
 import com.swag.solutions.logic.Solution;
 import com.swag.solutions.input.MyShakeDetector;
 import com.swag.solutions.input.ShakeDetector;
@@ -62,6 +62,7 @@ public class GameScreen implements Screen {
         professor.tellHint("yole");
 
         ShakeDetector shakeDetector = new MyShakeDetector();
+        ScoreCalculator scoreCalculator = new ScoreCalculator(shakeDetector);
         EnergyContainer enContainer = new EnergyContainer(5000.f, shakeDetector);
         hudElement = new HudElement(camera, enContainer);
         LevelHandler levelHandler =
@@ -73,6 +74,7 @@ public class GameScreen implements Screen {
         levelHandler.loadLevel();
 
         gameStage.addActor(shakeDetector);
+        gameStage.addActor(scoreCalculator);
         gameStage.addActor(enContainer);
         gameStage.addActor(reactionArea);
         gameStage.addActor(hudElement);
