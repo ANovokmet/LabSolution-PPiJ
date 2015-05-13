@@ -127,9 +127,9 @@ public class Molecule extends Actor {
         }*/
 
         //odbijanje
-        if (this.getX() < solution.left_x || this.getX() > solution.right_x)
+        if (this.getX() < solution.left_x || this.getX()+this.getWidth() > solution.right_x)
             this.movement.x *= -1;
-        if (this.getY() < solution.bottom_y || this.getY() > solution.top_y)
+        if (this.getY() < solution.bottom_y || this.getY()+getHeight() > solution.top_y)
             this.movement.y *= -1;
 
         if (van_kutije && !dira_se) {

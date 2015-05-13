@@ -24,6 +24,7 @@ import com.swag.solutions.input.MyShakeDetector;
 import com.swag.solutions.input.ShakeDetector;
 import com.swag.solutions.logic.LevelHandler;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
@@ -70,7 +71,7 @@ public class GameScreen implements Screen {
         EnergyContainer enContainer = new EnergyContainer(5000.f, shakeDetector);
         hudElement = new HudElement(camera, enContainer);
         LevelHandler levelHandler =
-                new LevelHandler(enContainer, hudElement, hintButton);
+                new LevelHandler(enContainer, hudElement, hintButton, main_game);
         reactionArea = new ReactionArea(Gdx.graphics.getWidth(),
                 Gdx.graphics.getHeight(), camera, enContainer, levelHandler);
         solution = new Solution(1000*SCREEN_SCALING, 1000*SCREEN_SCALING, reactionArea, gameStage);
@@ -102,11 +103,13 @@ public class GameScreen implements Screen {
         multiplexer.addProcessor(gameStage);
         multiplexer.addProcessor(new GestureDetector(20, 0.5f, 2, 0.15f, controller));
         Gdx.input.setInputProcessor(multiplexer);
+
     }
 
     @Override
     public void show() {
-
+        gameStage.getRoot().getColor().a = 0;
+        gameStage.getRoot().addAction(fadeIn(0.5f));
     }
 
     @Override
@@ -129,18 +132,19 @@ public class GameScreen implements Screen {
         if (!gameStage.getRoot().isVisible()) return;
 
         Batch batch = gameStage.getBatch();
+        float alpha = gameStage.getBatch().getColor().a;
         if (batch != null) {
             batch.setProjectionMatrix(camera.combined);
             batch.begin();
 
-            solution.draw(batch,1);
+            solution.draw(batch,alpha);
 
-            reactionArea.draw(batch,1);
-            hudElement.draw(batch,1); //zatočene molekule se crtaju u ovoj metodi
-            score.draw(batch, 1);
-            hintButton.draw(batch,1);
-            professor.draw(batch, 1);
-            endDialog.draw(batch,1);
+            reactionArea.draw(batch,alpha);
+            hudElement.draw(batch,alpha); //zatočene molekule se crtaju u ovoj metodi
+            score.draw(batch,alpha);
+            hintButton.draw(batch,alpha);
+            professor.draw(batch,alpha);
+            endDialog.draw(batch,alpha);
 
             for(Molecule m : solution.getFreeMolecules()){
                 m.draw(batch,1);
