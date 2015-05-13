@@ -29,11 +29,12 @@ public class HintButton extends Actor {
     Texture button_gray = new Texture(Gdx.files.internal("hint_s.png"),true);
     private float BUTTON_X;
     private float BUTTON_Y;
-    private float BUTTON_WIDTH = 128;
-    private float BUTTON_HEIGHT = 128;
+    private float BUTTON_WIDTH = 72;
+    private float BUTTON_HEIGHT = 72;
 
     Professor professor;
 
+    private float SCREEN_SCALING;
 
     private LinkedList<String> hints = new LinkedList<String>();
     private String freeHint;
@@ -44,11 +45,17 @@ public class HintButton extends Actor {
     public HintButton (OrthographicCamera camera, final Professor professor){
         this.camera = camera;
         this.professor = professor;
-        setWidth(BUTTON_WIDTH);
-        setHeight(BUTTON_HEIGHT);
+        SCREEN_SCALING = Gdx.graphics.getWidth()/360f;
 
-        BUTTON_X = camera.viewportWidth/2-BUTTON_WIDTH;
-        BUTTON_Y = camera.viewportHeight/2-BUTTON_HEIGHT;
+        setWidth(BUTTON_WIDTH*SCREEN_SCALING);
+        setHeight(BUTTON_HEIGHT*SCREEN_SCALING);
+
+        button_red.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        button_green.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        button_gray.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+        BUTTON_X = camera.viewportWidth/2-this.getWidth();
+        BUTTON_Y = camera.viewportHeight/2-this.getWidth();
 
         //tellHintSound = Gdx.audio.newSound(
                 //Gdx.files.internal("sounds/mumbling.ogg"));
@@ -68,9 +75,14 @@ public class HintButton extends Actor {
     }
 
     public void tellHint(){
-        if(!hints.isEmpty()){
+        if(freeHint!=null){
+            professor.tellHint(freeHint);// ovo bi moglo izvuc u posebnu metodu da se izvana moze naplatit hint
+            freeHint = null;
+        }
+        else if(!hints.isEmpty()){
             professor.tellHint(hints.removeFirst());
         }
+
     }
 
     public void loadHints(JsonValue hints, JsonValue freeHint){
@@ -93,9 +105,21 @@ public class HintButton extends Actor {
 
     @Override
     public void draw(Batch batch, float alpha){
-        batch.draw(button_green, getX(), getY(), this.getOriginX(), this.getOriginY(), getWidth(),
-                getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
-                button_green.getWidth(), button_green.getHeight(), false, false);
+        if(freeHint!=null) {
+            batch.draw(button_green, getX(), getY(), this.getOriginX(), this.getOriginY(), getWidth(),
+                    getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
+                    button_green.getWidth(), button_green.getHeight(), false, false);
+        }
+        else if(!hints.isEmpty()){
+            batch.draw(button_red, getX(), getY(), this.getOriginX(), this.getOriginY(), getWidth(),
+                    getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
+                    button_red.getWidth(), button_red.getHeight(), false, false);
+        }
+        else {
+            batch.draw(button_gray, getX(), getY(), this.getOriginX(), this.getOriginY(), getWidth(),
+                    getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
+                    button_gray.getWidth(), button_gray.getHeight(), false, false);
+        }
 
     }
     
