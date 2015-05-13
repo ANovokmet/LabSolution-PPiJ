@@ -18,6 +18,7 @@ import com.swag.solutions.hud.HudElement;
 import com.swag.solutions.logic.Molecule;
 import com.swag.solutions.hud.Professor;
 import com.swag.solutions.logic.ReactionArea;
+import com.swag.solutions.logic.Score;
 import com.swag.solutions.logic.Solution;
 import com.swag.solutions.input.MyShakeDetector;
 import com.swag.solutions.input.ShakeDetector;
@@ -40,6 +41,7 @@ public class GameScreen implements Screen {
     ReactionArea reactionArea;
     Solution solution;
     Professor professor;
+    Score score;
 
     EndDialog endDialog;
 
@@ -72,6 +74,11 @@ public class GameScreen implements Screen {
         levelHandler.setSolution(solution);
         levelHandler.loadLevel();
 
+        //score
+        score = new Score(camera);
+        levelHandler.addObserver(score);
+
+        gameStage.addActor(score);
         gameStage.addActor(shakeDetector);
         gameStage.addActor(enContainer);
         gameStage.addActor(reactionArea);
@@ -122,6 +129,7 @@ public class GameScreen implements Screen {
 
             reactionArea.draw(batch,1);
             hudElement.draw(batch,1); //zatočene molekule se crtaju u ovoj metodi
+            score.draw(batch, 1);
             professor.draw(batch, 1);
             endDialog.draw(batch,1);
 

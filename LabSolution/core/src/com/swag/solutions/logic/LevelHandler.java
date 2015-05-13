@@ -8,13 +8,14 @@ import com.swag.solutions.hud.HudElement;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
 
 /**
  * Created by Branimir on 12.5.2015..
  * Učitava levele i proslijeđuje bitne informacije ostalim objektima ili
  * objekti te informacije uzimaju od njega.
  */
-public class LevelHandler {
+public class LevelHandler extends Observable{
     private int currentLevel;
     private JsonValue levels;
     private Map<Integer, Integer> neededReactants;
@@ -88,6 +89,9 @@ public class LevelHandler {
             // bacit će exception negdje u loadLeve()
             // treba stavit game over screen ili nešto
         }
+
+        super.setChanged();
+        super.notifyObservers();
         loadLevel();
     }
 }
