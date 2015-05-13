@@ -7,30 +7,42 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.swag.solutions.input.ShakeDetector;
 
 import java.util.Observable;
 import java.util.Observer;
 
+import sun.security.provider.SHA;
+
 /**
  * Created by Mate on 13.5.2015..
+ * Pokraden dobar dio od Branimira :)
+ * Živio oblikovni obrazac Promatraè
  */
 public class Score extends Actor implements Observer{
 
-    private int score;
+    private int totalScore;
     private int level;
+    private float levelScore;
     private BitmapFont textFont;
     private Camera camera;
 
-    public Score(Camera camera){
+    private final ShakeDetector shakeDetector;
+    private static final float TIME_DECREASE_RATE = 10f;
+    private static final float SHAKE_DECREASE_RATE = 20f;
+
+    public Score(Camera camera, ShakeDetector shakeDetector){
         this.camera = camera;
+        this.shakeDetector = shakeDetector;
         createFonts();
-        score = 0;
+        totalScore = 0;
+        levelScore = 1000;
         level = 0;
     }
 
     @Override
     public void draw(Batch batch, float alpha){
-        textFont.draw(batch, Integer.toString(score), 16 + getX() - camera.viewportWidth / 2, -32 + getY() + camera.viewportHeight / 2 + 18);
+        textFont.draw(batch, Integer.toString(totalScore), 16 + getX() - camera.viewportWidth / 2, -32 + getY() + camera.viewportHeight / 2 + 18);
     }
 
     @Override
@@ -38,12 +50,21 @@ public class Score extends Actor implements Observer{
         super.act(delta);
         setX(camera.position.x);
         setY(camera.position.y);
+
+        levelScore -= delta * TIME_DECREASE_RATE;
+        if (shakeDetector.deviceBeingShaken()) {
+            levelScore -= delta * SHAKE_DECREASE_RATE;
+        }
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        score = (int) (100 * Math.round(Math.pow(2, level)));
+        totalScore += levelScore;
+        if(totalScore < 0){
+            totalScore = 0;
+        }
         level += 1;
+        levelScore = 1000 * Math.round(Math.pow(2, level));
     }
 
     private void createFonts() {

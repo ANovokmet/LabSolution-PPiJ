@@ -120,7 +120,7 @@ public class HudElement extends Actor {
         //titleFont.draw(batch, moleculeFormula, getX()-80, getY()+camera.viewportWidth/2+40);
 
         // KJ/MOL na dnu
-        //textFont.draw(batch, "KJ/MOL", 16 + getX() - camera.viewportWidth / 2, 16 + getY() - camera.viewportHeight / 2 + 18);
+        textFont.draw(batch, "KJ/MOL", 16 + getX() - camera.viewportWidth / 2, 16 + getY() - camera.viewportHeight / 2 + 18);
 
         // zadana reakcija
         formulaTable.setPosition(getX(), getY() + camera.viewportHeight / 2 * FORMULA_POSITION_Y_PERCENTAGE);

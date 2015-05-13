@@ -75,7 +75,7 @@ public class GameScreen implements Screen {
         levelHandler.loadLevel();
 
         //score
-        score = new Score(camera);
+        score = new Score(camera, shakeDetector);
         levelHandler.addObserver(score);
 
         gameStage.addActor(score);
