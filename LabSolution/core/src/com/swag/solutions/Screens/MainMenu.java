@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.swag.solutions.LabGame;
+import com.swag.solutions.TransitionCover;
 
 
 /**
@@ -43,6 +45,8 @@ public class MainMenu implements com.badlogic.gdx.Screen {
     private Sprite pozadinaSprite;
     private Sprite naslovSprite;
 
+
+    TransitionCover transitionActor;
     public MainMenu(LabGame game) {
         create();
         this.game = game;
@@ -97,6 +101,8 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         table.setFillParent(true);
         stage.addActor(table);
         //
+
+
 
 
         //test slike za gumbe
@@ -154,7 +160,8 @@ public class MainMenu implements com.badlogic.gdx.Screen {
                //System.out.println("Clicked! Is checked: " + button.isChecked());
                startGameButton.setText("Starting new game");
                clickSound.play();
-               game.setScreen(new GameScreen(game));
+               //game.setScreen(new GameScreen(game));
+               transitionActor.transitionIn(game,new GameScreen(game));
            }
        });
 
@@ -184,12 +191,18 @@ public class MainMenu implements com.badlogic.gdx.Screen {
                 clickSound.play();
             }
         });
-    }
 
+        transitionActor = new TransitionCover(camera);
+        stage.addActor(transitionActor);
+
+
+    }
     @Override
     public void show() {
 
     }
+
+
 
     @Override
     public void render(float delta) {
@@ -199,6 +212,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         batch.begin();
         pozadinaSprite.draw(batch);
         naslovSprite.draw(batch);
+
         batch.end();
         stage.act(Math.min(Gdx.graphics.getDeltaTime(), 1 / 30f));
         stage.draw();

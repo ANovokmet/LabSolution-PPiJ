@@ -11,7 +11,7 @@ public class LabGame extends Game {
     public enum GameState {
         MENU, PLAYING, ENDGAME
     }
-    public GameState currentState;
+    public GameState currentState;//ne koristi se, izbrisati
 
 
     @Override

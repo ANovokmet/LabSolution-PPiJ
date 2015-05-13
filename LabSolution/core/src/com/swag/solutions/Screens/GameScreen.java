@@ -11,6 +11,7 @@ import com.badlogic.gdx.input.GestureDetector;
 import com.swag.solutions.CameraController;
 import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
+import com.swag.solutions.TransitionCover;
 import com.swag.solutions.hud.EndDialog;
 import com.swag.solutions.hud.HintButton;
 import com.swag.solutions.logic.EnergyContainer;
@@ -47,6 +48,8 @@ public class GameScreen implements Screen {
     EndDialog endDialog;
 
     float SCREEN_SCALING;
+
+    TransitionCover transitionActor;
 
     public GameScreen(LabGame main){
         main_game=main;
@@ -104,12 +107,16 @@ public class GameScreen implements Screen {
         multiplexer.addProcessor(new GestureDetector(20, 0.5f, 2, 0.15f, controller));
         Gdx.input.setInputProcessor(multiplexer);
 
+        transitionActor = new TransitionCover(camera);
+        gameStage.addActor(transitionActor);
     }
 
     @Override
     public void show() {
         gameStage.getRoot().getColor().a = 0;
         gameStage.getRoot().addAction(fadeIn(0.5f));
+        transitionActor.transitionOut();
+
     }
 
     @Override
@@ -149,6 +156,8 @@ public class GameScreen implements Screen {
             for(Molecule m : solution.getFreeMolecules()){
                 m.draw(batch,1);
             }
+
+            transitionActor.draw(batch,alpha);
             batch.end();
         }
     }
