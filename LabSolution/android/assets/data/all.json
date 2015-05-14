@@ -8,4 +8,15 @@
 {id: 7, name: "Carbon", formula: "C", path: "molecules/carbon.png", width: 40, height: 40},
 {id: 8, name: "Carbon dioxide", formula: "CO2", path: "molecules/carbon-dioxide.png", width: 56, height: 37},
 {id: 9, name: "Nitrogen", formula: "N2", path: "molecules/nitrogen.png", width: 45, height: 34},
-{id: 10, name: "Ammonia", formula: "NH3", path: "molecules/ammonia.png", width: 45, height: 42}]
+{id: 10, name: "Ammonia", formula: "NH3", path: "molecules/ammonia.png", width: 45, height: 42},
+{id: 11, name: "Methane", formula: "CH4", path: "molecules/methane.png", width: 45, height: 45},
+{id: 12, name: "Calcium", formula: "Ca", path: "molecules/calcium.png", width: 42, height: 42},
+{id: 13, name: "Calcium oxide", formula: "CaO", path: "molecules/calcium-oxide.png", width: 50, height: 43},
+{id: 14, name: "Calcium hydroxide", formula: "Ca(OH)2", path: "molecules/calcium-hydroxide.png", width: 70, height: 45},
+{id: 15, name: "Carbonic acid", formula: "H2CO3", path: "molecules/carbonic-acid.png", width: 60, height: 54},
+{id: 16, name: "Calcium carbonate", formula: "CaCO3", path: "molecules/calcium-carbonate.png", width: 70, height: 60},
+{id: 17, name: "Sodium bicarbonate", formula: "NaHCO3", path: "molecules/sodium-bicarbonate.png", width: 80, height: 48},
+{id: 18, name: "Methanol", formula: "CH3OH", path: "molecules/methanol.png", width: 45, height: 55},
+{id: 19, name: "Methanoic acid", formula: "HCOOH", path: "molecules/methanoic-acid.png", width: 60, height: 46},
+{id: 20, name: "Methyl methanoate", formula: "HCOOCH3", path: "molecules/methyl-methanoate.png", width: 80, height: 55},
+]

@@ -1,11 +1,11 @@
 [
   {
-    reactants: [{id: 0, quantity: 2}, {id: 1, quantity: 1}],
-    results: [{id: 2, quantity: 2}],
-    energy_needed: 400,
-    energy_released: 285,
-    hint_free: "Oxygen (O2) is colored red",
-    hints:["Hydrogen (H2) is colored white", "Every oxygen atom needs two electrons, while every hydrogen atom gives one"]
+      reactants: [{id: 0, quantity: 2}, {id: 1, quantity: 1}],
+      results: [{id: 2, quantity: 2}],
+      energy_needed: 400,
+      energy_released: 285,
+      hint_free: "Oxygen (O2) is colored red",
+      hints:["Hydrogen (H2) is colored white", "Every oxygen atom needs two electrons, while every hydrogen atom gives one"]
   },
   {
       reactants: [{id: 3, quantity: 2}, {id: 4, quantity: 1}],
@@ -21,7 +21,7 @@
       energy_needed: 400,
       energy_released: 92,
       hint_free: "Hydrogen lents his only electron to chlorine",
-      hints:["Every chlorine atom needs only one hydrogen", "FUN FACT: when dissolved in water, this gas forms very strong acid"]
+      hints:["Every chlorine atom needs only one hydrogen", "When dissolved in water, this gas forms very strong acid"]
   },
   {
       reactants: [{id: 7, quantity: 1}, {id: 1, quantity: 1}],
@@ -37,6 +37,78 @@
       energy_needed: 400,
       energy_released: 80,
       hint_free: "Nitrogen (N2) is colored dark blue",
-      hints:["Nitrogen needs 3 electrons", ""]
+      hints:["Nitrogen needs 3 electrons", "When dissolved in water, ammonia forms weak base"]
+  },
+  {
+      reactants: [{id: 7, quantity: 1}, {id: 0, quantity: 2}],
+      results: [{id: 11, quantity: 1}],
+      energy_needed: 400,
+      energy_released: 75,
+      hint_free: "Carbon needs 4 electrons",
+      hints:["Hydrogen gives his only electron", ""]
+  },
+  {
+      reactants: [{id: 12, quantity: 2}, {id: 1, quantity: 1}],
+      results: [{id: 13, quantity: 2}],
+      energy_needed: 400,
+      energy_released: 635,
+      hint_free: "",
+      hints:["", ""]
+  },
+  {
+      reactants: [{id: 13, quantity: 1}, {id: 2, quantity: 1}],
+      results: [{id: 14, quantity: 1}],
+      energy_needed: 400,
+      energy_released: 1000,
+      hint_free: "",
+      hints:["", ""]
+  },
+  {
+      reactants: [{id: 2, quantity: 1}, {id: 8, quantity: 1}],
+      results: [{id: 15, quantity: 1}],
+      energy_needed: 400,
+      energy_released: 0,
+      hint_free: "",
+      hints:["", ""]
+  },
+  {
+      reactants: [{id: 15, quantity: 1}, {id: 14, quantity: 1}],
+      results: [{id: 16, quantity: 1}, {id: 2, quantity: 2}],
+      energy_needed: 600,
+      energy_released: 1200,
+      hint_free: "",
+      hints:["", ""]
+  },
+  {
+      reactants: [{id: 3, quantity: 2}, {id: 15, quantity: 2}],
+      results: [{id: 17, quantity: 2}, {id: 0, quantity: 1}],
+      energy_needed: 600,
+      energy_released: 950,
+      hint_free: "",
+      hints:["", ""]
+  },
+  {
+      reactants: [{id: 11, quantity: 1}, {id: 2, quantity: 1}],
+      results: [{id: 18, quantity: 1}, {id: 0, quantity: 1}],
+      energy_needed: 600,
+      energy_released: 238,
+      hint_free: "",
+      hints:["", ""]
+  },
+  {
+      reactants: [{id: 18, quantity: 1}, {id: 1, quantity: 1}],
+      results: [{id: 19, quantity: 1}, {id: 2, quantity: 1}],
+      energy_needed: 600,
+      energy_released: 460,
+      hint_free: "",
+      hints:["", ""]
+  },
+  {
+      reactants: [{id: 18, quantity: 1}, {id: 19, quantity: 1}],
+      results: [{id: 20, quantity: 1}, {id: 2, quantity: 1}],
+      energy_needed: 600,
+      energy_released: 700,
+      hint_free: "",
+      hints:["", ""]
   }
 ]
