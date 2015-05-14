@@ -67,7 +67,7 @@ public class Molecule extends Actor {
                 dira_se = true;
                 Gdx.app.error("touchDown", "");
                 p.addAction(scaleTo(TOUCH_SCALE, TOUCH_SCALE, TOUCH_SCALETIME));
-                moleculePutDownSound.play(0.5f);
+                moleculePutDownSound.play(0.4f);
                 return true;
             }
 
@@ -75,7 +75,7 @@ public class Molecule extends Actor {
                 dira_se = false;
                 p.addAction(scaleTo(1, 1, TOUCH_SCALETIME));
                 Gdx.app.error("touchUp", "");
-                moleculePickUpSound.play(0.5f);
+                moleculePickUpSound.play(0.4f);
                 dropMolecule();
             }
 

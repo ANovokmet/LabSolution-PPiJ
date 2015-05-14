@@ -63,6 +63,16 @@ public class Score extends Actor implements Observer{
         }
         level += 1;
         levelScore = 1000 * Math.round(Math.pow(2, level));
+        if (levelScore < 0f) {
+            levelScore = 0f;
+        }
+    }
+
+    public void reduceHintPoints() {
+        levelScore -= 200 * Math.round(Math.pow(2, level));
+        if (levelScore < 0f) {
+            levelScore = 0f;
+        }
     }
 
     private void createFonts() {

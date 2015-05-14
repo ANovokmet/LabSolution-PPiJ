@@ -10,9 +10,11 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.JsonValue;
+import com.swag.solutions.logic.Score;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Observable;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.delay;
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
@@ -33,6 +35,7 @@ public class HintButton extends Actor {
     private float BUTTON_HEIGHT = 72;
 
     Professor professor;
+    Score score;
 
     private float SCREEN_SCALING;
 
@@ -42,9 +45,10 @@ public class HintButton extends Actor {
 
 
     private OrthographicCamera camera;
-    public HintButton (OrthographicCamera camera, final Professor professor){
+    public HintButton(OrthographicCamera camera, final Professor professor, Score score){
         this.camera = camera;
         this.professor = professor;
+        this.score = score;
         SCREEN_SCALING = Gdx.graphics.getWidth()/360f;
 
         setWidth(BUTTON_WIDTH*SCREEN_SCALING);
@@ -80,9 +84,9 @@ public class HintButton extends Actor {
             freeHint = null;
         }
         else if(!hints.isEmpty()){
+            score.reduceHintPoints();
             professor.tellHint(hints.removeFirst());
         }
-
     }
 
     public void loadHints(JsonValue hints, JsonValue freeHint){

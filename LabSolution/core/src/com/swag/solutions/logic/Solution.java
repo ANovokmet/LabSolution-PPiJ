@@ -28,7 +28,7 @@ public class Solution extends Actor {
 
     public float left_x, right_x, top_y, bottom_y, size_x, size_y;
 
-    private final int NUM_FREE_MOLECULES = 30;
+    private final int NUM_FREE_MOLECULES = 60;
 
     private Array<Molecule> freeMolecules;
     private ReactionArea reactionArea;

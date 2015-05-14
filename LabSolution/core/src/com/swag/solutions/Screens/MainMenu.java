@@ -60,10 +60,6 @@ public class MainMenu implements com.badlogic.gdx.Screen {
     }
 
     public void create(){
-        backgroundMusic.setLooping(true);
-        backgroundMusic.setVolume(0.5f);
-        backgroundMusic.play();
-
         float w = Gdx.graphics.getWidth();
         float h = Gdx.graphics.getHeight();
         camera = new OrthographicCamera(1, h / w);
@@ -188,7 +184,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         highScoresButton.setHeight(150);
         highScoresButton.setWidth(400);
         table.row();
-        table.add(highScoresButton).height(h/12).width(w*6/7).padBottom(h/8);
+        table.add(highScoresButton).height(h / 12).width(w * 6 / 7).padBottom(h / 8);
         table.align(Align.bottom);
         highScoresButton.addListener(new ChangeListener() {
             @Override
@@ -201,6 +197,9 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         transitionActor = new TransitionCover(camera);
         stage.addActor(transitionActor);
 
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(0.25f);
+        backgroundMusic.play();
 
     }
     @Override

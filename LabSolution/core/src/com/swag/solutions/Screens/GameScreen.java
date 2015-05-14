@@ -68,9 +68,11 @@ public class GameScreen implements Screen {
 
         professor = new Professor(camera);
         gameStage.addActor(professor);
-        hintButton = new HintButton(camera,professor);
+
 
         ShakeDetector shakeDetector = new MyShakeDetector();
+        score = new Score(camera, shakeDetector);
+        hintButton = new HintButton(camera, professor, score);
         EnergyContainer enContainer = new EnergyContainer(5000.f, shakeDetector, main_game);
         hudElement = new HudElement(camera, enContainer);
         LevelHandler levelHandler =
@@ -80,14 +82,7 @@ public class GameScreen implements Screen {
         solution = new Solution(1000*SCREEN_SCALING, 1000*SCREEN_SCALING, reactionArea, gameStage);
         levelHandler.setSolution(solution);
         levelHandler.loadLevel();
-
-
-
-        //score
-        score = new Score(camera, shakeDetector);
         levelHandler.addObserver(score);
-
-
 
         gameStage.addActor(score);
         gameStage.addActor(shakeDetector);

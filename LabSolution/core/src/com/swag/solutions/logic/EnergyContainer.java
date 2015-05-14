@@ -18,7 +18,7 @@ public class EnergyContainer extends Actor {
     private float maxEnergy;
     private float neededEnergy;
 
-    private static final float SHAKE_INCREASE_RATE = 0.1f;
+    private static final float SHAKE_INCREASE_RATE = 0.2f;
     private static final float DISSIPATION_RATE = 0.01f;
     private static final float START_PERCENT_FILLED = 0.8f;
     private ShakeDetector shakeDetector;
