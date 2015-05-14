@@ -119,7 +119,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         // font za glavni menu
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("sf-atarian-system.extended-bold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size =  Math.round(32 * Gdx.graphics.getDensity());
+        parameter.size =  Math.round(w/14 * Gdx.graphics.getDensity());
         BitmapFont bfont = generator.generateFont(parameter);
         buttonSkin.add("default",bfont);
 
@@ -154,7 +154,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final TextButton startGameButton=new TextButton("PLAY",textButtonStyle);
         //startGameButton.setPosition(200, 200);
-        table.add(startGameButton).height(170).width(500).padBottom(-35);
+        table.add(startGameButton).height(h / 12).width(w * 6 / 7).padBottom(h/18);
         //stage.addActor(startGameButton);
 
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
@@ -174,7 +174,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
         final TextButton optionsButton=new TextButton("TUTORIAL",textButtonStyleObrnuto);
         table.row();
-        table.add(optionsButton).height(170).width(500).padBottom(-35);
+        table.add(optionsButton).height(h/12).width(w*6/7).padBottom(h/18);
         optionsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -188,7 +188,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         highScoresButton.setHeight(150);
         highScoresButton.setWidth(400);
         table.row();
-        table.add(highScoresButton).height(170).width(500);
+        table.add(highScoresButton).height(h/12).width(w*6/7).padBottom(h/8);
         table.align(Align.bottom);
         highScoresButton.addListener(new ChangeListener() {
             @Override

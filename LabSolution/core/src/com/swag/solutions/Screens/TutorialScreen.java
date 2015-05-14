@@ -78,7 +78,7 @@ public class TutorialScreen implements Screen{
         Skin fontSkin = new Skin();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("sf-atarian-system.extended-bold.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size =  Math.round(32 * Gdx.graphics.getDensity());
+        parameter.size =  Math.round(w/14 * Gdx.graphics.getDensity());
         BitmapFont bfont = generator.generateFont(parameter);
         fontSkin.add("default", bfont);
 
@@ -86,7 +86,7 @@ public class TutorialScreen implements Screen{
 
         //table.add(image).height(image.getHeight()).width(image.getWidth());
         //table.row().
-        table.add(image).width(image.getWidth()*2/3).height(image.getHeight()*2/3).fill().padBottom(20);
+        table.add(image).width(w * 7/24).height(h * 9/40).fill().padBottom(h/34);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(bfont, Color.BLACK);
         Label label = new Label("Povuci molekule u posudu\n kako bi obavile reakciju.", labelStyle);
@@ -98,14 +98,14 @@ public class TutorialScreen implements Screen{
         Label label1 = new Label("Ako ne mozes pronaci \nzeljenu molekulu,\npomici ekran u potrazi \nza njom.", labelStyle);
         label.setAlignment(Align.center);
         table.row();
-        table.add(label1).width(image.getWidth() * 2 / 3).expandX();
-        table.add(image1).width(150).height(200).spaceLeft(50);
+        table.add(label1).width(w * 7/24).expandX();
+        table.add(image1).width(w * 15/48).height(h * 13 / 48).spaceLeft(w/10);
 
 
         Image image2 = new Image(skin.getDrawable("tutorial3"));
         Label label2 = new Label("Pazi da ne ostanes\nbez energije.", labelStyle);
         table.row();
-        table.add(image2).width(150).height(200);
+        table.add(image2).width(w * 15/48).height(h * 13/48);
         table.add(label2).expandX();
         table.setBackground(skin.getDrawable("pozadina_tablice"));
 
