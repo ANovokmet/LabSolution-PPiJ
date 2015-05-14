@@ -17,6 +17,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
+import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
 
 /**
@@ -27,7 +28,7 @@ public class TutorialScreen implements Screen{
     private LabGame game;
     private Camera camera;
     private Sprite pozadinaSprite;
-    private Stage stage;
+    private GameStage stage;
     private SpriteBatch batch;
     private Sprite sprite;
     private Skin skin;
@@ -56,12 +57,12 @@ public class TutorialScreen implements Screen{
                 -pozadinaSprite.getHeight() / 2);
 
         batch = new SpriteBatch();
-        stage = new Stage();
-        Gdx.input.setInputProcessor(stage);
+        stage = new GameStage(game);
 
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
+        Gdx.input.setInputProcessor(stage);
 
         sprite = textureAtlas.createSprite("tutorial1");
         sprite.setSize(1f,

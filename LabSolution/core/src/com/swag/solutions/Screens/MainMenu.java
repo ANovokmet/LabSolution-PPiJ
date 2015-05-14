@@ -47,7 +47,8 @@ public class MainMenu implements com.badlogic.gdx.Screen {
     private Sprite naslovSprite;
     private final static Music backgroundMusic = Gdx.audio.newMusic(
             Gdx.files.internal("sounds/background_music.ogg"));
-
+    private final static Sound clickSound =
+            Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
 
     TransitionCover transitionActor;
     public MainMenu(LabGame game) {
@@ -144,9 +145,6 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
         buttonSkin.add("default", textButtonStyle);
 
-        final Sound clickSound =
-                Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
-
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final TextButton startGameButton=new TextButton("PLAY",textButtonStyle);
         //startGameButton.setPosition(200, 200);
@@ -176,7 +174,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 optionsButton.setText("Starting tutorial");
                 clickSound.play();
-                game.setScreen(new com.swag.solutions.Screens.TutorialScreen(game));
+                game.setScreen(new TutorialScreen(game));
             }
         });
 

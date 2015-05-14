@@ -57,7 +57,7 @@ public class GameScreen implements Screen {
 
         SCREEN_SCALING = Gdx.graphics.getWidth()/360f;
 
-        gameStage = new GameStage();
+        gameStage = new GameStage(main_game);
         this.camera = (OrthographicCamera) gameStage.getCamera();
         final float screenWidth = Gdx.graphics.getWidth();
         final float screenHeight = Gdx.graphics.getHeight();

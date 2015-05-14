@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Affine2;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
 
 /**
@@ -25,7 +26,7 @@ public class EndScreen implements Screen {
 
     private final OrthographicCamera camera;
     LabGame game;
-    Stage stage;
+    GameStage stage;
     Batch batch;
     Texture background = new Texture(Gdx.files.internal("background2.png"),true);
 
@@ -37,7 +38,7 @@ public class EndScreen implements Screen {
 
     public EndScreen(LabGame game, boolean gameFinished) {
         this.game = game;
-        stage = new Stage();
+        stage = new GameStage(game);
         this.camera = (OrthographicCamera) stage.getCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 

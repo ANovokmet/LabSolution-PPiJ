@@ -18,7 +18,7 @@ public class LabGame extends Game {
 
     @Override
     public void create() {
-
+        Gdx.input.setCatchBackKey(true);
         setScreen(new MainMenu(this));
     }
 }
