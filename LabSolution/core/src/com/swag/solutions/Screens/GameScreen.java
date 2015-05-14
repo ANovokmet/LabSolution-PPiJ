@@ -1,13 +1,23 @@
 package com.swag.solutions.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.swag.solutions.CameraController;
 import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
@@ -35,6 +45,13 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
  */
 public class GameScreen implements Screen {
 
+    public enum State {
+        NOTREADY, PLAYING, PAUSED
+    }
+
+    State gameState;
+
+
     LabGame main_game;  //referenca na igru zbog mijenjanja screenova
     GameStage gameStage;
     CameraController controller;
@@ -50,10 +67,12 @@ public class GameScreen implements Screen {
     float SCREEN_SCALING;
 
     TransitionCover transitionActor;
+    Dialog dialog;
 
     public GameScreen(LabGame main){
         main_game=main;
-        main_game.currentState = LabGame.GameState.PLAYING;
+
+        gameState = State.PLAYING;
 
         SCREEN_SCALING = Gdx.graphics.getWidth()/360f;
 
@@ -104,6 +123,7 @@ public class GameScreen implements Screen {
 
         transitionActor = new TransitionCover(camera);
         gameStage.addActor(transitionActor);
+
     }
 
     @Override
@@ -120,9 +140,14 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Gdx.app.log("GameScreen FPS", (1/delta) + "");
         //renderer.render(actors)
+        if(gameState == State.PLAYING) {
 
-        controller.update();
-        gameStage.act(delta);
+            controller.update();
+            gameStage.act(delta);
+
+            Camera camera = gameStage.getViewport().getCamera();
+            camera.update();
+        }
 
         drawStage();
     }
@@ -146,7 +171,9 @@ public class GameScreen implements Screen {
             score.draw(batch,alpha);
             hintButton.draw(batch,alpha);
             professor.draw(batch,alpha);
-            endDialog.draw(batch,alpha);
+
+            if(dialogOpen)
+                dialog.draw(batch,alpha);
 
             for(Molecule m : solution.getFreeMolecules()){
                 m.draw(batch,1);
@@ -164,12 +191,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
+        gameState = State.PAUSED;
+        quitGameDialog();
     }
 
     @Override
     public void resume() {
-
+        gameState = State.PLAYING;
     }
 
     @Override
@@ -180,5 +208,62 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    boolean dialogOpen = false;
+
+    public void quitGameDialog() {
+        dialogOpen = true;
+        Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+
+        FileHandle fontFile = Gdx.files.internal("04B_30__.TTF");
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 24;
+        BitmapFont textFont = generator.generateFont(parameter);
+        Label.LabelStyle ls = new Label.LabelStyle(textFont, Color.WHITE);
+
+        skin.add("defaultt",ls);
+
+        Label label = new Label("Zelis li uistinu izaci iz igre moj africko americki prijatelju?", skin, "defaultt");
+        label.setWrap(true);
+
+        label.setFontScale(1f);
+        label.setAlignment(Align.center);
+
+
+        dialog =
+                new Dialog("", skin, "default") {
+                    protected void result (Object shouldQuit) {
+                        System.out.println("Chosen: " + shouldQuit);
+                        dialogOpen = false;
+                        if((Boolean)shouldQuit){
+                            main_game.setScreen(new MainMenu(main_game));
+                        }
+                        else {
+                            gameState = State.PLAYING;
+                        }
+
+                    }
+                };
+
+        dialog.padTop(50).padBottom(50);
+        dialog.getContentTable().add(label).width(camera.viewportWidth*2/3).row();
+        dialog.getButtonTable().padTop(50);
+        TextButton dbutton = new TextButton("Yes", skin, "default");
+        dialog.button(dbutton, true);
+
+        dbutton = new TextButton("Resume", skin, "default");
+        dialog.button(dbutton, false);
+        dialog.key(Input.Keys.ENTER, true).key(Input.Keys.ESCAPE, false);
+        dialog.invalidateHierarchy();
+        dialog.invalidate();
+        dialog.layout();
+        dialog.setModal(true);
+        dialog.pack();
+        gameStage.addActor(dialog);
+
+        dialog.setPosition(camera.position.x-dialog.getWidth()/2,camera.position.y-dialog.getHeight()/2);
+        //dialog.show(dialogStage);
     }
 }

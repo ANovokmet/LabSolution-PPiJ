@@ -45,9 +45,9 @@ public class MainMenu implements com.badlogic.gdx.Screen {
     private Camera camera;
     private Sprite pozadinaSprite;
     private Sprite naslovSprite;
-    private final static Music backgroundMusic = Gdx.audio.newMusic(
+    private final Music backgroundMusic = Gdx.audio.newMusic(
             Gdx.files.internal("sounds/background_music.ogg"));
-    private final static Sound clickSound =
+    private final Sound clickSound =
             Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
 
     TransitionCover transitionActor;
@@ -227,7 +227,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
     @Override
     public void pause() {
-
+        Gdx.app.exit();
     }
 
     @Override

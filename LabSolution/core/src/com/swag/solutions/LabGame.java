@@ -1,9 +1,6 @@
 package com.swag.solutions;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.swag.solutions.Screens.MainMenu;
 
 /**
@@ -18,7 +15,6 @@ public class LabGame extends Game {
 
     @Override
     public void create() {
-        Gdx.input.setCatchBackKey(true);
         setScreen(new MainMenu(this));
     }
 }
