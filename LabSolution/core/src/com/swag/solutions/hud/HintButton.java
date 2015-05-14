@@ -88,6 +88,7 @@ public class HintButton extends Actor {
     public void loadHints(JsonValue hints, JsonValue freeHint){
         this.freeHint = freeHint.asString();
 
+        this.hints.clear();
         for(int i=0; i<hints.size;i++){
             this.hints.add(hints.get(i).asString());
         }
