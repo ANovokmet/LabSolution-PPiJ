@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.swag.solutions.LabGame;
 import com.swag.solutions.hud.HintButton;
 import com.swag.solutions.hud.HudElement;
-import com.swag.solutions.screens.EndScreen;
+import com.swag.solutions.Screens.EndScreen;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,7 +78,6 @@ public class LevelHandler extends Observable{
         JsonValue molecule = molecules.get(result.get("id").asInt());
         hudElement.setMoleculeTitle(molecule.get("formula").asString());
 
-
         hintButton.loadHints(level.get("hints"), level.get("hint_free"));
 
         solution.ensureReactionSatisfiability(neededReactants, molecules);
@@ -97,10 +96,7 @@ public class LevelHandler extends Observable{
 
         ++currentLevel;
         if (currentLevel >= levels.size) {
-            // bacit će exception negdje u loadLeve()
-            // treba stavit game over screen ili nešto
-            game.setScreen(new EndScreen(game));
-
+            game.setScreen(new EndScreen(game, true));
         }
         else {
             super.setChanged();

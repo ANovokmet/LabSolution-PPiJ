@@ -1,4 +1,4 @@
-package com.swag.solutions.screens;
+package com.swag.solutions.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
@@ -71,7 +71,7 @@ public class GameScreen implements Screen {
         hintButton = new HintButton(camera,professor);
 
         ShakeDetector shakeDetector = new MyShakeDetector();
-        EnergyContainer enContainer = new EnergyContainer(5000.f, shakeDetector);
+        EnergyContainer enContainer = new EnergyContainer(5000.f, shakeDetector, main_game);
         hudElement = new HudElement(camera, enContainer);
         LevelHandler levelHandler =
                 new LevelHandler(enContainer, hudElement, hintButton, main_game);

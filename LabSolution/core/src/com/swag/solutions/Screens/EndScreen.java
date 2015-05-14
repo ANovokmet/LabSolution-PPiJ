@@ -1,7 +1,8 @@
-package com.swag.solutions.screens;
+package com.swag.solutions.Screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -28,17 +29,24 @@ public class EndScreen implements Screen {
     Batch batch;
     Texture background = new Texture(Gdx.files.internal("background2.png"),true);
 
-
     private Sprite pozadinaSprite;
+    private final static Sound gameFinishedSound = Gdx.audio.newSound(
+            Gdx.files.internal("sounds/game_finished.wav"));
+    private final static Sound gameOverSound = Gdx.audio.newSound(
+            Gdx.files.internal("sounds/game_over.wav"));
 
-    public EndScreen(LabGame game) {
+    public EndScreen(LabGame game, boolean gameFinished) {
         this.game = game;
         stage = new Stage();
         this.camera = (OrthographicCamera) stage.getCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         batch = new SpriteBatch();
-
+        if (gameFinished) {
+            gameFinishedSound.play();
+        } else {
+            gameOverSound.play();
+        }
     }
 
     @Override

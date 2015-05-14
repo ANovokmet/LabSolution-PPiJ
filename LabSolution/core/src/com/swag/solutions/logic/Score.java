@@ -12,8 +12,6 @@ import com.swag.solutions.input.ShakeDetector;
 import java.util.Observable;
 import java.util.Observer;
 
-import sun.security.provider.SHA;
-
 /**
  * Created by Mate on 13.5.2015..
  * Pokraden dobar dio od Branimira :)
