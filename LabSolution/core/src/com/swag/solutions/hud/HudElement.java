@@ -42,7 +42,12 @@ public class HudElement extends Actor {
 
     static BitmapFont titleFont;
     static BitmapFont textFont;
+    static BitmapFont energyFont;
     String moleculeFormula = "";//CILJNA MOLEKULA
+
+    private int BIG_FONT_SIZE;
+    private int SMALL_FONT_SIZE;
+    private int ENERGY_FONT_SIZE;
 
     public HudElement(OrthographicCamera camera, EnergyContainer enContainer) {
         setWidth(100);
@@ -53,22 +58,35 @@ public class HudElement extends Actor {
         this.BAR_HEIGHT = camera.viewportHeight*BAR_HEIGHT_PERCENTAGE;
         this.BAR_Y = (camera.viewportHeight-BAR_HEIGHT)/2-HEIGHT_OF_EDGE;
 
+        BIG_FONT_SIZE = (int)(96 * camera.viewportWidth/480f);
+        SMALL_FONT_SIZE = (int)(48 * camera.viewportWidth/480f);
+
+        ENERGY_FONT_SIZE = (int)(24 * camera.viewportWidth/480f);
+
+
         createFonts();
         //formulaTable = renderString(moleculeFormula);
         energyContainer = enContainer;
     }
 
     private void createFonts() {
-        FileHandle fontFile = Gdx.files.internal("04B_30__.TTF");
+        FileHandle fontFile = Gdx.files.internal("coolvetica.TTF");
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 24;
+        parameter.size = SMALL_FONT_SIZE;
         textFont = generator.generateFont(parameter);
-        parameter.size = 48;
+        parameter.size = BIG_FONT_SIZE;
         titleFont = generator.generateFont(parameter);
+
+        /*fontFile = Gdx.files.internal("04B_30__.TTF");
+        generator = new FreeTypeFontGenerator(fontFile);
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();*/
+
+        parameter.size = ENERGY_FONT_SIZE;
+        energyFont = generator.generateFont(parameter);
         generator.dispose();
 
-        textFont.setColor(1f, 0f, 0f, 1f);
+        energyFont.setColor(255f/255f, 255f/255f, 255f/255f, 1f);
     }
 
     public void setMoleculeTitle(String formula){
@@ -116,11 +134,11 @@ public class HudElement extends Actor {
                 target.getWidth(), target.getHeight(), false, false);
 
         // količina trenutne energije (broj)
-        textFont.draw(batch, (int)(energyContainer.getCurrentEnergy())+"", BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT* percentFilled +18);
+        energyFont.draw(batch, (int)(energyContainer.getCurrentEnergy())+"", BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT* percentFilled +SMALL_FONT_SIZE);
         //titleFont.draw(batch, moleculeFormula, getX()-80, getY()+camera.viewportWidth/2+40);
 
         // KJ/MOL na dnu
-        textFont.draw(batch, "KJ/MOL", 16 + getX() - camera.viewportWidth / 2, 16 + getY() - camera.viewportHeight / 2 + 18);
+        energyFont.draw(batch, "KJ/MOL", BAR_X + getX() - camera.viewportWidth / 2, BAR_Y + getY() - camera.viewportHeight / 2 - SMALL_FONT_SIZE);
 
         // zadana reakcija
         formulaTable.setPosition(getX(), getY() + camera.viewportHeight / 2 * FORMULA_POSITION_Y_PERCENTAGE);
@@ -130,7 +148,7 @@ public class HudElement extends Actor {
     // 0: sredina ekrana, +-1 vrh i dno
 
     static Skin skin = new Skin();
-    private static final float PADDING = 30;
+    private static final float PADDING = 50;
     public static Table renderString(String string){
 
         skin.add("normal",titleFont);

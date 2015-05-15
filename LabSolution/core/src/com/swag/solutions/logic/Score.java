@@ -29,13 +29,19 @@ public class Score extends Actor implements Observer{
     private static final float TIME_DECREASE_RATE = 10f;
     private static final float SHAKE_DECREASE_RATE = 20f;
 
+    private int FONT_SIZE;
+
     public Score(Camera camera, ShakeDetector shakeDetector){
         this.camera = camera;
         this.shakeDetector = shakeDetector;
+
+        FONT_SIZE = (int)(48 * camera.viewportWidth/480f);
+
         createFonts();
         totalScore = 0;
         levelScore = 1000;
         level = 0;
+
     }
 
     @Override
@@ -75,14 +81,16 @@ public class Score extends Actor implements Observer{
         }
     }
 
+
+
     private void createFonts() {
-        FileHandle fontFile = Gdx.files.internal("04B_30__.TTF");
+        FileHandle fontFile = Gdx.files.internal("coolvetica.TTF");
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 24;
+        parameter.size = FONT_SIZE;
         textFont = generator.generateFont(parameter);
         generator.dispose();
 
-        textFont.setColor(1f, 0f, 0f, 1f);
+        textFont.setColor(1f, 1f, 1f, 1f);
     }
 }

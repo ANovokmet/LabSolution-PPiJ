@@ -228,7 +228,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
     @Override
     public void pause() {
-        Gdx.app.exit();
+        
     }
 
     @Override

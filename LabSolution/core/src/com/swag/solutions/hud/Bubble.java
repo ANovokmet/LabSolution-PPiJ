@@ -1,11 +1,15 @@
 package com.swag.solutions.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -29,7 +33,7 @@ public class Bubble extends Actor {
     private float BUBBLE_HEIGHT = 128;
     private float BUBBLE_X = 50;
     private float BUBBLE_Y = 120;
-
+    private int FONT_SIZE;
 
     private OrthographicCamera camera;
     public Bubble (OrthographicCamera camera){
@@ -37,11 +41,21 @@ public class Bubble extends Actor {
         setWidth(BUBBLE_WIDTH);
         setHeight(BUBBLE_HEIGHT);
 
-        BUBBLE_WIDTH=camera.viewportWidth*2/3;
-
+        BUBBLE_WIDTH=camera.viewportWidth*3/4;
+        FONT_SIZE = (int)(36*camera.viewportWidth/480f);
         table.getColor().a = 0;
 
-        label = new Label("",skin);
+        FileHandle fontFile = Gdx.files.internal("orange-juice.TTF");//ili coolvetica
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = FONT_SIZE;
+        BitmapFont textFont = generator.generateFont(parameter);
+        Label.LabelStyle ls = new Label.LabelStyle(textFont, Color.BLACK);
+        skin.add("nas_font",ls);
+
+
+
+        label = new Label("", skin, "nas_font");
         label.setWrap(true);
         label.setAlignment(Align.center);
        //label.setStyle(new Label.LabelStyle(hintFont,Color.RED));

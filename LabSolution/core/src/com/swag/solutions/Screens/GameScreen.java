@@ -65,7 +65,6 @@ public class GameScreen implements Screen {
 
     float SCREEN_SCALING;
 
-    Dialog dialog;
 
     public GameScreen(LabGame main){
         main_game=main;
@@ -168,17 +167,18 @@ public class GameScreen implements Screen {
             solution.draw(batch,alpha);
 
             reactionArea.draw(batch,alpha);
+
+            for(Molecule m : solution.getFreeMolecules()){
+                m.draw(batch,1);
+            }
+
             hudElement.draw(batch,alpha); //zatočene molekule se crtaju u ovoj metodi
             score.draw(batch,alpha);
             hintButton.draw(batch,alpha);
             professor.draw(batch,alpha);
 
-            if(dialogOpen)
-                dialog.draw(batch,alpha);
 
-            for(Molecule m : solution.getFreeMolecules()){
-                m.draw(batch,1);
-            }
+
 
             gameStage.transitionCover.draw(batch, alpha);
             batch.end();
@@ -214,6 +214,7 @@ public class GameScreen implements Screen {
 
     public void quitGameDialog() {//ne, igra se nesmije pauzirat u pravom smislu.
         dialogOpen = true;
+        Dialog dialog;
         Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
         FileHandle fontFile = Gdx.files.internal("04B_30__.TTF");
