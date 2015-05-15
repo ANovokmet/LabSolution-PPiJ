@@ -1,4 +1,4 @@
-package com.swag.solutions.Screens;
+package com.swag.solutions.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -46,7 +46,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
 public class GameScreen implements Screen {
 
     public enum State {
-        NOTREADY, PLAYING, PAUSED
+        NOTREADY, PLAYING, PAUSED, GAMEOVER
     }
 
     State gameState;
@@ -62,11 +62,9 @@ public class GameScreen implements Screen {
     Professor professor;
     Score score;
     HintButton hintButton;
-    EndDialog endDialog;
 
     float SCREEN_SCALING;
 
-    TransitionCover transitionActor;
     Dialog dialog;
 
     public GameScreen(LabGame main){
@@ -82,8 +80,6 @@ public class GameScreen implements Screen {
         final float screenHeight = Gdx.graphics.getHeight();
         camera.setToOrtho(false, screenWidth, screenHeight);//OVDJE JE DI SE NAMJESTI OMJER, ostali djelovi se prilagođavaju viewportwidth i height
 
-        endDialog = new EndDialog(camera, main_game);
-        gameStage.addActor(endDialog);
 
         professor = new Professor(camera);
         gameStage.addActor(professor);
@@ -92,10 +88,10 @@ public class GameScreen implements Screen {
         ShakeDetector shakeDetector = new MyShakeDetector();
         score = new Score(camera, shakeDetector);
         hintButton = new HintButton(camera, professor, score);
-        EnergyContainer enContainer = new EnergyContainer(5000.f, shakeDetector, main_game);
+        EnergyContainer enContainer = new EnergyContainer(5000.f, shakeDetector, this);
         hudElement = new HudElement(camera, enContainer);
         LevelHandler levelHandler =
-                new LevelHandler(enContainer, hudElement, hintButton, main_game);
+                new LevelHandler(enContainer, hudElement, hintButton, this);
         reactionArea = new ReactionArea(Gdx.graphics.getWidth(),
                 Gdx.graphics.getHeight(), camera, enContainer, levelHandler);
         solution = new Solution(1000*SCREEN_SCALING, 1000*SCREEN_SCALING, reactionArea, gameStage);
@@ -121,17 +117,14 @@ public class GameScreen implements Screen {
         multiplexer.addProcessor(new GestureDetector(20, 0.5f, 2, 0.15f, controller));
         Gdx.input.setInputProcessor(multiplexer);
 
-        transitionActor = new TransitionCover(camera);
-        gameStage.addActor(transitionActor);
+        gameStage.initTransition();
 
     }
 
     @Override
     public void show() {
-        gameStage.getRoot().getColor().a = 0;
-        gameStage.getRoot().addAction(fadeIn(0.5f));
-        transitionActor.transitionOut();
-
+        Gdx.input.setCatchBackKey(true);
+        gameStage.transitionCover.transitionOut();
     }
 
     @Override
@@ -140,7 +133,7 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Gdx.app.log("GameScreen FPS", (1/delta) + "");
         //renderer.render(actors)
-        if(gameState == State.PLAYING) {
+        if(gameState == State.PLAYING || gameState == State.GAMEOVER) {
 
             controller.update();
             gameStage.act(delta);
@@ -150,6 +143,14 @@ public class GameScreen implements Screen {
         }
 
         drawStage();
+    }
+
+    public void gameOver(boolean gameFinished){
+        if(gameState!=State.GAMEOVER){
+            gameState = State.GAMEOVER;
+            gameStage.transitionCover.transitionIn(main_game,new EndScreen(main_game,gameFinished));
+        }
+
     }
 
     public void drawStage(){//omogućava redoslijed crtanja
@@ -179,7 +180,7 @@ public class GameScreen implements Screen {
                 m.draw(batch,1);
             }
 
-            transitionActor.draw(batch,alpha);
+            gameStage.transitionCover.draw(batch, alpha);
             batch.end();
         }
     }
@@ -192,7 +193,6 @@ public class GameScreen implements Screen {
     @Override
     public void pause() {
         gameState = State.PAUSED;
-        quitGameDialog();
     }
 
     @Override
@@ -212,7 +212,7 @@ public class GameScreen implements Screen {
 
     boolean dialogOpen = false;
 
-    public void quitGameDialog() {
+    public void quitGameDialog() {//ne, igra se nesmije pauzirat u pravom smislu.
         dialogOpen = true;
         Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
 
@@ -238,7 +238,7 @@ public class GameScreen implements Screen {
                         System.out.println("Chosen: " + shouldQuit);
                         dialogOpen = false;
                         if((Boolean)shouldQuit){
-                            main_game.setScreen(new MainMenu(main_game));
+                            gameStage.transitionCover.transitionIn(main_game, main_game.mainMenu);
                         }
                         else {
                             gameState = State.PLAYING;

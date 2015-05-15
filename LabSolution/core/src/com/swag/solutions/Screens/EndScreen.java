@@ -1,23 +1,16 @@
-package com.swag.solutions.Screens;
+package com.swag.solutions.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.math.Affine2;
-import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
+import com.swag.solutions.TransitionCover;
 
 /**
  * Created by Ante on 13.5.2015..
@@ -48,11 +41,12 @@ public class EndScreen implements Screen {
         } else {
             gameOverSound.play();
         }
+        stage.initTransition();
     }
 
     @Override
     public void show() {
-
+        stage.transitionCover.transitionOut();
     }
 
     @Override
@@ -60,6 +54,8 @@ public class EndScreen implements Screen {
         batch.begin();
         batch.draw(background, 0, 0);
         batch.end();
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override

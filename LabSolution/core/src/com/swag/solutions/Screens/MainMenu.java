@@ -1,4 +1,4 @@
-package com.swag.solutions.Screens;
+package com.swag.solutions.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -13,7 +13,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.graphics.Texture;
@@ -45,14 +44,13 @@ public class MainMenu implements com.badlogic.gdx.Screen {
     private Camera camera;
     private Sprite pozadinaSprite;
     private Sprite naslovSprite;
-    private final Music backgroundMusic = Gdx.audio.newMusic(
+    private final static Music backgroundMusic = Gdx.audio.newMusic(
             Gdx.files.internal("sounds/background_music.ogg"));
-    private final Sound clickSound =
+    private final static Sound clickSound =
             Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
 
     TransitionCover transitionActor;
     public MainMenu(LabGame game) {
-        create();
         this.game = game;
     }
 
@@ -199,10 +197,13 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         backgroundMusic.setVolume(0.25f);
         backgroundMusic.play();
 
+        transitionActor.transitionOut();
+
     }
     @Override
     public void show() {
-
+        create();
+        Gdx.input.setCatchBackKey(false);
     }
 
 

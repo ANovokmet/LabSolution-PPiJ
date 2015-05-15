@@ -2,8 +2,9 @@ package com.swag.solutions.logic;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.swag.solutions.LabGame;
-import com.swag.solutions.Screens.EndScreen;
+import com.swag.solutions.screens.EndScreen;
 import com.swag.solutions.input.ShakeDetector;
+import com.swag.solutions.screens.GameScreen;
 
 /**
  * Created by Branimir on 6.5.2015..
@@ -13,7 +14,7 @@ import com.swag.solutions.input.ShakeDetector;
  * Stopa pada i rasta trešnjom je izražena u fiksnim postotcima.
  */
 public class EnergyContainer extends Actor {
-    private LabGame game;
+    private GameScreen gameScreen;
     private float currentEnergy;
     private float maxEnergy;
     private float neededEnergy;
@@ -23,11 +24,11 @@ public class EnergyContainer extends Actor {
     private static final float START_PERCENT_FILLED = 0.8f;
     private ShakeDetector shakeDetector;
 
-    public EnergyContainer(float maxEnergy, ShakeDetector shakeDetector, LabGame game) {
+    public EnergyContainer(float maxEnergy, ShakeDetector shakeDetector, GameScreen gameScreen) {
         this.maxEnergy = (maxEnergy > 0.f) ? maxEnergy : 1000.f;
         currentEnergy = this.maxEnergy * START_PERCENT_FILLED;
         this.shakeDetector = shakeDetector;
-        this.game = game;
+        this.gameScreen = gameScreen;
     }
 
     public float getCurrentEnergy() {
@@ -75,7 +76,7 @@ public class EnergyContainer extends Actor {
             increaseEnergyBy(maxEnergy * SHAKE_INCREASE_RATE * delta);
         }
         if (currentEnergy == 0.f) {
-            game.setScreen(new EndScreen(game, false));
+            gameScreen.gameOver(false);
         }
     }
 }

@@ -32,13 +32,14 @@ public class AndroidLauncher extends AndroidApplication {
 
     @Override
     public void onBackPressed() {
-        labGame.pause();
+        super.onBackPressed();
+        //labGame.pause();
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        labGame.pause();
+        //labGame.pause();
         return true;
-    }
+    }*/
 
 }

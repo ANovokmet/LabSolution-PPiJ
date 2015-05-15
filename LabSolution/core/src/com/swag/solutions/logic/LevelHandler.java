@@ -7,7 +7,8 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.swag.solutions.LabGame;
 import com.swag.solutions.hud.HintButton;
 import com.swag.solutions.hud.HudElement;
-import com.swag.solutions.Screens.EndScreen;
+import com.swag.solutions.screens.EndScreen;
+import com.swag.solutions.screens.GameScreen;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,7 +20,7 @@ import java.util.Observable;
  * objekti te informacije uzimaju od njega.
  */
 public class LevelHandler extends Observable{
-    private LabGame game;
+    private GameScreen gameScreen;
 
     private int currentLevel;
     private JsonValue levels;
@@ -32,8 +33,8 @@ public class LevelHandler extends Observable{
     private Solution solution;
     private HintButton hintButton;
 
-    public LevelHandler(EnergyContainer enContainer, HudElement hudElement, HintButton hintButton, LabGame game) {
-        this.game = game;
+    public LevelHandler(EnergyContainer enContainer, HudElement hudElement, HintButton hintButton, GameScreen gameScreen) {
+        this.gameScreen = gameScreen;
         this.currentLevel = 0;
         this.energyContainer = enContainer;
         this.hudElement = hudElement;
@@ -96,7 +97,7 @@ public class LevelHandler extends Observable{
 
         ++currentLevel;
         if (currentLevel >= levels.size) {
-            game.setScreen(new EndScreen(game, true));
+            gameScreen.gameOver(true);
         }
         else {
             super.setChanged();
