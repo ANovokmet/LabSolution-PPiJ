@@ -63,7 +63,7 @@ public class Bubble extends Actor {
 
 
         Pixmap pm = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pm.setColor(100, 100, 100, (float) 0.5);
+        pm.setColor(1f, 1f, 1f, (float) 0.5);
         pm.fill();
         table.background(new TextureRegionDrawable(new TextureRegion(new Texture(pm))));
         table.pack();

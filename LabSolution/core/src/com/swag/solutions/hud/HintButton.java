@@ -54,12 +54,17 @@ public class HintButton extends Actor {
         setWidth(BUTTON_WIDTH*SCREEN_SCALING);
         setHeight(BUTTON_HEIGHT*SCREEN_SCALING);
 
+
+
         button_red.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         button_green.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         button_gray.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
         BUTTON_X = camera.viewportWidth/2-this.getWidth();
         BUTTON_Y = camera.viewportHeight/2-this.getWidth();
+
+        setX(camera.position.x+BUTTON_X);
+        setY(camera.position.y+BUTTON_Y);
 
         //tellHintSound = Gdx.audio.newSound(
                 //Gdx.files.internal("sounds/mumbling.ogg"));

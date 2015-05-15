@@ -50,10 +50,13 @@ public class HudElement extends Actor {
     private int ENERGY_FONT_SIZE;
 
     public HudElement(OrthographicCamera camera, EnergyContainer enContainer) {
-        setWidth(100);
-        setHeight(100);//vlastiti width i height se ne koriste
+        setWidth(0);
+        setHeight(0);//vlastiti width i height se ne koriste
 
         this.camera= camera;
+
+        setX(camera.position.x);
+        setY(camera.position.y);
 
         this.BAR_HEIGHT = camera.viewportHeight*BAR_HEIGHT_PERCENTAGE;
         this.BAR_Y = (camera.viewportHeight-BAR_HEIGHT)/2-HEIGHT_OF_EDGE;

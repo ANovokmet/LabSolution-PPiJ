@@ -44,6 +44,10 @@ public class Professor extends Actor {
         PROFESSOR_X = camera.viewportWidth/2;
         PROFESSOR_Y = camera.viewportHeight/2-this.getHeight();
 
+
+        setX(camera.position.x+PROFESSOR_X);
+        setY(camera.position.y+PROFESSOR_Y);
+
         tellHintSound = Gdx.audio.newSound(
                 Gdx.files.internal("sounds/mumbling.ogg"));
 

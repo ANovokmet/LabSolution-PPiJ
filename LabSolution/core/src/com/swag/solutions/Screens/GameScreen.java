@@ -21,6 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.swag.solutions.CameraController;
 import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
+import com.swag.solutions.hud.CountDown;
 import com.swag.solutions.hud.HintButton;
 import com.swag.solutions.logic.EnergyContainer;
 import com.swag.solutions.hud.HudElement;
@@ -44,10 +45,10 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
 public class GameScreen implements Screen {
 
     public enum State {
-        NOTREADY, PLAYING, PAUSED, GAMEOVER
+        COUNTDOWN, PLAYING, PAUSED, GAMEOVER
     }
 
-    State gameState;
+    public State gameState;
 
 
     LabGame main_game;  //referenca na igru zbog mijenjanja screenova
@@ -60,6 +61,8 @@ public class GameScreen implements Screen {
     Professor professor;
     Score score;
     HintButton hintButton;
+
+    CountDown countDown;
 
     float SCREEN_SCALING;
 
@@ -114,7 +117,8 @@ public class GameScreen implements Screen {
         multiplexer.addProcessor(new GestureDetector(20, 0.5f, 2, 0.15f, controller));
         Gdx.input.setInputProcessor(multiplexer);
 
-        gameStage.initTransition();
+        countDown = new CountDown(camera, this);
+
 
     }
 
@@ -122,6 +126,9 @@ public class GameScreen implements Screen {
     public void show() {
         Gdx.input.setCatchBackKey(true);
         gameStage.transitionCover.transitionOut();
+
+        countDown.startCountdown();
+
     }
 
     @Override
@@ -130,15 +137,23 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //Gdx.app.log("GameScreen FPS", (1/delta) + "");
         //renderer.render(actors)
-        if(gameState == State.PLAYING || gameState == State.GAMEOVER) {
-
+        if(gameState == State.PLAYING || gameState == State.GAMEOVER) {//igra tece i aktori se updateaju
+            if(gameStage.disableInput){//ukljucivanje inputa
+                gameStage.disableInput = false;
+                controller.disableCamera(false);
+            }
             controller.update();
             gameStage.act(delta);
-
-            Camera camera = gameStage.getViewport().getCamera();
-            camera.update();
         }
 
+        if(gameState == State.COUNTDOWN){//updatea se samo countdown
+            if(!gameStage.disableInput){//iskljucivanje inputa
+                gameStage.disableInput = true;
+                controller.disableCamera(true);
+            }
+            countDown.act(delta);
+        }
+        gameStage.transitionCover.act(delta);//transitioncover u svakom slucaju se mora
         drawStage();
     }
 
@@ -147,7 +162,6 @@ public class GameScreen implements Screen {
             gameState = State.GAMEOVER;
             gameStage.transitionCover.transitionIn(main_game,new EndScreen(main_game,gameFinished));
         }
-
     }
 
     public void drawStage(){//omogućava redoslijed crtanja
@@ -175,9 +189,7 @@ public class GameScreen implements Screen {
             hintButton.draw(batch,alpha);
             professor.draw(batch,alpha);
 
-
-
-
+            countDown.draw(batch,alpha);
             gameStage.transitionCover.draw(batch, alpha);
             batch.end();
         }
@@ -195,7 +207,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void resume() {
-        gameState = State.PLAYING;
+        countDown.startCountdown();
     }
 
     @Override

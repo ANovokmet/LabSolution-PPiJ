@@ -111,7 +111,8 @@ public class TutorialScreen implements Screen{
 
         table.center();
 
-        stage.initTransition();
+
+        stage.addActor(stage.transitionCover);
     }
 
     @Override

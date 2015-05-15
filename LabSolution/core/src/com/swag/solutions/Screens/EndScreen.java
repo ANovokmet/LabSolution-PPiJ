@@ -41,11 +41,13 @@ public class EndScreen implements Screen {
         } else {
             gameOverSound.play();
         }
-        stage.initTransition();
+        stage.addActor(stage.transitionCover);
     }
 
     @Override
     public void show() {
+        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setCatchBackKey(true);
         stage.transitionCover.transitionOut();
         LabGame.googleServices.submitScore(Score.totalScore);
     }

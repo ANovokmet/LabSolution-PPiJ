@@ -35,6 +35,10 @@ public class Score extends Actor implements Observer{
         this.camera = camera;
         this.shakeDetector = shakeDetector;
 
+
+        setX(camera.position.x);
+        setY(camera.position.y);
+
         FONT_SIZE = (int)(48 * camera.viewportWidth/480f);
 
         createFonts();

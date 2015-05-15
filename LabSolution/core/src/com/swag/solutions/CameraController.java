@@ -17,6 +17,8 @@ public class CameraController implements GestureDetector.GestureListener {
     private Solution solution;
     Vector2 lastGoodCamera;
 
+    boolean disabled = false;
+
     public CameraController(OrthographicCamera camera, Solution w){
         this.camera = camera;   //glavna kamera
         lastGoodCamera = new Vector2(camera.position.x, camera.position.y);   //pozicija u slucaju pomicanja van okvira svijeta
@@ -61,18 +63,27 @@ public class CameraController implements GestureDetector.GestureListener {
 
     @Override
     public boolean fling (float velocityX, float velocityY, int button) {
-        Gdx.app.log("GestureDetectorTest", "fling " + velocityX + ", " + velocityY);
-        flinging = true;
-        velX = camera.zoom * velocityX * 0.5f;
-        velY = camera.zoom * velocityY * 0.5f;
+        if(!disabled) {
+            Gdx.app.log("GestureDetectorTest", "fling " + velocityX + ", " + velocityY);
+            flinging = true;
+            velX = camera.zoom * velocityX * 0.5f;
+            velY = camera.zoom * velocityY * 0.5f;
+        }
         return false;
     }
 
     @Override
     public boolean pan (float x, float y, float deltaX, float deltaY) {
         // Gdx.app.log("GestureDetectorTest", "pan at " + x + ", " + y);
-        camera.position.add(-deltaX * camera.zoom, deltaY * camera.zoom, 0);
+        if(!disabled){
+            camera.position.add(-deltaX * camera.zoom, deltaY * camera.zoom, 0);
+        }
         return false;
+
+    }
+
+    public void disableCamera(boolean state){
+        this.disabled = state;
     }
 
     @Override
@@ -83,9 +94,9 @@ public class CameraController implements GestureDetector.GestureListener {
 
     @Override
     public boolean zoom (float originalDistance, float currentDistance) {
-        float ratio = originalDistance / currentDistance;
+        /*float ratio = originalDistance / currentDistance;
         camera.zoom = initialScale * ratio;
-        System.out.println(camera.zoom);
+        System.out.println(camera.zoom);*/
         return false;
     }
 
