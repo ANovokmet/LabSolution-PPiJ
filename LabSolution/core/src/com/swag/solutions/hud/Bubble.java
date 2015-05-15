@@ -45,7 +45,7 @@ public class Bubble extends Actor {
         FONT_SIZE = (int)(36*camera.viewportWidth/480f);
         table.getColor().a = 0;
 
-        FileHandle fontFile = Gdx.files.internal("orange-juice.TTF");//ili coolvetica
+        FileHandle fontFile = Gdx.files.internal("orange-juice.ttf");//ili coolvetica
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = FONT_SIZE;

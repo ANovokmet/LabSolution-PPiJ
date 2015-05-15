@@ -1,7 +1,6 @@
 package com.swag.solutions;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.swag.solutions.screens.MainMenu;
 
 /**
@@ -14,6 +13,14 @@ public class LabGame extends Game {
     }
     public GameState currentState;//ne koristi se, izbrisati
     public MainMenu mainMenu;
+    public static AbstractGoogleServices googleServices;
+
+    public LabGame(AbstractGoogleServices googleServices)
+    {
+        super();
+        LabGame.googleServices = googleServices;
+    }
+
     @Override
     public void create() {
         mainMenu = new MainMenu(this);

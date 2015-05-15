@@ -21,8 +21,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.swag.solutions.CameraController;
 import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
-import com.swag.solutions.TransitionCover;
-import com.swag.solutions.hud.EndDialog;
 import com.swag.solutions.hud.HintButton;
 import com.swag.solutions.logic.EnergyContainer;
 import com.swag.solutions.hud.HudElement;

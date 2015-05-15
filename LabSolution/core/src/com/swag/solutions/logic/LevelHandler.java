@@ -4,10 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.swag.solutions.LabGame;
 import com.swag.solutions.hud.HintButton;
 import com.swag.solutions.hud.HudElement;
-import com.swag.solutions.screens.EndScreen;
 import com.swag.solutions.screens.GameScreen;
 
 import java.util.HashMap;

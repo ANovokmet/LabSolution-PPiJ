@@ -70,7 +70,7 @@ public class HudElement extends Actor {
     }
 
     private void createFonts() {
-        FileHandle fontFile = Gdx.files.internal("coolvetica.TTF");
+        FileHandle fontFile = Gdx.files.internal("coolvetica.ttf");
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = SMALL_FONT_SIZE;

@@ -1,8 +1,6 @@
 package com.swag.solutions.logic;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.swag.solutions.LabGame;
-import com.swag.solutions.screens.EndScreen;
 import com.swag.solutions.input.ShakeDetector;
 import com.swag.solutions.screens.GameScreen;
 
@@ -20,7 +18,7 @@ public class EnergyContainer extends Actor {
     private float neededEnergy;
 
     private static final float SHAKE_INCREASE_RATE = 0.2f;
-    private static final float DISSIPATION_RATE = 0.05f;
+    private static final float DISSIPATION_RATE = 0.02f;
     private static final float START_PERCENT_FILLED = 0.8f;
     private ShakeDetector shakeDetector;
 

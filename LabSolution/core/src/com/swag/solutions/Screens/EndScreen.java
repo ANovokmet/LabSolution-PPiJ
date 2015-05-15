@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
-import com.swag.solutions.TransitionCover;
 
 /**
  * Created by Ante on 13.5.2015..

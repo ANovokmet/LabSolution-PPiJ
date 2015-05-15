@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
-import com.swag.solutions.TransitionCover;
 
 /**
  * Created by Mate on 12.5.2015..

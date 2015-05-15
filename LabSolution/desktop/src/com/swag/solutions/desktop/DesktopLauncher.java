@@ -10,6 +10,6 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.height=800;
         config.width=480;
-		new LwjglApplication(new LabGame(), config);
+		new LwjglApplication(new LabGame(new DesktopGoogleServices()), config);
 	}
 }
