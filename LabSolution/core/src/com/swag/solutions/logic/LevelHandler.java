@@ -67,10 +67,14 @@ public class LevelHandler extends Observable{
                     reactant.get("quantity").asInt());
         }
 
-        JsonValue result = level.get("results").get(0);  //vise produkata, prvi je glavni
+        JsonValue result;
+        JsonValue results = level.get("results");
         resultMolecules.clear();
-        resultMolecules.put(
-                result.get("id").asInt(), result.get("quantity").asInt());
+        for(int i=0;i<results.size;i++){
+            result = results.get(i);
+            resultMolecules.put(result.get("id").asInt(), result.get("quantity").asInt());
+        }
+        result = results.get(0);
 
         energyContainer.setNeededEnergy(level.get("energy_needed").asFloat());
 

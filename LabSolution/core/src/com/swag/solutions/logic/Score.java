@@ -19,7 +19,7 @@ import java.util.Observer;
  */
 public class Score extends Actor implements Observer{
 
-    private int totalScore;
+    public static int totalScore;
     private int level;
     private float levelScore;
     private BitmapFont textFont;
@@ -68,14 +68,14 @@ public class Score extends Actor implements Observer{
             totalScore = 0;
         }
         level += 1;
-        levelScore = 1000 * Math.round(Math.pow(2, level));
+        levelScore = 1000 * Math.round(Math.pow(1.6, level));
         if (levelScore < 0f) {
             levelScore = 0f;
         }
     }
 
     public void reduceHintPoints() {
-        levelScore -= 200 * Math.round(Math.pow(2, level));
+        levelScore -= 200 * Math.round(Math.pow(1.6, level));
         if (levelScore < 0f) {
             levelScore = 0f;
         }

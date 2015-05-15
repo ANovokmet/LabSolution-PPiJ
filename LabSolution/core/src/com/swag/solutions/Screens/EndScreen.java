@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
+import com.swag.solutions.logic.Score;
 
 /**
  * Created by Ante on 13.5.2015..
@@ -46,6 +47,7 @@ public class EndScreen implements Screen {
     @Override
     public void show() {
         stage.transitionCover.transitionOut();
+        LabGame.googleServices.submitScore(Score.totalScore);
     }
 
     @Override
@@ -55,6 +57,7 @@ public class EndScreen implements Screen {
         batch.end();
         stage.act(delta);
         stage.draw();
+        Gdx.app.error("totalni score",""+ Score.totalScore);
     }
 
     @Override

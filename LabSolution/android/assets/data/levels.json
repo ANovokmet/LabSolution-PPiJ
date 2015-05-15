@@ -21,7 +21,7 @@
       energy_needed: 400,
       energy_released: 92,
       hint_free: "Hydrogen lents his only electron to chlorine",
-      hints:["Every chlorine atom needs only one hydrogen", "When dissolved in water, this gas forms very strong acid"]
+      hints:["Every chlorine atom needs only one electron", "When dissolved in water, this gas forms very strong acid"]
   },
   {
       reactants: [{id: 7, quantity: 1}, {id: 1, quantity: 1}],

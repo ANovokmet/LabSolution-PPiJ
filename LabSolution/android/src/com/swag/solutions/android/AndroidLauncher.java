@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
+import android.widget.Toast;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -138,7 +139,7 @@ public class AndroidLauncher extends AndroidApplication implements AbstractGoogl
         }
         else
         {
-
+            Toast.makeText(this, "Unable to submit score. You are not signed in.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -148,8 +149,7 @@ public class AndroidLauncher extends AndroidApplication implements AbstractGoogl
             startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
         else
         {
-            signIn();
-            //startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
+
         }
     }
 
