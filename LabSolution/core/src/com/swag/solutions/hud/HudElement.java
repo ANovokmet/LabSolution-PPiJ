@@ -18,18 +18,18 @@ import com.swag.solutions.logic.EnergyContainer;
  */
 public class HudElement extends Actor {
 
-    Texture emptybot = new Texture("barBack_verticalBottom.png");//18x9
-    Texture emptymid = new Texture("barBack_verticalMid.png");//18x18
-    Texture emptytop = new Texture("barBack_verticalTop.png");
-    Texture filledbot = new Texture("barGreen_verticalBottom.png");
-    Texture filledmid = new Texture("barGreen_verticalMid.png");
-    Texture filledtop = new Texture("barGreen_verticalTop.png");
+    Texture emptybot = new Texture("bar_empty_bot.png");//18x9
+    Texture emptymid = new Texture("bar_empty_mid.png");//18x18
+    Texture emptytop = new Texture("bar_empty_top.png");
+    Texture filledbot = new Texture("bar_fill_bot.png");
+    Texture filledmid = new Texture("bar_fill_mid.png");
+    Texture filledtop = new Texture("bar_fill_top.png");
     Texture target = new Texture("barRed_verticalMid.png");
 
     float BAR_X = 16;
     float BAR_Y = 16;
-    float BAR_WIDTH = 32;
-    float BAR_HEIGHT = 512;
+    float BAR_WIDTH;
+    float BAR_HEIGHT;
 
     private OrthographicCamera camera;
     Table formulaTable;
@@ -53,10 +53,18 @@ public class HudElement extends Actor {
         setWidth(0);
         setHeight(0);//vlastiti width i height se ne koriste
 
+        emptytop.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        emptybot.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+
+
         this.camera= camera;
 
         setX(camera.position.x);
         setY(camera.position.y);
+
+
+        this.BAR_WIDTH = 36*camera.viewportWidth/480f;
+        this.HEIGHT_OF_EDGE = BAR_WIDTH/2;
 
         this.BAR_HEIGHT = camera.viewportHeight*BAR_HEIGHT_PERCENTAGE;
         this.BAR_Y = (camera.viewportHeight-BAR_HEIGHT)/2-HEIGHT_OF_EDGE;
