@@ -6,6 +6,7 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
@@ -69,13 +70,15 @@ public class GameScreen implements Screen {
 
     float SCREEN_SCALING;
 
+    static Sound clickSound;
 
     public GameScreen(LabGame main){
         main_game=main;
+
     }
 
     public void create(){
-
+        clickSound = main_game.assetManager.get("sounds/click.wav", Sound.class);
         gameState = State.PLAYING;
 
         SCREEN_SCALING = Gdx.graphics.getWidth()/360f;
@@ -132,6 +135,7 @@ public class GameScreen implements Screen {
             public boolean keyDown(int keycode) {
 
                 if ((keycode == Input.Keys.ESCAPE) || (keycode == Input.Keys.BACK) )
+                    clickSound.play();
                     if(quitDialog.isVisible())
                         gameOver(false);
                     else if(gameState != State.COUNTDOWN)

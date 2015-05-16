@@ -11,8 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
  */
 public class GameStage extends Stage {
     private LabGame game = null;
-    private final static Sound clickSound =
-            Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
+
 
     public TransitionCover transitionCover;
 
