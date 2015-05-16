@@ -1,6 +1,7 @@
 package com.swag.solutions.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,9 +23,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
  * Created by Ante on 6.5.2015..
  */
 public class Bubble extends Actor {
-    Texture image = new Texture("bubble.png");
     Label label;
-    Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+    Skin skin = new Skin();
     Table table = new Table();
 
     public boolean hinting = false;
@@ -36,7 +36,7 @@ public class Bubble extends Actor {
     private int FONT_SIZE;
 
     private OrthographicCamera camera;
-    public Bubble (OrthographicCamera camera){
+    public Bubble (OrthographicCamera camera, AssetManager manager){
         this.camera = camera;
         setWidth(BUBBLE_WIDTH);
         setHeight(BUBBLE_HEIGHT);
@@ -45,20 +45,14 @@ public class Bubble extends Actor {
         FONT_SIZE = (int)(36*camera.viewportWidth/480f);
         table.getColor().a = 0;
 
-        FileHandle fontFile = Gdx.files.internal("orange-juice.ttf");//ili coolvetica
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = FONT_SIZE;
-        BitmapFont textFont = generator.generateFont(parameter);
+
+        BitmapFont textFont = manager.get("hintfont.ttf", BitmapFont.class);
         Label.LabelStyle ls = new Label.LabelStyle(textFont, Color.BLACK);
         skin.add("nas_font",ls);
-
-
 
         label = new Label("", skin, "nas_font");
         label.setWrap(true);
         label.setAlignment(Align.center);
-       //label.setStyle(new Label.LabelStyle(hintFont,Color.RED));
         table.add(label).width(BUBBLE_WIDTH);
 
 

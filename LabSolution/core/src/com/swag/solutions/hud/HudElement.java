@@ -1,6 +1,7 @@
 package com.swag.solutions.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,13 +19,13 @@ import com.swag.solutions.logic.EnergyContainer;
  */
 public class HudElement extends Actor {
 
-    Texture emptybot = new Texture("bar_empty_bot.png");//18x9
-    Texture emptymid = new Texture("bar_empty_mid.png");//18x18
-    Texture emptytop = new Texture("bar_empty_top.png");
-    Texture filledbot = new Texture("bar_fill_bot.png");
-    Texture filledmid = new Texture("bar_fill_mid.png");
-    Texture filledtop = new Texture("bar_fill_top.png");
-    Texture target = new Texture("barRed_verticalMid.png");
+    Texture emptybot;//18x9
+    Texture emptymid;//18x18
+    Texture emptytop;
+    Texture filledbot;
+    Texture filledmid;
+    Texture filledtop;
+    Texture target;
 
     float BAR_X = 16;
     float BAR_Y = 16;
@@ -45,23 +46,29 @@ public class HudElement extends Actor {
     static BitmapFont energyFont;
     String moleculeFormula = "";//CILJNA MOLEKULA
 
-    private int BIG_FONT_SIZE;
-    private int SMALL_FONT_SIZE;
-    private int ENERGY_FONT_SIZE;
+    private int ENERGY_LABEL_OFFSET;
 
-    public HudElement(OrthographicCamera camera, EnergyContainer enContainer) {
+    AssetManager manager;
+
+    public HudElement(OrthographicCamera camera, EnergyContainer enContainer, AssetManager manager) {
         setWidth(0);
-        setHeight(0);//vlastiti width i height se ne koriste
+        setHeight(0);
+        this.manager = manager;
 
+        emptybot = manager.get("bar_empty_bot.png", Texture.class);
+        emptymid = manager.get("bar_empty_mid.png", Texture.class);
+        emptytop = manager.get("bar_empty_top.png", Texture.class);
+        filledbot = manager.get("bar_fill_bot.png", Texture.class);
+        filledmid = manager.get("bar_fill_mid.png", Texture.class);
+        filledtop = manager.get("bar_fill_top.png", Texture.class);
+        target = manager.get("barRed_verticalMid.png", Texture.class);
         emptytop.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         emptybot.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
 
         this.camera= camera;
 
         setX(camera.position.x);
         setY(camera.position.y);
-
 
         this.BAR_WIDTH = 36*camera.viewportWidth/480f;
         this.HEIGHT_OF_EDGE = BAR_WIDTH/2;
@@ -69,34 +76,15 @@ public class HudElement extends Actor {
         this.BAR_HEIGHT = camera.viewportHeight*BAR_HEIGHT_PERCENTAGE;
         this.BAR_Y = (camera.viewportHeight-BAR_HEIGHT)/2-HEIGHT_OF_EDGE;
 
-        BIG_FONT_SIZE = (int)(96 * camera.viewportWidth/480f);
-        SMALL_FONT_SIZE = (int)(48 * camera.viewportWidth/480f);
-
-        ENERGY_FONT_SIZE = (int)(24 * camera.viewportWidth/480f);
-
-
+        ENERGY_LABEL_OFFSET = (int)(48 * camera.viewportWidth/480f);
         createFonts();
-        //formulaTable = renderString(moleculeFormula);
         energyContainer = enContainer;
     }
 
     private void createFonts() {
-        FileHandle fontFile = Gdx.files.internal("coolvetica.ttf");
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = SMALL_FONT_SIZE;
-        textFont = generator.generateFont(parameter);
-        parameter.size = BIG_FONT_SIZE;
-        titleFont = generator.generateFont(parameter);
-
-        /*fontFile = Gdx.files.internal("04B_30__.TTF");
-        generator = new FreeTypeFontGenerator(fontFile);
-        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();*/
-
-        parameter.size = ENERGY_FONT_SIZE;
-        energyFont = generator.generateFont(parameter);
-        generator.dispose();
-
+        textFont = manager.get("smallfont.ttf", BitmapFont.class);
+        titleFont = manager.get("bigfont.ttf", BitmapFont.class);
+        energyFont = manager.get("energyfont.ttf", BitmapFont.class);
         energyFont.setColor(255f/255f, 255f/255f, 255f/255f, 1f);
     }
 
@@ -145,11 +133,11 @@ public class HudElement extends Actor {
                 target.getWidth(), target.getHeight(), false, false);
 
         // količina trenutne energije (broj)
-        energyFont.draw(batch, (int)(energyContainer.getCurrentEnergy())+"", BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT* percentFilled +SMALL_FONT_SIZE);
+        energyFont.draw(batch, (int)(energyContainer.getCurrentEnergy())+"", BAR_X+getX()-camera.viewportWidth/2, BAR_Y+getY()-camera.viewportHeight/2+BAR_HEIGHT* percentFilled +ENERGY_LABEL_OFFSET);
         //titleFont.draw(batch, moleculeFormula, getX()-80, getY()+camera.viewportWidth/2+40);
 
         // KJ/MOL na dnu
-        energyFont.draw(batch, "KJ/MOL", BAR_X + getX() - camera.viewportWidth / 2, BAR_Y + getY() - camera.viewportHeight / 2 - SMALL_FONT_SIZE);
+        energyFont.draw(batch, "KJ/MOL", BAR_X + getX() - camera.viewportWidth / 2, BAR_Y + getY() - camera.viewportHeight / 2 - ENERGY_LABEL_OFFSET);
 
         // zadana reakcija
         formulaTable.setPosition(getX(), getY() + camera.viewportHeight / 2 * FORMULA_POSITION_Y_PERCENTAGE);

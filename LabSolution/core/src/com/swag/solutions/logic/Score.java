@@ -1,6 +1,7 @@
 package com.swag.solutions.logic;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -29,19 +30,20 @@ public class Score extends Actor implements Observer{
     private static final float TIME_DECREASE_RATE = 10f;
     private static final float SHAKE_DECREASE_RATE = 20f;
 
-    private int FONT_SIZE;
 
-    public Score(Camera camera, ShakeDetector shakeDetector){
+    AssetManager manager;
+
+    public Score(Camera camera, ShakeDetector shakeDetector, AssetManager manager){
         this.camera = camera;
         this.shakeDetector = shakeDetector;
-
+        this.manager = manager;
 
         setX(camera.position.x);
         setY(camera.position.y);
 
-        FONT_SIZE = (int)(48 * camera.viewportWidth/480f);
+        textFont = manager.get("scorefont.ttf", BitmapFont.class);
+        textFont.setColor(1f, 1f, 1f, 1f);
 
-        createFonts();
         totalScore = 0;
         levelScore = 1000;
         level = 0;
@@ -86,15 +88,4 @@ public class Score extends Actor implements Observer{
     }
 
 
-
-    private void createFonts() {
-        FileHandle fontFile = Gdx.files.internal("coolvetica.ttf");
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = FONT_SIZE;
-        textFont = generator.generateFont(parameter);
-        generator.dispose();
-
-        textFont.setColor(1f, 1f, 1f, 1f);
-    }
 }

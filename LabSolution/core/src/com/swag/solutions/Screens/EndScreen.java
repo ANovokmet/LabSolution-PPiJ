@@ -21,19 +21,20 @@ public class EndScreen implements Screen {
     LabGame game;
     GameStage stage;
     Batch batch;
-    Texture background = new Texture(Gdx.files.internal("background2.png"),true);
+    Texture background;
 
-    private Sprite pozadinaSprite;
-    private final static Sound gameFinishedSound = Gdx.audio.newSound(
-            Gdx.files.internal("sounds/game_finished.wav"));
-    private final static Sound gameOverSound = Gdx.audio.newSound(
-            Gdx.files.internal("sounds/game_over.wav"));
+    private static Sound gameFinishedSound;
+    private static Sound gameOverSound;
 
     public EndScreen(LabGame game, boolean gameFinished) {
         this.game = game;
         stage = new GameStage(game);
         this.camera = (OrthographicCamera) stage.getCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        gameFinishedSound = this.game.assetManager.get("sounds/game_finished.wav", Sound.class);
+        gameOverSound = this.game.assetManager.get("sounds/game_over.wav", Sound.class);
+        background = this.game.assetManager.get("background2.png", Texture.class);
 
         batch = new SpriteBatch();
         if (gameFinished) {

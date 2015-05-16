@@ -1,6 +1,7 @@
 package com.swag.solutions.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,7 +18,7 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
  * Created by Ante on 6.5.2015..
  */
 public class Professor extends Actor {
-    Texture image = new Texture(Gdx.files.internal("professor1x0.png"),true);
+    Texture image;
     private float PROFESSOR_X;
     private float PROFESSOR_Y;
     private float PROFESSOR_WIDTH = 256;
@@ -33,13 +34,14 @@ public class Professor extends Actor {
     private float HINT_DURATION = 2f;
 
     private OrthographicCamera camera;
-    public Professor (OrthographicCamera camera){
+    public Professor (OrthographicCamera camera, AssetManager manager){
         SCREEN_SCALING = Gdx.graphics.getWidth()/480f; //malo ipak veci ;)
 
+        this.image = manager.get("professor1x0.png", Texture.class);
         this.camera = camera;
         setWidth(PROFESSOR_WIDTH*SCREEN_SCALING);
         setHeight(PROFESSOR_HEIGHT*SCREEN_SCALING);
-        bubble = new Bubble(camera);
+        bubble = new Bubble(camera, manager);
 
         PROFESSOR_X = camera.viewportWidth/2;
         PROFESSOR_Y = camera.viewportHeight/2-this.getHeight();
@@ -48,8 +50,7 @@ public class Professor extends Actor {
         setX(camera.position.x+PROFESSOR_X);
         setY(camera.position.y+PROFESSOR_Y);
 
-        tellHintSound = Gdx.audio.newSound(
-                Gdx.files.internal("sounds/mumbling.ogg"));
+        tellHintSound = manager.get("sounds/mumbling.ogg", Sound.class);
 
         image.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
@@ -73,7 +74,7 @@ public class Professor extends Actor {
         super.act(delta);
         setX(camera.position.x+PROFESSOR_X);
         setY(camera.position.y+PROFESSOR_Y);
-        //percentFilled+=0.0005;//test za "animaciju"
+
         bubble.act(delta);
 
         if(!hintQueue.isEmpty() && !bubble.isHinting()){

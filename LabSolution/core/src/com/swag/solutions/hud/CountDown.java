@@ -2,6 +2,7 @@ package com.swag.solutions.hud;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -33,11 +34,11 @@ public class CountDown extends Actor {
     Table table;
 
 
-    Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
+    Skin skin = new Skin();
 
     int FONT_SIZE;
 
-    public CountDown(OrthographicCamera camera, GameScreen screen){
+    public CountDown(OrthographicCamera camera, GameScreen screen, AssetManager manager){
         this.camera = camera;
         this.screen = screen;
         setWidth(camera.viewportWidth);
@@ -47,11 +48,8 @@ public class CountDown extends Actor {
         FONT_SIZE = (int)(200*camera.viewportWidth/480f);
         table.getColor().a = 1;
 
-        FileHandle fontFile = Gdx.files.internal("orange-juice.ttf");//ili coolvetica
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = FONT_SIZE;
-        BitmapFont textFont = generator.generateFont(parameter);
+
+        BitmapFont textFont = manager.get("countdownfont.ttf", BitmapFont.class);
         Label.LabelStyle ls = new Label.LabelStyle(textFont, Color.WHITE);
         skin.add("nas_font",ls);
 
@@ -60,13 +58,11 @@ public class CountDown extends Actor {
         label = new Label("3", skin, "nas_font");
         label.setWrap(true);
         label.setAlignment(Align.center);
-        //label.setStyle(new Label.LabelStyle(hintFont,Color.RED));
         table.add(label).width(this.getWidth()).height(this.getHeight());
         Pixmap pm = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
         pm.setColor(1f, 1f, 1f, (float) 0.3);
         pm.fill();
         table.background(new TextureRegionDrawable(new TextureRegion(new Texture(pm))));
-
         table.pack();
 
     }
@@ -106,9 +102,7 @@ public class CountDown extends Actor {
         }
 
         table.setPosition(camera.position.x - table.getWidth() / 2, camera.position.y - table.getHeight() / 2);
-
         table.act(delta);
-
     }
 
 

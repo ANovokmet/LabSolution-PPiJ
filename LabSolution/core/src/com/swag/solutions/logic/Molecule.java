@@ -1,6 +1,7 @@
 package com.swag.solutions.logic;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -41,19 +42,23 @@ public class Molecule extends Actor {
 
     public JsonValue params;
 
-    private final static Sound moleculePickUpSound = Gdx.audio.newSound(
-            Gdx.files.internal("sounds/molecule_pick_up.wav"));
-    private final static Sound moleculePutDownSound = Gdx.audio.newSound(
-            Gdx.files.internal("sounds/molecule_put_down.wav"));
+    private static Sound moleculePickUpSound;
+    private static Sound moleculePutDownSound;
 
-    public Molecule(float x, float y, Solution solution, JsonValue params){
+    public Molecule(float x, float y, Solution solution, JsonValue params, AssetManager manager){
         SCREEN_SCALING = Gdx.graphics.getWidth()/360f;
         setX(x);
         setY(y);
+
+        if(moleculePickUpSound==null);
+            moleculePickUpSound = manager.get("sounds/molecule_pick_up.wav", Sound.class);
+        if(moleculePutDownSound==null);
+            moleculePutDownSound = manager.get("sounds/molecule_put_down.wav", Sound.class);
+
         this.params = params;
         setWidth(params.get("width").asInt()*SCREEN_SCALING);
         setHeight(params.get("height").asInt()*SCREEN_SCALING);
-        texture = new Texture(params.get("path").asString());
+        texture = manager.get(params.get("path").asString(), Texture.class);
         this.solution = solution;
         setOrigin(getWidth()/2,getHeight()/2);
         brzina_rotacije=MathUtils.random(-15,15);

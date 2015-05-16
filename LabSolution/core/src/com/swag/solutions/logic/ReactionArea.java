@@ -1,6 +1,7 @@
 package com.swag.solutions.logic;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -19,9 +20,9 @@ import java.util.Map;
  */
 public class ReactionArea extends Actor {
 
-    Texture texture_top = new Texture("reaction_area_top.png");
-    Texture texture_bot = new Texture("reaction_area_bot.png");
-    private Sound reactionSuccessSound;
+    Texture texture_top;
+    Texture texture_bot;
+    private static Sound reactionSuccessSound;
 
     static float REAREA_X = 50;
     static float REAREA_Y = 40;
@@ -41,12 +42,14 @@ public class ReactionArea extends Actor {
 
     public ReactionArea(float screenWidth, float screenHeight,
                         OrthographicCamera camera, EnergyContainer enContainer,
-                        LevelHandler levelHandler){
+                        LevelHandler levelHandler, AssetManager manager){
         this.camera = camera;
         this.energyContainer = enContainer;
         this.levelHandler = levelHandler; // za mijenjanje levela kada se provede reakcija
-        reactionSuccessSound = Gdx.audio.newSound(
-                Gdx.files.internal("sounds/reaction_success.wav"));
+
+        texture_top = manager.get("reaction_area_top.png", Texture.class);
+        texture_bot = manager.get("reaction_area_bot.png", Texture.class);
+        reactionSuccessSound = manager.get("sounds/reaction_success.wav", Sound.class);
 
         Vector2 botLeftCorner = new Vector2(
                 camera.position.x - camera.viewportWidth/2,

@@ -1,6 +1,7 @@
 package com.swag.solutions.logic;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -33,7 +34,7 @@ public class Solution extends Actor {
     private Array<Molecule> freeMolecules;
     private ReactionArea reactionArea;
     private Stage stage;
-    Texture texture = new Texture("AzureWaters.jpg");
+    Texture texture;
 
     private static final int        FRAME_COLS = 4;         // #1
     private static final int        FRAME_ROWS = 4;         // #2
@@ -44,8 +45,11 @@ public class Solution extends Actor {
     TextureRegion                   currentFrame;           // #7
     float stateTime;
 
+    AssetManager manager;
 
-    public Solution(float sizex, float sizey, ReactionArea podrucje, GameStage gameStage){
+    public Solution(float sizex, float sizey, ReactionArea podrucje, GameStage gameStage, AssetManager manager){
+        this.manager = manager;
+
         float offsetx = Gdx.graphics.getWidth();
         float offsety = Gdx.graphics.getHeight();
         size_x=sizex+offsetx;
@@ -58,7 +62,9 @@ public class Solution extends Actor {
         reactionArea =podrucje;
         stage = gameStage;
 
-        waterSheet = new Texture(Gdx.files.internal("wateranim.png")); // #9
+
+        texture = manager.get("AzureWaters.jpg", Texture.class);//TODO rubovi solutiona
+        waterSheet = manager.get("wateranim.png", Texture.class); // #9
         TextureRegion[][] tmp = TextureRegion.split(waterSheet, 512/FRAME_COLS, 512/FRAME_ROWS);              // #10
         waterFrames = new TextureRegion[FRAME_COLS * FRAME_ROWS];
         int index = 0;
@@ -117,7 +123,7 @@ public class Solution extends Actor {
             Molecule molecule = new Molecule(
                     MathUtils.random(left_x + 100, right_x - 100),
                     MathUtils.random(bottom_y + 100, top_y - 100),
-                    this, moleculeInfo);
+                    this, moleculeInfo, manager);
             freeMolecules.add(molecule);
         }
     }
@@ -158,7 +164,7 @@ public class Solution extends Actor {
                 Molecule molecule = new Molecule(
                         reactionArea.getReactionMolecules().first().getX(),
                         reactionArea.getReactionMolecules().first().getY(),
-                        this, moleculeInfo);
+                        this, moleculeInfo, manager);
 
                 freeMolecules.add(molecule);
                 stage.addActor(molecule);
@@ -177,7 +183,7 @@ public class Solution extends Actor {
                 Molecule molecule = new Molecule(
                         MathUtils.random(left_x + 100, right_x - 100),
                         MathUtils.random(bottom_y + 100, top_y - 100),
-                        this, moleculeInfo);
+                        this, moleculeInfo, manager);
 
                 freeMolecules.add(molecule);
                 stage.addActor(molecule);

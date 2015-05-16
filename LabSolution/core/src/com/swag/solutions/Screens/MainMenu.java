@@ -159,7 +159,8 @@ public class MainMenu implements com.badlogic.gdx.Screen {
                startGameButton.setText("Starting new game");
                clickSound.play();
                //game.setScreen(new GameScreen(game));
-               transitionActor.transitionIn(game,new GameScreen(game));
+               //game.gameScreen.create();
+               transitionActor.transitionIn(game,game.gameScreen);
            }
        });
 

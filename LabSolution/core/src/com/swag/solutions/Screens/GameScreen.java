@@ -69,6 +69,9 @@ public class GameScreen implements Screen {
 
     public GameScreen(LabGame main){
         main_game=main;
+    }
+
+    public void create(){
 
         gameState = State.PLAYING;
 
@@ -81,20 +84,20 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, screenWidth, screenHeight);//OVDJE JE DI SE NAMJESTI OMJER, ostali djelovi se prilagođavaju viewportwidth i height
 
 
-        professor = new Professor(camera);
+        professor = new Professor(camera, main_game.assetManager);
         gameStage.addActor(professor);
 
 
         ShakeDetector shakeDetector = new MyShakeDetector();
-        score = new Score(camera, shakeDetector);
-        hintButton = new HintButton(camera, professor, score);
+        score = new Score(camera, shakeDetector, main_game.assetManager);
+        hintButton = new HintButton(camera, professor, score, main_game.assetManager);
         EnergyContainer enContainer = new EnergyContainer(5000.f, shakeDetector, this);
-        hudElement = new HudElement(camera, enContainer);
+        hudElement = new HudElement(camera, enContainer, main_game.assetManager);
         LevelHandler levelHandler =
                 new LevelHandler(enContainer, hudElement, hintButton, this);
         reactionArea = new ReactionArea(Gdx.graphics.getWidth(),
-                Gdx.graphics.getHeight(), camera, enContainer, levelHandler);
-        solution = new Solution(1000*SCREEN_SCALING, 1000*SCREEN_SCALING, reactionArea, gameStage);
+                Gdx.graphics.getHeight(), camera, enContainer, levelHandler, main_game.assetManager);
+        solution = new Solution(1000*SCREEN_SCALING, 1000*SCREEN_SCALING, reactionArea, gameStage, main_game.assetManager);
         levelHandler.setSolution(solution);
         levelHandler.loadLevel();
         levelHandler.addObserver(score);
@@ -117,13 +120,12 @@ public class GameScreen implements Screen {
         multiplexer.addProcessor(new GestureDetector(20, 0.5f, 2, 0.15f, controller));
         Gdx.input.setInputProcessor(multiplexer);
 
-        countDown = new CountDown(camera, this);
-
-
+        countDown = new CountDown(camera, this, main_game.assetManager);
     }
 
     @Override
     public void show() {
+        create();
         Gdx.input.setCatchBackKey(true);
         gameStage.transitionCover.transitionOut();
 

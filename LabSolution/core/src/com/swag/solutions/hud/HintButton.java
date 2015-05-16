@@ -1,6 +1,7 @@
 package com.swag.solutions.hud;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -27,9 +28,9 @@ import static com.badlogic.gdx.scenes.scene2d.actions.Actions.sequence;
  * Created by Ante on 13.5.2015..
  */
 public class HintButton extends Actor {
-    Texture button_red = new Texture(Gdx.files.internal("hint_c.png"),true);
-    Texture button_green = new Texture(Gdx.files.internal("hint_z.png"),true);
-    Texture button_gray = new Texture(Gdx.files.internal("hint_s.png"),true);
+    Texture button_red;
+    Texture button_green;
+    Texture button_gray;
     private float BUTTON_X;
     private float BUTTON_Y;
     private float BUTTON_WIDTH = 72;
@@ -46,7 +47,7 @@ public class HintButton extends Actor {
 
 
     private OrthographicCamera camera;
-    public HintButton(OrthographicCamera camera, final Professor professor, Score score){
+    public HintButton(OrthographicCamera camera, final Professor professor, Score score, AssetManager manager){
         this.camera = camera;
         this.professor = professor;
         this.score = score;
@@ -55,7 +56,9 @@ public class HintButton extends Actor {
         setWidth(BUTTON_WIDTH*SCREEN_SCALING);
         setHeight(BUTTON_HEIGHT*SCREEN_SCALING);
 
-
+        button_red = manager.get("hint_c.png",Texture.class);
+        button_green = manager.get("hint_z.png",Texture.class);
+        button_gray = manager.get("hint_s.png",Texture.class);
 
         button_red.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         button_green.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -64,7 +67,7 @@ public class HintButton extends Actor {
         BUTTON_X = camera.viewportWidth/2-this.getWidth();
         BUTTON_Y = camera.viewportHeight/2-this.getWidth();
 
-        setX(camera.position.x+BUTTON_X);
+        setX(camera.position.x + BUTTON_X);
         setY(camera.position.y+BUTTON_Y);
 
         //tellHintSound = Gdx.audio.newSound(
