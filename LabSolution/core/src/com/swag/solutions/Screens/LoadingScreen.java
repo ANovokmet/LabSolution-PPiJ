@@ -49,6 +49,7 @@ public class LoadingScreen implements Screen {
     int HINT_FONT_SIZE;
     int MENU_FONT_SIZE;
     int QUIT_FONT_SIZE;
+    int LEVEL_SCORE_FONT_SIZE;
     float percent;
 
     BitmapFont loadText;
@@ -72,6 +73,7 @@ public class LoadingScreen implements Screen {
         HINT_FONT_SIZE = (int)(36 * gameWidth/480f);
         SCORE_FONT_SIZE = (int)(48 * gameWidth/480f);
         QUIT_FONT_SIZE = (int)(96 * gameWidth/480f);
+        LEVEL_SCORE_FONT_SIZE = (int)(24 * gameWidth/480f);
         MENU_FONT_SIZE = (int)(gameWidth/14 * Gdx.graphics.getDensity());
         batch = new SpriteBatch();
 
@@ -162,6 +164,11 @@ public class LoadingScreen implements Screen {
         size6Params.fontFileName = "coolvetica.ttf";
         size6Params.fontParameters.size = SCORE_FONT_SIZE;
         manager.load("scorefont.ttf", BitmapFont.class, size6Params);
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter size9Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        size9Params.fontFileName = "coolvetica.ttf";
+        size9Params.fontParameters.size = LEVEL_SCORE_FONT_SIZE;
+        manager.load("levelscorefont.ttf", BitmapFont.class, size9Params);
 
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter size7Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
