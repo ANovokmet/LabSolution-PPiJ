@@ -1,6 +1,10 @@
 package com.swag.solutions.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -22,11 +26,12 @@ public class EndScreen implements Screen {
     GameStage stage;
     Batch batch;
     Texture background;
+    InputMultiplexer inputMultiplexer;
 
     private static Sound gameFinishedSound;
     private static Sound gameOverSound;
 
-    public EndScreen(LabGame game, boolean gameFinished) {
+    public EndScreen(final LabGame game, boolean gameFinished) {
         this.game = game;
         stage = new GameStage(game);
         this.camera = (OrthographicCamera) stage.getCamera();
@@ -35,6 +40,17 @@ public class EndScreen implements Screen {
         gameFinishedSound = this.game.assetManager.get("sounds/game_finished.wav", Sound.class);
         gameOverSound = this.game.assetManager.get("sounds/game_over.wav", Sound.class);
         background = this.game.assetManager.get("background2.png", Texture.class);
+
+        InputProcessor backProcessor = new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+                stage.transitionCover.transitionIn(game, game.mainMenu);
+                return false;
+            }
+        };
+        inputMultiplexer = new InputMultiplexer();
+        inputMultiplexer.addProcessor(backProcessor);
+        inputMultiplexer.addProcessor(stage);
 
         batch = new SpriteBatch();
         if (gameFinished) {
@@ -47,7 +63,7 @@ public class EndScreen implements Screen {
 
     @Override
     public void show() {
-        Gdx.input.setInputProcessor(stage);
+        Gdx.input.setInputProcessor(inputMultiplexer);
         Gdx.input.setCatchBackKey(true);
         stage.transitionCover.transitionOut();
         LabGame.googleServices.submitScore(Score.totalScore);

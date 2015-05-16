@@ -41,6 +41,8 @@ public class HudElement extends Actor {
     float FORMULA_POSITION_Y_PERCENTAGE = 0.75f;
     float HEIGHT_OF_EDGE = 18;
 
+    static float PADDING; //za subscript brojeva u formuli
+
     static BitmapFont titleFont;
     static BitmapFont textFont;
     static BitmapFont energyFont;
@@ -69,6 +71,8 @@ public class HudElement extends Actor {
 
         setX(camera.position.x);
         setY(camera.position.y);
+
+        this.PADDING = 50*camera.viewportWidth/480f;
 
         this.BAR_WIDTH = 36*camera.viewportWidth/480f;
         this.HEIGHT_OF_EDGE = BAR_WIDTH/2;
@@ -147,7 +151,6 @@ public class HudElement extends Actor {
     // 0: sredina ekrana, +-1 vrh i dno
 
     static Skin skin = new Skin();
-    private static final float PADDING = 50;
     public static Table renderString(String string){
 
         skin.add("normal",titleFont);

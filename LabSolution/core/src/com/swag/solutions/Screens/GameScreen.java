@@ -2,7 +2,9 @@ package com.swag.solutions.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
@@ -23,6 +25,7 @@ import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
 import com.swag.solutions.hud.CountDown;
 import com.swag.solutions.hud.HintButton;
+import com.swag.solutions.hud.QuitDialog;
 import com.swag.solutions.logic.EnergyContainer;
 import com.swag.solutions.hud.HudElement;
 import com.swag.solutions.logic.Molecule;
@@ -61,7 +64,7 @@ public class GameScreen implements Screen {
     Professor professor;
     Score score;
     HintButton hintButton;
-
+    QuitDialog quitDialog;
     CountDown countDown;
 
     float SCREEN_SCALING;
@@ -113,11 +116,31 @@ public class GameScreen implements Screen {
             gameStage.addActor(m);
         }
 
+        quitDialog = new QuitDialog(camera, this, main_game.assetManager);
+        gameStage.addActor(quitDialog);
+
+
+
         controller = new CameraController(camera, solution);
         //molekula.addAction(parallel(moveTo(200,0,5),rotateBy(90,5)));
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(gameStage);
         multiplexer.addProcessor(new GestureDetector(20, 0.5f, 2, 0.15f, controller));
+
+        InputProcessor backProcessor = new InputAdapter() {
+            @Override
+            public boolean keyDown(int keycode) {
+
+                if ((keycode == Input.Keys.ESCAPE) || (keycode == Input.Keys.BACK) )
+                    if(quitDialog.isVisible())
+                        gameOver(false);
+                    else if(gameState != State.COUNTDOWN)
+                        quitDialog.showDialog();
+                return false;
+            }
+        };
+        multiplexer.addProcessor(backProcessor);
+
         Gdx.input.setInputProcessor(multiplexer);
 
         countDown = new CountDown(camera, this, main_game.assetManager);
@@ -198,6 +221,11 @@ public class GameScreen implements Screen {
             }
 
             countDown.draw(batch,alpha);
+
+            if(quitDialog.isVisible()){
+                quitDialog.draw(batch,alpha);
+            }
+
             gameStage.transitionCover.draw(batch, alpha);
             batch.end();
         }
@@ -228,61 +256,4 @@ public class GameScreen implements Screen {
 
     }
 
-    boolean dialogOpen = false;
-
-    public void quitGameDialog() {//ne, igra se nesmije pauzirat u pravom smislu.
-        dialogOpen = true;
-        Dialog dialog;
-        Skin skin = new Skin(Gdx.files.internal("data/uiskin.json"));
-
-        FileHandle fontFile = Gdx.files.internal("04B_30__.TTF");
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(fontFile);
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 24;
-        BitmapFont textFont = generator.generateFont(parameter);
-        Label.LabelStyle ls = new Label.LabelStyle(textFont, Color.WHITE);
-
-        skin.add("defaultt",ls);
-
-        Label label = new Label("Zelis li uistinu izaci iz igre moj africko americki prijatelju?", skin, "defaultt");
-        label.setWrap(true);
-
-        label.setFontScale(1f);
-        label.setAlignment(Align.center);
-
-
-        dialog =
-                new Dialog("", skin, "default") {
-                    protected void result (Object shouldQuit) {
-                        System.out.println("Chosen: " + shouldQuit);
-                        dialogOpen = false;
-                        if((Boolean)shouldQuit){
-                            gameStage.transitionCover.transitionIn(main_game, main_game.mainMenu);
-                        }
-                        else {
-                            gameState = State.PLAYING;
-                        }
-
-                    }
-                };
-
-        dialog.padTop(50).padBottom(50);
-        dialog.getContentTable().add(label).width(camera.viewportWidth*2/3).row();
-        dialog.getButtonTable().padTop(50);
-        TextButton dbutton = new TextButton("Yes", skin, "default");
-        dialog.button(dbutton, true);
-
-        dbutton = new TextButton("Resume", skin, "default");
-        dialog.button(dbutton, false);
-        dialog.key(Input.Keys.ENTER, true).key(Input.Keys.ESCAPE, false);
-        dialog.invalidateHierarchy();
-        dialog.invalidate();
-        dialog.layout();
-        dialog.setModal(true);
-        dialog.pack();
-        gameStage.addActor(dialog);
-
-        dialog.setPosition(camera.position.x-dialog.getWidth()/2,camera.position.y-dialog.getHeight()/2);
-        //dialog.show(dialogStage);
-    }
 }

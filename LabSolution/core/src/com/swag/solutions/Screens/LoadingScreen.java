@@ -48,7 +48,7 @@ public class LoadingScreen implements Screen {
     int COUNTDOWN_FONT_SIZE;
     int HINT_FONT_SIZE;
     int MENU_FONT_SIZE;
-
+    int QUIT_FONT_SIZE;
     float percent;
 
     BitmapFont loadText;
@@ -71,6 +71,7 @@ public class LoadingScreen implements Screen {
         COUNTDOWN_FONT_SIZE = (int)(200 * gameWidth/480f);
         HINT_FONT_SIZE = (int)(36 * gameWidth/480f);
         SCORE_FONT_SIZE = (int)(48 * gameWidth/480f);
+        QUIT_FONT_SIZE = (int)(96 * gameWidth/480f);
         MENU_FONT_SIZE = (int)(gameWidth/14 * Gdx.graphics.getDensity());
         batch = new SpriteBatch();
 
@@ -167,6 +168,11 @@ public class LoadingScreen implements Screen {
         size7Params.fontFileName = "sf-atarian-system.extended-bold.ttf";
         size7Params.fontParameters.size = MENU_FONT_SIZE;
         manager.load("menufont.ttf", BitmapFont.class, size7Params);
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter size8Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        size8Params.fontFileName = "orange-juice.ttf";
+        size8Params.fontParameters.size = QUIT_FONT_SIZE;
+        manager.load("quitfont.ttf", BitmapFont.class, size8Params);
 
 
     }

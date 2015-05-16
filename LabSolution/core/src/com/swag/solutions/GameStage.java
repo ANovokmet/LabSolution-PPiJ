@@ -34,13 +34,14 @@ public class GameStage extends Stage {
 
     @Override
     public boolean keyDown(int keycode) {
-        clickSound.play();
+        /*clickSound.play();
         if ((keycode==Input.Keys.ESCAPE || keycode == Input.Keys.BACK) && game != null) {
             transitionCover.transitionIn(game, game.mainMenu);
             return true;
         } else {
             return super.keyDown(keycode);
-        }
+        }*/
+        return super.keyDown(keycode);
     }
 
     public boolean disableInput = false;
