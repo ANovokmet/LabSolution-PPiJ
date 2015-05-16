@@ -25,8 +25,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.swag.solutions.LabGame;
 import com.swag.solutions.TransitionCover;
 
-import javax.swing.event.ChangeEvent;
-
 
 /**
  * Created by Mate on 6.5.2015..

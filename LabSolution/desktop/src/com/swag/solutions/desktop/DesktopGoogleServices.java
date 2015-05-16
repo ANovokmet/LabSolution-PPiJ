@@ -31,6 +31,16 @@ public class DesktopGoogleServices implements AbstractGoogleServices{
     }
 
     @Override
+    public boolean isInternetAvailable() {
+        return true;
+    }
+
+    @Override
+    public void unlockAchievement(String id) {
+        System.out.println("DesktopGoogleServies: unlockAchievement("+id+")");
+    }
+
+    @Override
     public boolean isSignedIn() {
         System.out.println("DesktopGoogleServies: isSignedIn()");
         return false;

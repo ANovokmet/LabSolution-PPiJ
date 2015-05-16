@@ -1,8 +1,11 @@
 package com.swag.solutions.android;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,12 +26,12 @@ public class AndroidLauncher extends AndroidApplication implements AbstractGoogl
     private GameHelper gameHelper;
     private final static int REQUEST_CODE_UNUSED = 9002;
 
-	@Override
+    @Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
         gameHelper = new GameHelper(this, GameHelper.CLIENT_GAMES);
-        gameHelper.enableDebugLog(false);
+        gameHelper.enableDebugLog(true);
 
         GameHelper.GameHelperListener gameHelperListener = new GameHelper.GameHelperListener()
         {
@@ -131,11 +134,42 @@ public class AndroidLauncher extends AndroidApplication implements AbstractGoogl
     }
 
     @Override
+    public void unlockAchievement(String id){
+        if (isSignedIn() == true) {
+            Games.Achievements.unlock(gameHelper.getApiClient(), id);
+        }
+    }
+
+    @Override
+    public boolean isInternetAvailable() {
+        ConnectivityManager conMgr =  (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if ( conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED
+                ||  conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED ) {
+            return true;
+        }
+        else {
+            try {
+                runOnUiThread(new Runnable() {
+                    //@Override
+                    public void run() {
+                        Toast.makeText(AndroidLauncher.this, "Internet connection is not available", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Gdx.app.log("Google Services", "Check Internet failed: " + e.getMessage());
+            }
+            return false;
+        }
+    }
+
+    @Override
     public void submitScore(long score) {
         if (isSignedIn() == true)
         {
             Games.Leaderboards.submitScore(gameHelper.getApiClient(), getString(R.string.leaderboard_id), score);
-            startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
+            //startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
         }
         else
         {
@@ -145,7 +179,7 @@ public class AndroidLauncher extends AndroidApplication implements AbstractGoogl
 
     @Override
     public void showScores() {
-        if (isSignedIn() == true)
+        if (isSignedIn() == true && isInternetAvailable())
             startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
         else
         {

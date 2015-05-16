@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.TimeUtils;
+import com.swag.solutions.LabGame;
 import com.swag.solutions.hud.HintButton;
 import com.swag.solutions.hud.HudElement;
 import com.swag.solutions.screens.GameScreen;
 
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -31,6 +34,9 @@ public class LevelHandler extends Observable{
     private Solution solution;
     private HintButton hintButton;
 
+    private TimeUtils time;
+    private long moment_start, moment_end;
+
     public LevelHandler(EnergyContainer enContainer, HudElement hudElement, HintButton hintButton, GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         this.currentLevel = 0;
@@ -38,6 +44,8 @@ public class LevelHandler extends Observable{
         this.hudElement = hudElement;
         this.solution = null;
         this.hintButton = hintButton;
+
+        time = new TimeUtils();
 
         JsonReader jsonReader = new JsonReader();
         FileHandle levelsFile = Gdx.files.internal("data/levels.json");
@@ -84,6 +92,8 @@ public class LevelHandler extends Observable{
         hintButton.loadHints(level.get("hints"), level.get("hint_free"));
 
         solution.ensureReactionSatisfiability(neededReactants, molecules);
+
+        moment_start = time.millis();
     }
 
     public Map<Integer, Integer> getNeededReactants() {
@@ -96,6 +106,19 @@ public class LevelHandler extends Observable{
                 levels.get(currentLevel).get("energy_released").asInt());
 
         solution.addResultMolecules(resultMolecules, molecules);
+        if(currentLevel==0)
+            LabGame.googleServices.unlockAchievement("CgkIrYPb-McCEAIQAw");
+
+        moment_end = time.millis();
+
+        if(currentLevel>=5){
+            if((moment_end-moment_start)<30*1000){
+                LabGame.googleServices.unlockAchievement("CgkIrYPb-McCEAIQBQ");
+            }
+            else if((moment_end-moment_start)<60*1000){
+                LabGame.googleServices.unlockAchievement("CgkIrYPb-McCEAIQBA");
+            }
+        }
 
         ++currentLevel;
         if (currentLevel >= levels.size) {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.utils.JsonValue;
+import com.swag.solutions.LabGame;
 import com.swag.solutions.logic.Score;
 
 import java.util.ArrayList;
@@ -92,6 +93,8 @@ public class HintButton extends Actor {
             score.reduceHintPoints();
             professor.tellHint(hints.removeFirst());
         }
+        if(hints.isEmpty())
+            LabGame.googleServices.unlockAchievement("CgkIrYPb-McCEAIQBw");
     }
 
     public void loadHints(JsonValue hints, JsonValue freeHint){

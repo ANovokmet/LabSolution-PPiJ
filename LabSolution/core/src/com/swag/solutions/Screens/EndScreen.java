@@ -50,6 +50,9 @@ public class EndScreen implements Screen {
         Gdx.input.setCatchBackKey(true);
         stage.transitionCover.transitionOut();
         LabGame.googleServices.submitScore(Score.totalScore);
+        if(Score.totalScore>=1000000){
+            LabGame.googleServices.unlockAchievement("CgkIrYPb-McCEAIQBg"); //millionaire achievement
+        }
     }
 
     @Override
