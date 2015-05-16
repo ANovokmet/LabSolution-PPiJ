@@ -37,7 +37,7 @@
       energy_needed: 400,
       energy_released: 80,
       hint_free: "Nitrogen (N2) is colored dark blue",
-      hints:["Nitrogen needs 3 electrons", "When dissolved in water, ammonia forms weak base"]
+      hints:["Nitrogen needs 3 electrons", "Hydrogen atom gives 1 electron"]
   },
   {
       reactants: [{id: 7, quantity: 1}, {id: 0, quantity: 2}],
@@ -45,70 +45,70 @@
       energy_needed: 400,
       energy_released: 75,
       hint_free: "Carbon needs 4 electrons",
-      hints:["Hydrogen gives his only electron", ""]
+      hints:["Hydrogen gives his only electron", "This molecule forms from elementary molecules"]
   },
   {
       reactants: [{id: 12, quantity: 2}, {id: 1, quantity: 1}],
       results: [{id: 13, quantity: 2}],
       energy_needed: 400,
       energy_released: 635,
-      hint_free: "",
-      hints:["", ""]
+      hint_free: "Calcium (Ca) is single atom, colored green",
+      hints:["This molecule forms from elementary molecules", "Oxygen (O2) is red molecule"]
   },
   {
       reactants: [{id: 13, quantity: 1}, {id: 2, quantity: 1}],
       results: [{id: 14, quantity: 1}],
       energy_needed: 400,
       energy_released: 1000,
-      hint_free: "",
-      hints:["", ""]
+      hint_free: "Calcium (Ca) is big green atom",
+      hints:["This molecule forms from complex molecules", "CaO may be important for this reaction"]
   },
   {
       reactants: [{id: 2, quantity: 1}, {id: 8, quantity: 1}],
       results: [{id: 15, quantity: 1}],
       energy_needed: 400,
       energy_released: 0,
-      hint_free: "",
-      hints:["", ""]
+      hint_free: "This molecule forms from complex molecules",
+      hints:["This molecule forms by dissolving some gas in some fluid", "This acid is common in beverages"]
   },
   {
       reactants: [{id: 15, quantity: 1}, {id: 14, quantity: 1}],
       results: [{id: 16, quantity: 1}, {id: 2, quantity: 2}],
       energy_needed: 600,
       energy_released: 1200,
-      hint_free: "",
-      hints:["", ""]
+      hint_free: "This reaction is neutralisation",
+      hints:["Neutralisation is acid + base", "Base is metal with (OH) group"]
   },
   {
       reactants: [{id: 3, quantity: 2}, {id: 15, quantity: 2}],
       results: [{id: 17, quantity: 2}, {id: 0, quantity: 1}],
       energy_needed: 600,
       energy_released: 950,
-      hint_free: "",
-      hints:["", ""]
+      hint_free: "Sodium (Na) is colored purple",
+      hints:["This is metal-acid reaction", "This reaction has 2 products"]
   },
   {
       reactants: [{id: 11, quantity: 1}, {id: 2, quantity: 1}],
       results: [{id: 18, quantity: 1}, {id: 0, quantity: 1}],
       energy_needed: 600,
       energy_released: 238,
-      hint_free: "",
-      hints:["", ""]
+      hint_free: "This reaction has 2 products",
+      hints:["Products are an alcohol - methanol and hydrogen", "Gas needs to dissolve in water"]
   },
   {
       reactants: [{id: 18, quantity: 1}, {id: 1, quantity: 1}],
       results: [{id: 19, quantity: 1}, {id: 2, quantity: 1}],
       energy_needed: 600,
       energy_released: 460,
-      hint_free: "",
-      hints:["", ""]
+      hint_free: "Alcohols during oxidation become carboxylic acids",
+      hints:["One of the products is water", "Oxidation is reaction with oxygen"]
   },
   {
       reactants: [{id: 18, quantity: 1}, {id: 19, quantity: 1}],
       results: [{id: 20, quantity: 1}, {id: 2, quantity: 1}],
       energy_needed: 600,
       energy_released: 700,
-      hint_free: "",
-      hints:["", ""]
+      hint_free: "This reaction has 2 products, of which one is water",
+      hints:["This reaction is esterification - neutralisation between alcohol and carboxylic acid", "Remember the last two molecules"]
   }
 ]
