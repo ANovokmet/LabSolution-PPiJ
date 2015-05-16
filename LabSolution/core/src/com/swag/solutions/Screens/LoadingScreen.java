@@ -16,6 +16,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
@@ -46,6 +47,7 @@ public class LoadingScreen implements Screen {
     int SCORE_FONT_SIZE;
     int COUNTDOWN_FONT_SIZE;
     int HINT_FONT_SIZE;
+    int MENU_FONT_SIZE;
 
     float percent;
 
@@ -69,7 +71,7 @@ public class LoadingScreen implements Screen {
         COUNTDOWN_FONT_SIZE = (int)(200 * gameWidth/480f);
         HINT_FONT_SIZE = (int)(36 * gameWidth/480f);
         SCORE_FONT_SIZE = (int)(48 * gameWidth/480f);
-
+        MENU_FONT_SIZE = (int)(gameWidth/14 * Gdx.graphics.getDensity());
         batch = new SpriteBatch();
 
         FileHandleResolver resolver = new InternalFileHandleResolver();
@@ -94,6 +96,8 @@ public class LoadingScreen implements Screen {
         label.setAlignment(Align.center);
         table.add(label).width(Gdx.graphics.getWidth()).height(Gdx.graphics.getHeight());
         table.pack();
+
+        game.assetManager.load("spritesheet.txt", TextureAtlas.class);
 
         manager.load("bar_empty_bot.png", Texture.class);
         manager.load("bar_empty_mid.png", Texture.class);
@@ -121,15 +125,15 @@ public class LoadingScreen implements Screen {
         }
 
 
-
-
         manager.load("sounds/mumbling.ogg", Sound.class);
         manager.load("sounds/game_finished.wav", Sound.class);
         manager.load("sounds/game_over.wav", Sound.class);
         manager.load("sounds/molecule_pick_up.wav", Sound.class);
         manager.load("sounds/molecule_put_down.wav", Sound.class);
         manager.load("sounds/reaction_success.wav", Sound.class);
+        manager.load("sounds/click.wav", Sound.class);
 
+        manager.load("sounds/background_music.ogg", Music.class);
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter size1Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
         size1Params.fontFileName = "coolvetica.ttf";
@@ -157,6 +161,12 @@ public class LoadingScreen implements Screen {
         size6Params.fontFileName = "coolvetica.ttf";
         size6Params.fontParameters.size = SCORE_FONT_SIZE;
         manager.load("scorefont.ttf", BitmapFont.class, size6Params);
+
+
+        FreetypeFontLoader.FreeTypeFontLoaderParameter size7Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
+        size7Params.fontFileName = "sf-atarian-system.extended-bold.ttf";
+        size7Params.fontParameters.size = MENU_FONT_SIZE;
+        manager.load("menufont.ttf", BitmapFont.class, size7Params);
 
 
     }

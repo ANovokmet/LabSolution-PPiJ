@@ -5,6 +5,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.swag.solutions.screens.GameScreen;
 import com.swag.solutions.screens.LoadingScreen;
 import com.swag.solutions.screens.MainMenu;
+import com.swag.solutions.screens.TutorialScreen;
 
 /**
  * Created by Ante on 15.4.2015..
@@ -17,6 +18,7 @@ public class LabGame extends Game {
     public GameState currentState;//ne koristi se, izbrisati
     public MainMenu mainMenu;
     public GameScreen gameScreen;
+    public TutorialScreen tutorialScreen;
     public static AbstractGoogleServices googleServices;
 
     public AssetManager assetManager = new AssetManager();
@@ -29,6 +31,7 @@ public class LabGame extends Game {
 
     @Override
     public void create() {
+        tutorialScreen = new TutorialScreen(this);
         mainMenu = new MainMenu(this);
         gameScreen = new GameScreen(this);
         setScreen(new LoadingScreen(this));

@@ -183,13 +183,19 @@ public class GameScreen implements Screen {
             reactionArea.draw(batch,alpha);
 
             for(Molecule m : solution.getFreeMolecules()){
-                m.draw(batch,1);
+                if(!m.isMoved())
+                    m.draw(batch,1);
             }
 
             hudElement.draw(batch,alpha); //zatočene molekule se crtaju u ovoj metodi
             score.draw(batch,alpha);
             hintButton.draw(batch,alpha);
             professor.draw(batch,alpha);
+
+            for(Molecule m : solution.getFreeMolecules()){
+                if(m.isMoved())
+                    m.draw(batch,1);
+            }
 
             countDown.draw(batch,alpha);
             gameStage.transitionCover.draw(batch, alpha);

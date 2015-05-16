@@ -33,7 +33,6 @@ public class TutorialScreen implements Screen{
     private Skin skin;
 
     public TutorialScreen(LabGame game){
-        create();
         this.game = game;
     }
 
@@ -44,7 +43,7 @@ public class TutorialScreen implements Screen{
         camera = new OrthographicCamera(1, h / w);
 
         //ucitavanje spritesheeta
-        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("spritesheet.txt"));
+        TextureAtlas textureAtlas = game.assetManager.get("spritesheet.txt", TextureAtlas.class);
 
         //ucitavanje pozadine
         pozadinaSprite = textureAtlas.createSprite("menu_pozadina");
@@ -76,10 +75,7 @@ public class TutorialScreen implements Screen{
 
         // font
         Skin fontSkin = new Skin();
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("sf-atarian-system.extended-bold.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size =  Math.round(w/14 * Gdx.graphics.getDensity());
-        BitmapFont bfont = generator.generateFont(parameter);
+        BitmapFont bfont = game.assetManager.get("menufont.ttf", BitmapFont.class);
         fontSkin.add("default", bfont);
 
         Image image = new Image(skin.getDrawable("tutorial1"));
@@ -117,7 +113,7 @@ public class TutorialScreen implements Screen{
 
     @Override
     public void show() {
-
+        create();
     }
 
     @Override

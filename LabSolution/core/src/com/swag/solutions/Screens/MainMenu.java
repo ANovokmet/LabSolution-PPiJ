@@ -44,9 +44,9 @@ public class MainMenu implements com.badlogic.gdx.Screen {
     private Camera camera;
     private Sprite pozadinaSprite;
     private Sprite naslovSprite;
-    private final static Music backgroundMusic = Gdx.audio.newMusic(
+    private static Music backgroundMusic = Gdx.audio.newMusic(
             Gdx.files.internal("sounds/background_music.ogg"));
-    private final static Sound clickSound =
+    private static Sound clickSound =
             Gdx.audio.newSound(Gdx.files.internal("sounds/click.wav"));
 
     TransitionCover transitionActor;
@@ -64,7 +64,11 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         camera = new OrthographicCamera(1, h / w);
 
         //ucitavanje spritesheeta
-        TextureAtlas textureAtlas = new TextureAtlas(Gdx.files.internal("spritesheet.txt"));
+
+        TextureAtlas textureAtlas = game.assetManager.get("spritesheet.txt", TextureAtlas.class);
+
+        backgroundMusic = game.assetManager.get("sounds/background_music.ogg", Music.class);
+        clickSound = game.assetManager.get("sounds/click.wav", Sound.class);
 
         //ucitavanje pozadine
         pozadinaSprite = textureAtlas.createSprite("menu_pozadina");
@@ -112,10 +116,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
 
         // font za glavni menu
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("sf-atarian-system.extended-bold.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size =  Math.round(w/14 * Gdx.graphics.getDensity());
-        BitmapFont bfont = generator.generateFont(parameter);
+        BitmapFont bfont = game.assetManager.get("menufont.ttf", BitmapFont.class);
         buttonSkin.add("default",bfont);
 
         // Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
@@ -173,7 +174,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 optionsButton.setText("Starting tutorial");
                 clickSound.play();
-                game.setScreen(new TutorialScreen(game));
+                game.setScreen(game.tutorialScreen);
             }
         });
 
