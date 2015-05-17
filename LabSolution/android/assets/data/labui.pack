@@ -1,0 +1,73 @@
+
+labui.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+background
+  rotate: false
+  xy: 1, 174
+  size: 480, 800
+  orig: 480, 800
+  offset: 0, 0
+  index: -1
+panel_bot
+  rotate: false
+  xy: 1, 52
+  size: 480, 120
+  orig: 480, 120
+  offset: 0, 0
+  index: -1
+panel_mid
+  rotate: false
+  xy: 483, 854
+  size: 480, 120
+  orig: 480, 120
+  offset: 0, 0
+  index: -1
+panel_top
+  rotate: false
+  xy: 483, 732
+  size: 480, 120
+  orig: 480, 120
+  offset: 0, 0
+  index: -1
+blue_button00
+  rotate: false
+  xy: 1, 1
+  size: 190, 49
+  orig: 190, 49
+  offset: 0, 0
+  index: -1
+blue_button01
+  rotate: false
+  xy: 483, 681
+  size: 190, 49
+  orig: 190, 49
+  offset: 0, 0
+  index: -1
+blue_button02
+  rotate: false
+  xy: 193, 1
+  size: 190, 49
+  orig: 190, 49
+  offset: 0, 0
+  index: -1
+blue_button03
+  rotate: false
+  xy: 483, 630
+  size: 190, 49
+  orig: 190, 49
+  offset: 0, 0
+  index: -1
+
+labui2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+cover_alpha
+  rotate: false
+  xy: 1, 1
+  size: 800, 391
+  orig: 800, 391
+  offset: 0, 0
+  index: -1

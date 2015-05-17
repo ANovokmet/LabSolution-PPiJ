@@ -30,7 +30,7 @@ import java.util.Observer;
 public class Score extends Actor implements Observer{
 
     public static int totalScore;
-    private int level;
+    public int level;
     private float levelScore;
     private BitmapFont textFont;
     private Camera camera;

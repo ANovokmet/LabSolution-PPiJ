@@ -113,7 +113,7 @@ public class LoadingScreen implements Screen {
         manager.load("hint_c.png",Texture.class);
         manager.load("hint_z.png",Texture.class);
         manager.load("hint_s.png",Texture.class);
-        manager.load("background2.png", Texture.class);
+        manager.load("blackboard.png", Texture.class);
         manager.load("wateranim.png", Texture.class);
         manager.load("AzureWaters.jpg", Texture.class);
         manager.load("reaction_area_top.png", Texture.class);
@@ -127,6 +127,7 @@ public class LoadingScreen implements Screen {
             manager.load(moleculeInfo.get("path").asString(), Texture.class);
         }
 
+        manager.load("data/labui.pack", TextureAtlas.class);
 
         manager.load("sounds/mumbling.ogg", Sound.class);
         manager.load("sounds/game_finished.wav", Sound.class);

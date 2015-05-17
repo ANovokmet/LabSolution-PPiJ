@@ -84,7 +84,7 @@ public class CountDown extends Actor {
 
         if(screen.gameState == GameScreen.State.COUNTDOWN){
             timeSecond+=delta;
-            if(timeSecond>=1){
+            if(timeSecond>=0.75f){
                 Gdx.app.log("timesecond",timeSecond+"");
                 Gdx.app.log("second",seconds+"");
 

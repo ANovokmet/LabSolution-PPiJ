@@ -189,7 +189,7 @@ public class GameScreen implements Screen {
     public void gameOver(boolean gameFinished){
         if(gameState!=State.GAMEOVER){
             gameState = State.GAMEOVER;
-            gameStage.transitionCover.transitionIn(main_game,new EndScreen(main_game,gameFinished));
+            gameStage.transitionCover.transitionIn(main_game,new EndScreen(main_game,gameFinished, score));
         }
     }
 
