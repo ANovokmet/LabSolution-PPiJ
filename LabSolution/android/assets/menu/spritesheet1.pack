@@ -1,0 +1,33 @@
+
+spritesheet1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+menu_pozadina
+  rotate: false
+  xy: 1, 1005
+  size: 1887, 2500
+  orig: 1887, 2500
+  offset: 0, 0
+  index: -1
+menu_pozadina1
+  rotate: false
+  xy: 1890, 1005
+  size: 1887, 2500
+  orig: 1887, 2500
+  offset: 0, 0
+  index: -1
+cover
+  rotate: false
+  xy: 1, 503
+  size: 1024, 500
+  orig: 1024, 500
+  offset: 0, 0
+  index: -1
+cover1
+  rotate: false
+  xy: 1, 1
+  size: 1024, 500
+  orig: 1024, 500
+  offset: 0, 0
+  index: -1

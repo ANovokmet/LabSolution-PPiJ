@@ -66,12 +66,14 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         //ucitavanje spritesheeta
 
         TextureAtlas textureAtlas = game.assetManager.get("spritesheet.txt", TextureAtlas.class);
+        TextureAtlas textureAtlas1 = new TextureAtlas(Gdx.files.internal("menu/spritesheet1.pack"));
+        TextureAtlas textureAtlas2 = game.assetManager.get("data/labui.pack", TextureAtlas.class);
 
         backgroundMusic = game.assetManager.get("sounds/background_music.ogg", Music.class);
         clickSound = game.assetManager.get("sounds/click.wav", Sound.class);
 
         //ucitavanje pozadine
-        pozadinaSprite = textureAtlas.createSprite("menu_pozadina");
+        pozadinaSprite = textureAtlas1.createSprite("menu_pozadina1");
         /*texture = new Texture(Gdx.files.internal("menu_pozadina.png"));
         texture.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         TextureRegion region =
@@ -86,14 +88,14 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
 
         //ucitavanje naslova
-        naslovSprite = textureAtlas.createSprite("naslov");
-        naslovSprite.setRotation(10);
-        naslovSprite.setSize(1.2f,
+        naslovSprite = textureAtlas1.createSprite("cover1");
+        //naslovSprite.setRotation(10);
+        naslovSprite.setSize(1f,
                 1f * naslovSprite.getHeight() / naslovSprite.getWidth());
         naslovSprite.setOrigin(pozadinaSprite.getWidth() / 2,
                 pozadinaSprite.getHeight() / 2);
-        naslovSprite.setPosition(-naslovSprite.getWidth() / 2 - 0.07f,
-                -naslovSprite.getHeight() / 2 + 0.31f);
+        naslovSprite.setPosition(-naslovSprite.getWidth() / 2,
+                -naslovSprite.getHeight() / 2 + 0.41f);
 
         batch = new SpriteBatch();
         stage = new Stage();
@@ -113,6 +115,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         //test slike za gumbe
         buttonSkin = new Skin();
         buttonSkin.addRegions(textureAtlas);
+        buttonSkin.addRegions(textureAtlas2);
 
 
         // font za glavni menu
@@ -126,10 +129,10 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
         textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
         textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);*/
-        textButtonStyle.up = buttonSkin.getDrawable("gumb_menu");
-        textButtonStyle.down = buttonSkin.getDrawable("gumb_menu");
-        textButtonStyle.checked = buttonSkin.getDrawable("gumb_menu");
-        textButtonStyle.over = buttonSkin.getDrawable("gumb_menu_oznaceno");
+        textButtonStyle.up = buttonSkin.getDrawable("blue_button00");
+        textButtonStyle.down = buttonSkin.getDrawable("blue_button00");
+        textButtonStyle.checked = buttonSkin.getDrawable("blue_button00");
+        textButtonStyle.over = buttonSkin.getDrawable("blue_button01");
 
         textButtonStyleObrnuto.up = buttonSkin.getDrawable("gumb_menu_obrnuto");
         textButtonStyleObrnuto.down = buttonSkin.getDrawable("gumb_menu_obrnuto");
@@ -161,14 +164,14 @@ public class MainMenu implements com.badlogic.gdx.Screen {
                clickSound.play();
                //game.setScreen(new GameScreen(game));
                //game.gameScreen.create();
-               transitionActor.transitionIn(game,game.gameScreen);
+               transitionActor.transitionIn(game, game.gameScreen);
            }
        });
 
 
-        final TextButton optionsButton=new TextButton("TUTORIAL",textButtonStyleObrnuto);
+        final TextButton optionsButton=new TextButton("TUTORIAL",textButtonStyle);
         table.row();
-        table.add(optionsButton).height(h/12).width(w*6/7).padBottom(h/18);
+        table.add(optionsButton).height(h/12).width(w*6/7).padBottom(h / 18);
         optionsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -179,16 +182,23 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         });
 
         final TextButton highScoresButton=new TextButton("HIGH SCORES",textButtonStyle);
-        highScoresButton.setHeight(150);
-        highScoresButton.setWidth(400);
         table.row();
-        table.add(highScoresButton).height(h / 12).width(w * 6 / 7).padBottom(h / 8);
-        table.align(Align.bottom);
+        table.add(highScoresButton).height(h / 12).width(w * 6 / 7).padBottom(h/18);
         highScoresButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LabGame.googleServices.showScores();
                 clickSound.play();
+            }
+        });
+
+        final TextButton achievementsButton =new TextButton("ACHIEVEMENTS",textButtonStyle);
+        table.row();
+        table.add(achievementsButton).height(h / 12).width(w * 6 / 7).padBottom(h / 16);
+        table.align(Align.bottom);
+        highScoresButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
             }
         });
 
