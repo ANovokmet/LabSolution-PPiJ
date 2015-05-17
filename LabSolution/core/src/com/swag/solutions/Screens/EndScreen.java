@@ -112,7 +112,7 @@ public class EndScreen implements Screen {
         Label label1 = new Label(score.totalScore+"", skin, "number_font");
         label1.setAlignment(Align.right);
         table1.add(label1).row();
-
+        //table1.setWidth(camera.viewportWidth);
 
         Table table2 = new Table();
         Label label2 = new Label("Levels solved:", skin, "score_font");
@@ -122,6 +122,7 @@ public class EndScreen implements Screen {
         Label label3 = new Label(score.level+"", skin, "number_font");
         label3.setAlignment(Align.right);
         table2.add(label3).row();
+        //table2.setWidth(camera.viewportWidth);
         /*levelScoreLabel = new Label((int)levelScore+"", skin, "level_score_font");
         levelScoreLabel.setAlignment(Align.bottomLeft);
         table.add(levelScoreLabel);*/
@@ -131,8 +132,8 @@ public class EndScreen implements Screen {
         table1.setBackground(skin2.getDrawable("panel_top"));
         table2.setBackground(skin2.getDrawable("panel_mid"));
 
-        table.add(table1).row();
-        table.add(table2).row();
+        table.add(table1).prefWidth(camera.viewportWidth).row();
+        table.add(table2).prefWidth(camera.viewportWidth).row();
 
 
         //Skin skin2 = new Skin(Gdx.files.internal("data/uiskin.json"));
@@ -160,7 +161,7 @@ public class EndScreen implements Screen {
         table3.add(dbutton).pad(0,BUTTONPADDING,0,BUTTONPADDING).width(camera.viewportWidth / 2 - BUTTONPADDING*2);
         table3.add(dbutton2).pad(0,BUTTONPADDING,0,BUTTONPADDING).width(camera.viewportWidth / 2 - BUTTONPADDING*2);
         table3.setBackground(skin2.getDrawable("panel_bot"));
-        table.add(table3);
+        table.add(table3).prefWidth(camera.viewportWidth);
         table.pack();
 
         table.setPosition(camera.viewportWidth/2-table.getWidth()/2, camera.viewportHeight/2-table.getHeight()/2);
@@ -168,8 +169,6 @@ public class EndScreen implements Screen {
 
 
         stage.addActor(table);
-
-
 
         stage.addActor(stage.transitionCover);
     }

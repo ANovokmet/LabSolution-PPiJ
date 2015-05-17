@@ -113,7 +113,6 @@ public class LoadingScreen implements Screen {
         manager.load("hint_c.png",Texture.class);
         manager.load("hint_z.png",Texture.class);
         manager.load("hint_s.png",Texture.class);
-        manager.load("blackboard.png", Texture.class);
         manager.load("wateranim.png", Texture.class);
         manager.load("AzureWaters.jpg", Texture.class);
         manager.load("reaction_area_top.png", Texture.class);
