@@ -38,6 +38,7 @@ public class Score extends Actor implements Observer{
     private final ShakeDetector shakeDetector;
     private static final float TIME_DECREASE_RATE = 10f;
     private static final float SHAKE_DECREASE_RATE = 20f;
+    private float MIN_SCORE;
 
     Table table;
     Label levelScoreLabel;
@@ -60,6 +61,7 @@ public class Score extends Actor implements Observer{
 
         totalScore = 0;
         levelScore = 1000;
+        MIN_SCORE = 0.1f * levelScore;
         level = 0;
 
 
@@ -75,10 +77,10 @@ public class Score extends Actor implements Observer{
         skin.add("level_score_font",ss);
 
         table = new Table();
-        totalScoreLabel = new Label(totalScore+" ", skin, "total_score_font");
+        totalScoreLabel = new Label("= "+totalScore+" ", skin, "total_score_font");
         totalScoreLabel.setAlignment(Align.bottomLeft);
         table.add(totalScoreLabel);
-        levelScoreLabel = new Label((int)levelScore+"", skin, "level_score_font");
+        levelScoreLabel = new Label("+"+(int)levelScore+"", skin, "level_score_font");
         levelScoreLabel.setAlignment(Align.bottomLeft);
         table.add(levelScoreLabel);
 
@@ -107,13 +109,17 @@ public class Score extends Actor implements Observer{
             levelScore -= delta * SHAKE_DECREASE_RATE;
         }
 
+        if (levelScore < MIN_SCORE) {
+            levelScore = MIN_SCORE;
+        }
+
         updateText();
 
     }
 
     private void updateText(){
-        levelScoreLabel.setText((int)levelScore+"");
-        totalScoreLabel.setText(totalScore+" ");
+        levelScoreLabel.setText("+"+(int)levelScore+"");
+        totalScoreLabel.setText("= "+totalScore+" ");
         table.pack();
         table.setPosition(getX() -camera.viewportWidth/2+PADDING_LEFT, getY() + camera.viewportHeight / 2 - table.getHeight());
     }
@@ -126,17 +132,21 @@ public class Score extends Actor implements Observer{
         }
         level += 1;
         levelScore = 1000 * Math.round(Math.pow(1.6, level));
-        if (levelScore < 0f) {
-            levelScore = 0f;
+        MIN_SCORE = 0.1f * levelScore;
+
+        if (levelScore < MIN_SCORE) {
+            levelScore = MIN_SCORE;
         }
     }
 
     public void reduceHintPoints() {
         levelScore -= 200 * Math.round(Math.pow(1.6, level));
-        if (levelScore < 0f) {
-            levelScore = 0f;
+        if (levelScore < MIN_SCORE) {
+            levelScore = MIN_SCORE;
         }
     }
 
-
+    public boolean canPayHint(){
+        return levelScore > MIN_SCORE + 200 * Math.round(Math.pow(1.6, level));
+    }
 }

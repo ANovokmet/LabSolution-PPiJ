@@ -1,5 +1,6 @@
 package com.swag.solutions.logic;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.swag.solutions.input.ShakeDetector;
 import com.swag.solutions.screens.GameScreen;
@@ -17,9 +18,10 @@ public class EnergyContainer extends Actor {
     private float maxEnergy;
     private float neededEnergy;
 
-    private static final float SHAKE_INCREASE_RATE = 0.2f;
+    private static final float SHAKE_INCREASE_RATE = 0.4f;
     private static final float DISSIPATION_RATE = 0.02f;
     private static final float START_PERCENT_FILLED = 0.8f;
+    private float DISSIPATION = 0.02f;
     private ShakeDetector shakeDetector;
 
     public EnergyContainer(float maxEnergy, ShakeDetector shakeDetector, GameScreen gameScreen) {
@@ -35,6 +37,7 @@ public class EnergyContainer extends Actor {
 
     public void setNeededEnergy(float neededEnergy) {
         this.neededEnergy = neededEnergy;
+        DISSIPATION = DISSIPATION_RATE;
     }
 
     public float neededEnergyPercentage() {
@@ -69,7 +72,9 @@ public class EnergyContainer extends Actor {
 
     @Override
     public void act(float delta) {
-        decreaseEnergyBy(maxEnergy * DISSIPATION_RATE * delta);
+        decreaseEnergyBy(maxEnergy * DISSIPATION * delta);
+        if(DISSIPATION < 0.06f)
+            DISSIPATION += 0.000001f;
         if (shakeDetector.deviceBeingShaken()) {
             increaseEnergyBy(maxEnergy * SHAKE_INCREASE_RATE * delta);
         }

@@ -79,7 +79,6 @@ public class EndScreen implements Screen {
         batch.end();
         stage.act(delta);
         stage.draw();
-        Gdx.app.error("totalni score",""+ Score.totalScore);
     }
 
     @Override

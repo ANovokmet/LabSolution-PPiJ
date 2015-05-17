@@ -121,12 +121,12 @@ public class LevelHandler extends Observable{
         }
 
         ++currentLevel;
+        super.setChanged();
+        super.notifyObservers();
         if (currentLevel >= levels.size) {
             gameScreen.gameOver(true);
         }
         else {
-            super.setChanged();
-            super.notifyObservers();
             loadLevel();
         }
     }

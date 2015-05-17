@@ -92,7 +92,7 @@ public class HintButton extends Actor {
             professor.tellHint(freeHint);// ovo bi moglo izvuc u posebnu metodu da se izvana moze naplatit hint
             freeHint = null;
         }
-        else if(!hints.isEmpty()){
+        else if(!hints.isEmpty() && score.canPayHint()){
             score.reduceHintPoints();
             professor.tellHint(hints.removeFirst());
         }
@@ -126,7 +126,7 @@ public class HintButton extends Actor {
                     getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
                     button_green.getWidth(), button_green.getHeight(), false, false);
         }
-        else if(!hints.isEmpty()){
+        else if(!hints.isEmpty() && score.canPayHint()){
             batch.draw(button_red, getX(), getY(), this.getOriginX(), this.getOriginY(), getWidth(),
                     getHeight(), this.getScaleX(), this.getScaleY(), this.getRotation(), 0, 0,
                     button_red.getWidth(), button_red.getHeight(), false, false);

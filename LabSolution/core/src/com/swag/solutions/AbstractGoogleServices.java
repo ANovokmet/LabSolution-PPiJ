@@ -11,5 +11,6 @@ public interface AbstractGoogleServices {
     public void showScores();
     public boolean isSignedIn();
     public void unlockAchievement(String id);
+    public void showAchievements();
     public boolean isInternetAvailable();
 }

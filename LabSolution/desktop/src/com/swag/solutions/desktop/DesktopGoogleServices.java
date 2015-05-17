@@ -31,6 +31,11 @@ public class DesktopGoogleServices implements AbstractGoogleServices{
     }
 
     @Override
+    public void showAchievements() {
+        System.out.println("DesktopGoogleServies: showAchievements()");
+    }
+
+    @Override
     public boolean isInternetAvailable() {
         return true;
     }

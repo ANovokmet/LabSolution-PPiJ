@@ -148,18 +148,7 @@ public class AndroidLauncher extends AndroidApplication implements AbstractGoogl
             return true;
         }
         else {
-            try {
-                runOnUiThread(new Runnable() {
-                    //@Override
-                    public void run() {
-                        Toast.makeText(AndroidLauncher.this, "Internet connection is not available", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-            catch (Exception e)
-            {
-                Gdx.app.log("Google Services", "Check Internet failed: " + e.getMessage());
-            }
+            toastOnUIThread("Internet connection is not available");
             return false;
         }
     }
@@ -178,9 +167,21 @@ public class AndroidLauncher extends AndroidApplication implements AbstractGoogl
     }
 
     @Override
+    public void showAchievements() {
+        if (isSignedIn() == true && isInternetAvailable()){
+            startActivityForResult(Games.Achievements.getAchievementsIntent(gameHelper.getApiClient()), REQUEST_CODE_UNUSED);
+        }
+        else
+        {
+
+        }
+    }
+
+    @Override
     public void showScores() {
-        if (isSignedIn() == true && isInternetAvailable())
+        if (isSignedIn() == true && isInternetAvailable()){
             startActivityForResult(Games.Leaderboards.getLeaderboardIntent(gameHelper.getApiClient(), getString(R.string.leaderboard_id)), REQUEST_CODE_UNUSED);
+        }
         else
         {
 
@@ -190,5 +191,21 @@ public class AndroidLauncher extends AndroidApplication implements AbstractGoogl
     @Override
     public boolean isSignedIn() {
         return gameHelper.isSignedIn();
+    }
+
+    public void toastOnUIThread(String message){
+        final String print = message;
+        try {
+            runOnUiThread(new Runnable() {
+                //@Override
+                public void run() {
+                Toast.makeText(AndroidLauncher.this, print, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        catch (Exception e)
+        {
+            Gdx.app.log("Google Services", "Error printing message: " + e.getMessage());
+        }
     }
 }
