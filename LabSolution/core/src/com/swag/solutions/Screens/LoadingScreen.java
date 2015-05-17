@@ -74,7 +74,7 @@ public class LoadingScreen implements Screen {
         SCORE_FONT_SIZE = (int)(48 * gameWidth/480f);
         QUIT_FONT_SIZE = (int)(96 * gameWidth/480f);
         LEVEL_SCORE_FONT_SIZE = (int)(24 * gameWidth/480f);
-        MENU_FONT_SIZE = (int)(gameWidth/14 * Gdx.graphics.getDensity());
+        MENU_FONT_SIZE = (int)(20 * gameWidth/480f);
         batch = new SpriteBatch();
 
         FileHandleResolver resolver = new InternalFileHandleResolver();

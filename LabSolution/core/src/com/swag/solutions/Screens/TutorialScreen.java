@@ -44,9 +44,10 @@ public class TutorialScreen implements Screen{
 
         //ucitavanje spritesheeta
         TextureAtlas textureAtlas = game.assetManager.get("spritesheet.txt", TextureAtlas.class);
+        TextureAtlas textureAtlas1 = new TextureAtlas(Gdx.files.internal("menu/spritesheet1.pack"));
 
         //ucitavanje pozadine
-        pozadinaSprite = textureAtlas.createSprite("menu_pozadina");
+        pozadinaSprite = textureAtlas1.createSprite("menu_pozadina1");
         pozadinaSprite.setSize(1f,
                 1f * h / w);
         pozadinaSprite.setOrigin(pozadinaSprite.getWidth() / 2,
@@ -72,6 +73,7 @@ public class TutorialScreen implements Screen{
 
         skin = new Skin();
         skin.addRegions(textureAtlas);
+        skin.addRegions(textureAtlas1);
 
         // font
         Skin fontSkin = new Skin();
@@ -103,7 +105,7 @@ public class TutorialScreen implements Screen{
         table.row();
         table.add(image2).width(w * 15/48).height(h * 13/48);
         table.add(label2).expandX();
-        table.setBackground(skin.getDrawable("pozadina_tablice"));
+        table.setBackground(skin.getDrawable("tablica_pozadina"));
 
         table.center();
 

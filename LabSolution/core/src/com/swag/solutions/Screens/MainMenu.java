@@ -88,8 +88,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
 
         //ucitavanje naslova
-        naslovSprite = textureAtlas1.createSprite("cover1");
-        //naslovSprite.setRotation(10);
+        naslovSprite = textureAtlas1.createSprite("cover");
         naslovSprite.setSize(1f,
                 1f * naslovSprite.getHeight() / naslovSprite.getWidth());
         naslovSprite.setOrigin(pozadinaSprite.getWidth() / 2,
@@ -109,9 +108,6 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         stage.addActor(table);
         //
 
-
-
-
         //test slike za gumbe
         buttonSkin = new Skin();
         buttonSkin.addRegions(textureAtlas);
@@ -124,33 +120,20 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
         // Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
         TextButtonStyle textButtonStyle = new TextButtonStyle();
-        TextButtonStyle textButtonStyleObrnuto = new TextButtonStyle();
-        /*textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-        textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-        textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);*/
         textButtonStyle.up = buttonSkin.getDrawable("blue_button00");
         textButtonStyle.down = buttonSkin.getDrawable("blue_button00");
         textButtonStyle.checked = buttonSkin.getDrawable("blue_button00");
         textButtonStyle.over = buttonSkin.getDrawable("blue_button01");
 
-        textButtonStyleObrnuto.up = buttonSkin.getDrawable("gumb_menu_obrnuto");
-        textButtonStyleObrnuto.down = buttonSkin.getDrawable("gumb_menu_obrnuto");
-        textButtonStyleObrnuto.checked = buttonSkin.getDrawable("gumb_menu_obrnuto");
-        textButtonStyleObrnuto.over = buttonSkin.getDrawable("gumb_menu_obrnuto_oznaceno");
-
         textButtonStyle.font = buttonSkin.getFont("default");
-        textButtonStyleObrnuto.font = buttonSkin.getFont("default");
         textButtonStyle.fontColor = Color.BLACK;
-        textButtonStyleObrnuto.fontColor = Color.BLACK;
-        //textButtonStyle.font.setScale(1); //ne ba� sretno rje�enje
 
         buttonSkin.add("default", textButtonStyle);
 
         // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final TextButton startGameButton=new TextButton("PLAY",textButtonStyle);
         //startGameButton.setPosition(200, 200);
-        table.add(startGameButton).height(h / 12).width(w * 6 / 7).padBottom(h/18);
+        table.add(startGameButton).height(h / 12).width(w * 5 / 7).padBottom(h/18);
         //stage.addActor(startGameButton);
 
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
@@ -171,7 +154,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
         final TextButton optionsButton=new TextButton("TUTORIAL",textButtonStyle);
         table.row();
-        table.add(optionsButton).height(h/12).width(w*6/7).padBottom(h / 18);
+        table.add(optionsButton).height(h/12).width(w*5/7).padBottom(h / 18);
         optionsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -183,7 +166,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
         final TextButton highScoresButton=new TextButton("HIGH SCORES",textButtonStyle);
         table.row();
-        table.add(highScoresButton).height(h / 12).width(w * 6 / 7).padBottom(h/18);
+        table.add(highScoresButton).height(h / 12).width(w * 5 / 7).padBottom(h/18);
         highScoresButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -194,7 +177,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
         final TextButton achievementsButton =new TextButton("ACHIEVEMENTS",textButtonStyle);
         table.row();
-        table.add(achievementsButton).height(h / 12).width(w * 6 / 7).padBottom(h / 16);
+        table.add(achievementsButton).height(h / 12).width(w * 5 / 7).padBottom(h / 16);
         table.align(Align.bottom);
         highScoresButton.addListener(new ChangeListener() {
             @Override

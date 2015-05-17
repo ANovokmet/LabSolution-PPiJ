@@ -31,3 +31,10 @@ cover1
   orig: 1024, 500
   offset: 0, 0
   index: -1
+tablica_pozadina
+  rotate: false
+  xy: 1027, 613
+  size: 800, 390
+  orig: 800, 390
+  offset: 0, 0
+  index: -1
