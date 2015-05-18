@@ -84,27 +84,35 @@ public class TutorialScreen implements Screen{
 
         //table.add(image).height(image.getHeight()).width(image.getWidth());
         //table.row().
-        table.add(image).width(w * 7/24).height(h * 9/40).fill().padBottom(h/34);
+        table.add(image).width(w * 5/24).height(h * 7 / 40).fill().padBottom(h/34);
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(bfont, Color.BLACK);
-        Label label = new Label("Povuci molekule u posudu\n kako bi obavile reakciju.", labelStyle);
-        //label.setAlignment(Align.center);
-        table.add(label).expandX();
-
-
-        Image image1 = new Image(skin.getDrawable("tutorial2"));
-        Label label1 = new Label("Ako ne mozes pronaci \nzeljenu molekulu,\npomici ekran u potrazi \nza njom.", labelStyle);
+        Label label = new Label("Drag molecules in\na container in order to\nenforce a chemical reaction", labelStyle);
         label.setAlignment(Align.center);
-        table.row();
-        table.add(label1).width(w * 7/24).expandX();
-        table.add(image1).width(w * 15/48).height(h * 13 / 48).spaceLeft(w/10);
+        table.add(label).expandX().padRight(w/28);
 
 
-        Image image2 = new Image(skin.getDrawable("tutorial3"));
-        Label label2 = new Label("Pazi da ne ostanes\nbez energije.", labelStyle);
+        Image image1 = new Image(skin.getDrawable("tut2"));
+        Label label1 = new Label("Move the screen\nin order to find\nmolecules you need", labelStyle);
+        label1.setAlignment(Align.center);
         table.row();
-        table.add(image2).width(w * 15/48).height(h * 13/48);
+        table.add(label1).expandX();
+        table.add(image1).width(w * 12 / 48).height(h * 11 / 48);
+
+
+        Image image2 = new Image(skin.getDrawable("tut3"));
+        Label label2 = new Label("Shake your device\nto get more energy", labelStyle);
+        label2.setAlignment(Align.center);
+        table.row();
+        table.add(image2).width(w * 12/48).height(h * 11/ 48);
         table.add(label2).expandX();
+
+        Image image3 = new Image(skin.getDrawable("tut4"));
+        Label label3 = new Label("Press the help button\nto get hints", labelStyle);
+        label3.setAlignment(Align.center);
+        table.row();
+        table.add(label3).expandX().padLeft(w/28);
+        table.add(image3).width(w * 12/48).height(h * 11/48);
         table.setBackground(skin.getDrawable("tablica_pozadina"));
 
         table.center();
