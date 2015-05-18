@@ -199,7 +199,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         table.row();
         table.add(achievementsButton).height(h / 12).width(w * 5 / 7).padBottom(h / 16);
         table.align(Align.bottom);
-        highScoresButton.addListener(new ChangeListener() {
+        achievementsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 LabGame.googleServices.showAchievements();
