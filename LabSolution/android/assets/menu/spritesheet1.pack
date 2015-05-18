@@ -3,59 +3,36 @@ spritesheet1.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-menu_pozadina
-  rotate: false
-  xy: 1, 1397
-  size: 1887, 2500
-  orig: 1887, 2500
-  offset: 0, 0
-  index: -1
-menu_pozadina1
-  rotate: false
-  xy: 1890, 1397
-  size: 1887, 2500
-  orig: 1887, 2500
-  offset: 0, 0
-  index: -1
-cover
-  rotate: false
-  xy: 1, 895
-  size: 1024, 500
-  orig: 1024, 500
-  offset: 0, 0
-  index: -1
-cover1
-  rotate: false
-  xy: 1, 393
-  size: 1024, 500
-  orig: 1024, 500
-  offset: 0, 0
-  index: -1
 tut2
   rotate: false
-  xy: 1027, 661
+  xy: 1, 252
   size: 481, 734
   orig: 481, 734
   offset: 0, 0
   index: -1
 tut3
   rotate: false
-  xy: 1510, 664
+  xy: 484, 255
   size: 481, 731
   orig: 481, 731
   offset: 0, 0
   index: -1
-tut4
-  rotate: false
-  xy: 1993, 664
-  size: 481, 731
-  orig: 481, 731
-  offset: 0, 0
-  index: -1
-tablica_pozadina
+tutorial1
   rotate: false
   xy: 1, 1
-  size: 800, 390
-  orig: 800, 390
+  size: 219, 249
+  orig: 219, 249
+  offset: 0, 0
+  index: -1
+
+spritesheet12.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+tut4
+  rotate: false
+  xy: 1, 1
+  size: 481, 731
+  orig: 481, 731
   offset: 0, 0
   index: -1

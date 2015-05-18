@@ -10,7 +10,6 @@ import com.swag.solutions.hud.HintButton;
 import com.swag.solutions.hud.HudElement;
 import com.swag.solutions.screens.GameScreen;
 
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
@@ -67,7 +66,6 @@ public class LevelHandler extends Observable{
         JsonValue level = levels.get(currentLevel);
         JsonValue reactants = level.get("reactants");
         neededReactants.clear();
-        //for (int i = 0; i < (levels.size + 1); i++) {
         for (int i = 0; i < reactants.size; ++i) {
             JsonValue reactant = reactants.get(i);
             neededReactants.put(

@@ -10,17 +10,15 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-//import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import com.swag.solutions.GameStage;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Created by Goran on 19.4.2015..
@@ -209,17 +207,6 @@ public class Solution extends Actor {
         return reactantOccurences;
     }
 
-    /**
-     * Azuriranje polozaja svih staticnih objekata na ekranu, trenutacno kutije i molekula u kutiji
-     * @param xmov
-     * @param ymov
-     */
-    /*public void updateReactionArea(float xmov, float ymov){
-        reactionArea.setPosition(reactionArea.getX() - xmov, reactionArea.getY() + ymov);
-        for(Molecule molecule : reactionArea.getReactionMolecules()){
-            Gdx.app.error("world",""+ reactionArea.getReactionMolecules());
-            molecule.setPosition(molecule.getX()-xmov, molecule.getY()+ymov);
-        }
-    }*/
+
 
 }

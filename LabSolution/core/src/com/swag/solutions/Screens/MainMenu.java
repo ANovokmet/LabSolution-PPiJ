@@ -28,17 +28,12 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
     private LabGame game;
     private Skin skin;
-    //private Skin buttonSkin;
     private Stage stage;
-    private BitmapFont font;
     private SpriteBatch batch;
     private Texture foreground = new Texture("chemistrySet.png");
-    private Texture slikaNaslov;
     private TextureRegion title;
     private TextureRegion background;
     private OrthographicCamera camera;
-    //private Sprite pozadinaSprite;
-    //private Sprite naslovSprite;
 
     float TITLE_Y;
     float TITLE_H;
@@ -71,39 +66,10 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         batch = new SpriteBatch();
 
         //ucitavanje spritesheeta
-
         TextureAtlas textureAtlas = game.assetManager.get("data/labui.pack", TextureAtlas.class);
 
         backgroundMusic = game.assetManager.get("sounds/background_music.ogg", Music.class);
         clickSound = game.assetManager.get("sounds/click.wav", Sound.class);
-
-
-
-        //ucitavanje pozadine
-
-
-
-        /*pozadinaSprite = textureAtlas.createSprite("menu_pozadina1");
-
-        pozadinaSprite.setSize(1f,
-                1f * h / w);
-        pozadinaSprite.setOrigin(pozadinaSprite.getWidth() / 2,
-                pozadinaSprite.getHeight() / 2);
-        pozadinaSprite.setPosition(-pozadinaSprite.getWidth() / 2,
-                -pozadinaSprite.getHeight() / 2);*/
-
-        /*pozadinaSprite.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-        //ucitavanje naslova
-        naslovSprite = textureAtlas1.createSprite("cover");
-        naslovSprite.setSize(1f,
-                1f * naslovSprite.getHeight() / naslovSprite.getWidth());
-        naslovSprite.setOrigin(pozadinaSprite.getWidth() / 2,
-                pozadinaSprite.getHeight() / 2);
-        naslovSprite.setPosition(-naslovSprite.getWidth() / 2,
-                -naslovSprite.getHeight() / 2 + 0.41f);*/
-
-
-
 
         //proba123
         Table table = new Table();
@@ -113,24 +79,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
         //test slike za gumbe
         skin = new Skin(textureAtlas);
-        //buttonSkin.addRegions(textureAtlas2);
 
-
-        // font za glavni menu
-        /*BitmapFont bfont = game.assetManager.get("menufont.ttf", BitmapFont.class);
-        buttonSkin.add("default",bfont);
-
-        // Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
-        TextButtonStyle textButtonStyle = new TextButtonStyle();
-        textButtonStyle.up = buttonSkin.getDrawable("blue_button00");
-        textButtonStyle.down = buttonSkin.getDrawable("blue_button00");
-        textButtonStyle.checked = buttonSkin.getDrawable("blue_button00");
-        textButtonStyle.over = buttonSkin.getDrawable("blue_button01");
-
-        textButtonStyle.font = buttonSkin.getFont("default");
-        textButtonStyle.fontColor = Color.BLACK;
-
-        buttonSkin.add("default", textButtonStyle);*/
 
         background = skin.getRegion("background");
         foreground = game.assetManager.get("chemistrySet.png", Texture.class);
@@ -150,23 +99,13 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         FORE_PROP = camera.viewportWidth/480f;
 
 
-        // Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
         final TextButton startGameButton=new TextButton("PLAY",style);
-        //startGameButton.setPosition(200, 200);
         table.add(startGameButton).height(h / 12).width(w * 5 / 7).padBottom(h/18);
-        //stage.addActor(startGameButton);
 
-        // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
-        // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
-        // ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
-        // revert the checked state.
        startGameButton.addListener(new ChangeListener() {
            public void changed(ChangeEvent event, Actor actor) {
-               //System.out.println("Clicked! Is checked: " + button.isChecked());
                startGameButton.setText("Starting new game");
                clickSound.play();
-               //game.setScreen(new GameScreen(game));
-               //game.gameScreen.create();
                transitionActor.transitionIn(game, game.gameScreen);
            }
        });
@@ -228,7 +167,6 @@ public class MainMenu implements com.badlogic.gdx.Screen {
 
     @Override
     public void render(float delta) {
-        //Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
         batch.begin();

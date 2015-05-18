@@ -7,41 +7,27 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.input.GestureDetector;
-import com.badlogic.gdx.scenes.scene2d.ui.Dialog;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.swag.solutions.CameraController;
 import com.swag.solutions.GameStage;
 import com.swag.solutions.LabGame;
 import com.swag.solutions.hud.CountDown;
 import com.swag.solutions.hud.HintButton;
-import com.swag.solutions.hud.QuitDialog;
-import com.swag.solutions.logic.EnergyContainer;
 import com.swag.solutions.hud.HudElement;
-import com.swag.solutions.logic.Molecule;
 import com.swag.solutions.hud.Professor;
+import com.swag.solutions.hud.QuitDialog;
+import com.swag.solutions.input.MyShakeDetector;
+import com.swag.solutions.input.ShakeDetector;
+import com.swag.solutions.logic.EnergyContainer;
+import com.swag.solutions.logic.LevelHandler;
+import com.swag.solutions.logic.Molecule;
 import com.swag.solutions.logic.ReactionArea;
 import com.swag.solutions.logic.Score;
 import com.swag.solutions.logic.Solution;
-import com.swag.solutions.input.MyShakeDetector;
-import com.swag.solutions.input.ShakeDetector;
-import com.swag.solutions.logic.LevelHandler;
-
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.fadeIn;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.moveTo;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.parallel;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.rotateBy;
 
 /**
  * Created by Ante on 15.4.2015..
@@ -125,7 +111,6 @@ public class GameScreen implements Screen {
 
 
         controller = new CameraController(camera, solution);
-        //molekula.addAction(parallel(moveTo(200,0,5),rotateBy(90,5)));
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(gameStage);
         multiplexer.addProcessor(new GestureDetector(20, 0.5f, 2, 0.15f, controller));
@@ -165,8 +150,7 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(10/255.0f, 15/255.0f, 230/255.0f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //Gdx.app.log("GameScreen FPS", (1/delta) + "");
-        //renderer.render(actors)
+
         if(gameState == State.PLAYING || gameState == State.GAMEOVER) {//igra tece i aktori se updateaju
             if(gameStage.disableInput){//ukljucivanje inputa
                 gameStage.disableInput = false;

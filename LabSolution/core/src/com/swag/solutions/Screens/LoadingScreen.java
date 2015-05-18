@@ -10,25 +10,18 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGeneratorLoader;
 import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.swag.solutions.LabGame;
@@ -100,7 +93,7 @@ public class LoadingScreen implements Screen {
         table.add(label).width(Gdx.graphics.getWidth()).height(Gdx.graphics.getHeight());
         table.pack();
 
-        game.assetManager.load("spritesheet.txt", TextureAtlas.class);
+        game.assetManager.load("menu/spritesheet1.pack", TextureAtlas.class);
 
         manager.load("bar_empty_bot.png", Texture.class);
         manager.load("bar_empty_mid.png", Texture.class);
@@ -175,7 +168,7 @@ public class LoadingScreen implements Screen {
 
 
         FreetypeFontLoader.FreeTypeFontLoaderParameter size7Params = new FreetypeFontLoader.FreeTypeFontLoaderParameter();
-        size7Params.fontFileName = "sf-atarian-system.extended-bold.ttf";
+        size7Params.fontFileName = "coolvetica.ttf";
         size7Params.fontParameters.size = MENU_FONT_SIZE;
         manager.load("menufont.ttf", BitmapFont.class, size7Params);
 
@@ -204,7 +197,7 @@ public class LoadingScreen implements Screen {
                 game.setScreen(game.mainMenu);
         }
 
-        percent = manager.getProgress();//Interpolation.linear.apply(percent, manager.getProgress(), 0.1f);
+        percent = manager.getProgress();
         label.setText((int)(percent*100)+"%");
 
         batch.begin();

@@ -1,8 +1,6 @@
 package com.swag.solutions.hud;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -31,9 +28,7 @@ public class Bubble extends Actor {
 
     private float BUBBLE_WIDTH = 256;
     private float BUBBLE_HEIGHT = 128;
-    private float BUBBLE_X = 50;
     private float BUBBLE_Y = 120;
-    private int FONT_SIZE;
 
     private OrthographicCamera camera;
     public Bubble (OrthographicCamera camera, AssetManager manager){
@@ -42,7 +37,6 @@ public class Bubble extends Actor {
         setHeight(BUBBLE_HEIGHT);
 
         BUBBLE_WIDTH=camera.viewportWidth*3/4;
-        FONT_SIZE = (int)(36*camera.viewportWidth/480f);
         table.getColor().a = 0;
 
 
@@ -84,10 +78,6 @@ public class Bubble extends Actor {
     }
 
     public void draw(Batch batch, float alpha) {
-        //Gdx.app.error("X",camera.position.x+"");
-        //Gdx.app.error("Y",camera.position.y+"");
-
-
         batch.setColor(1.0f, 1.0f, 1.0f, alpha * table.getColor().a);
         table.draw(batch, alpha);
         batch.setColor(1.0f, 1.0f, 1.0f, alpha);

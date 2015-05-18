@@ -10,10 +10,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -64,7 +62,6 @@ public class EndScreen implements Screen {
 
         gameFinishedSound = this.game.assetManager.get("sounds/game_finished.wav", Sound.class);
         gameOverSound = this.game.assetManager.get("sounds/game_over.wav", Sound.class);
-        //background = this.game.assetManager.get("blackboard.png", Texture.class);
 
         InputProcessor backProcessor = new InputAdapter() {
             @Override
@@ -112,7 +109,6 @@ public class EndScreen implements Screen {
         Label label1 = new Label(score.totalScore+"", skin, "number_font");
         label1.setAlignment(Align.right);
         table1.add(label1).row();
-        //table1.setWidth(camera.viewportWidth);
 
         Table table2 = new Table();
         Label label2 = new Label("Levels solved:", skin, "score_font");
@@ -122,21 +118,12 @@ public class EndScreen implements Screen {
         Label label3 = new Label(score.level+"", skin, "number_font");
         label3.setAlignment(Align.right);
         table2.add(label3).row();
-        //table2.setWidth(camera.viewportWidth);
-        /*levelScoreLabel = new Label((int)levelScore+"", skin, "level_score_font");
-        levelScoreLabel.setAlignment(Align.bottomLeft);
-        table.add(levelScoreLabel);*/
-
-        //table1.setBackground(skin2.getDrawable("blue_panel"));
 
         table1.setBackground(skin2.getDrawable("panel_top"));
         table2.setBackground(skin2.getDrawable("panel_bot"));
 
         table.add(table1).prefWidth(camera.viewportWidth).row();
         table.add(table2).prefWidth(camera.viewportWidth).row();
-
-
-        //Skin skin2 = new Skin(Gdx.files.internal("data/uiskin.json"));
 
 
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();

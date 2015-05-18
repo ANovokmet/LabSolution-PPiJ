@@ -74,7 +74,6 @@ public class CameraController implements GestureDetector.GestureListener {
 
     @Override
     public boolean pan (float x, float y, float deltaX, float deltaY) {
-        // Gdx.app.log("GestureDetectorTest", "pan at " + x + ", " + y);
         if(!disabled){
             camera.position.add(-deltaX * camera.zoom, deltaY * camera.zoom, 0);
         }
@@ -94,9 +93,6 @@ public class CameraController implements GestureDetector.GestureListener {
 
     @Override
     public boolean zoom (float originalDistance, float currentDistance) {
-        /*float ratio = originalDistance / currentDistance;
-        camera.zoom = initialScale * ratio;
-        System.out.println(camera.zoom);*/
         return false;
     }
 

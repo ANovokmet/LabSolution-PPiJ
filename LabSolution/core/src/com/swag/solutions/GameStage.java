@@ -1,8 +1,5 @@
 package com.swag.solutions;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
@@ -19,7 +16,7 @@ public class GameStage extends Stage {
         super();
         this.transitionCover = new TransitionCover(this.getCamera());
         this.game = game;
-    }//izbrisati razred ako se ne implementiraju metode
+    }
 
     @Override
     public void draw(){
@@ -33,13 +30,6 @@ public class GameStage extends Stage {
 
     @Override
     public boolean keyDown(int keycode) {
-        /*clickSound.play();
-        if ((keycode==Input.Keys.ESCAPE || keycode == Input.Keys.BACK) && game != null) {
-            transitionCover.transitionIn(game, game.mainMenu);
-            return true;
-        } else {
-            return super.keyDown(keycode);
-        }*/
         return super.keyDown(keycode);
     }
 

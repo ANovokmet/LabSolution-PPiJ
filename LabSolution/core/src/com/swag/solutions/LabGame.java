@@ -12,10 +12,6 @@ import com.swag.solutions.screens.TutorialScreen;
  */
 public class LabGame extends Game {
 
-    public enum GameState {
-        MENU, PLAYING, ENDGAME
-    }
-    public GameState currentState;//ne koristi se, izbrisati
     public MainMenu mainMenu;
     public GameScreen gameScreen;
     public TutorialScreen tutorialScreen;
