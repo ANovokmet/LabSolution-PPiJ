@@ -202,6 +202,8 @@ public class MainMenu implements com.badlogic.gdx.Screen {
         highScoresButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                LabGame.googleServices.showAchievements();
+                clickSound.play();
             }
         });
 

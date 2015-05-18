@@ -125,7 +125,7 @@ public class TutorialScreen implements Screen{
         Gdx.input.setInputProcessor(new InputAdapter() {
             @Override
             public boolean keyUp(final int keycode) {
-                if (keycode == Input.Keys.BACK) {
+                if ((keycode == Input.Keys.ESCAPE) || (keycode == Input.Keys.BACK)) {
                     //Gdx.app.log("Score", "Back");
                     TutorialScreen.this.game.setScreen(TutorialScreen.this.game.mainMenu);
                 }

@@ -134,12 +134,13 @@ public class GameScreen implements Screen {
             @Override
             public boolean keyDown(int keycode) {
 
-                if ((keycode == Input.Keys.ESCAPE) || (keycode == Input.Keys.BACK) )
+                if ((keycode == Input.Keys.ESCAPE) || (keycode == Input.Keys.BACK) ) {
                     clickSound.play();
-                    if(quitDialog.isVisible())
+                    if (quitDialog.isVisible())
                         gameOver(false);
-                    else if(gameState != State.COUNTDOWN)
+                    else if (gameState != State.COUNTDOWN)
                         quitDialog.showDialog();
+                }
                 return false;
             }
         };
