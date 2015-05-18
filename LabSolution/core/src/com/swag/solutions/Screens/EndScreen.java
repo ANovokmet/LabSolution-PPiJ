@@ -130,7 +130,7 @@ public class EndScreen implements Screen {
         //table1.setBackground(skin2.getDrawable("blue_panel"));
 
         table1.setBackground(skin2.getDrawable("panel_top"));
-        table2.setBackground(skin2.getDrawable("panel_mid"));
+        table2.setBackground(skin2.getDrawable("panel_bot"));
 
         table.add(table1).prefWidth(camera.viewportWidth).row();
         table.add(table2).prefWidth(camera.viewportWidth).row();
@@ -143,7 +143,7 @@ public class EndScreen implements Screen {
         style.font = textFont;
         style.up = skin2.getDrawable("blue_button02");
         style.down = skin2.getDrawable("blue_button03");
-        style.pressedOffsetY = -4;
+        style.pressedOffsetY = -4*(camera.viewportWidth-BUTTONPADDING*4)/(480f-80f);
         TextButton dbutton = new TextButton("Retry", style);
         dbutton.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
@@ -160,7 +160,7 @@ public class EndScreen implements Screen {
         Table table3 = new Table();
         table3.add(dbutton).pad(0,BUTTONPADDING,0,BUTTONPADDING).width(camera.viewportWidth / 2 - BUTTONPADDING*2);
         table3.add(dbutton2).pad(0,BUTTONPADDING,0,BUTTONPADDING).width(camera.viewportWidth / 2 - BUTTONPADDING*2);
-        table3.setBackground(skin2.getDrawable("panel_bot"));
+        //table3.setBackground(skin2.getDrawable("panel_bot"));
         table.add(table3).prefWidth(camera.viewportWidth);
         table.pack();
 

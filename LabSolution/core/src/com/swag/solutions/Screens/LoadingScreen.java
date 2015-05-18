@@ -117,6 +117,8 @@ public class LoadingScreen implements Screen {
         manager.load("AzureWaters.jpg", Texture.class);
         manager.load("reaction_area_top.png", Texture.class);
         manager.load("reaction_area_bot.png", Texture.class);
+        manager.load("chemistrySet.png", Texture.class);
+
 
         JsonReader jsonReader = new JsonReader();
         FileHandle moleculesFile = Gdx.files.internal("data/all.json");
@@ -135,6 +137,7 @@ public class LoadingScreen implements Screen {
         manager.load("sounds/molecule_put_down.wav", Sound.class);
         manager.load("sounds/reaction_success.wav", Sound.class);
         manager.load("sounds/click.wav", Sound.class);
+        manager.load("sounds/wrong_reaction.wav", Sound.class);
 
         manager.load("sounds/background_music.ogg", Music.class);
 
