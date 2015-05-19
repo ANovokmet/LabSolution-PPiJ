@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -32,6 +33,7 @@ public class TutorialScreen implements Screen{
     private SpriteBatch batch;
     private Sprite sprite;
     private Skin skin;
+    static Sound clickSound;
 
     private TextureRegion background;
 
@@ -43,6 +45,7 @@ public class TutorialScreen implements Screen{
     }
 
     private void create() {
+        clickSound = game.assetManager.get("sounds/click.wav", Sound.class);
         Gdx.input.setCatchBackKey(true);
 
         float w = Gdx.graphics.getWidth();
@@ -146,7 +149,7 @@ public class TutorialScreen implements Screen{
             @Override
             public boolean keyUp(final int keycode) {
                 if ((keycode == Input.Keys.ESCAPE) || (keycode == Input.Keys.BACK)) {
-                    //Gdx.app.log("Score", "Back");
+                    clickSound.play();
                     TutorialScreen.this.game.setScreen(TutorialScreen.this.game.mainMenu);
                 }
                 return false;
