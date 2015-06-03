@@ -119,7 +119,7 @@ public class MainMenu implements com.badlogic.gdx.Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 optionsButton.setText("Starting tutorial");
                 clickSound.play();
-                game.setScreen(game.tutorialScreen);
+                transitionActor.transitionIn(game, game.tutorialScreen);
             }
         });
 
@@ -143,6 +143,18 @@ public class MainMenu implements com.badlogic.gdx.Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 LabGame.googleServices.showAchievements();
                 clickSound.play();
+            }
+        });
+
+        final TextButton creditsButton =new TextButton("CREDITS",style);
+        table.row();
+        table.add(creditsButton).height(h / 12).width(w * 5 / 7).padBottom(h / 16);
+        table.align(Align.bottom);
+        creditsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                clickSound.play();
+                transitionActor.transitionIn(game, game.creditScreen);
             }
         });
 

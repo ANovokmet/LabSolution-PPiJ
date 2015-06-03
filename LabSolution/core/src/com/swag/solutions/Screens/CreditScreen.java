@@ -24,11 +24,10 @@ import com.swag.solutions.LabGame;
 /**
  * Created by Mate on 12.5.2015..
  */
-public class TutorialScreen implements Screen{
+public class CreditScreen implements Screen{
 
     private LabGame game;
     private OrthographicCamera camera;
-    private Sprite pozadinaSprite;
     private GameStage stage;
     private SpriteBatch batch;
     private Sprite sprite;
@@ -40,7 +39,7 @@ public class TutorialScreen implements Screen{
     float VERTICAL_PADDING;
     float HORIZONTAL_PADDING;
 
-    public TutorialScreen(LabGame game){
+    public CreditScreen(LabGame game){
         this.game = game;
     }
 
@@ -88,61 +87,50 @@ public class TutorialScreen implements Screen{
 
         // font
         Skin fontSkin = new Skin();
-        BitmapFont bfont = game.assetManager.get("menufont.ttf", BitmapFont.class);
+        BitmapFont bfont = game.assetManager.get("scorefont.ttf", BitmapFont.class);
         fontSkin.add("default", bfont);
 
 
 
-        Image image = new Image(skin.getDrawable("tutorial1"));
         Table table1 = new Table();
 
 
         Label.LabelStyle labelStyle = new Label.LabelStyle(bfont, Color.DARK_GRAY);
-        Label label = new Label("Drag molecules in\na container in order to\nenforce a chemical reaction", labelStyle);
-        label.setAlignment(Align.center);
+        Label label = new Label("Goran Rumin\nAnte Novokmet\nBranimir Klaric\nMate Pipunic\nMarija Spendic", labelStyle);
+        label.setAlignment(Align.bottom);
 
-        table1.add(image).width(w * 5/24).height(h * 7 / 40).padBottom(h / 34).pad(VERTICAL_PADDING,HORIZONTAL_PADDING,VERTICAL_PADDING,0);
         table1.add(label).expandX().padRight(w / 28);
         //table1.row();
 
 
         Table table2 = new Table();
-        Image image1 = new Image(skin.getDrawable("tut2"));
-        Label label1 = new Label("Move the screen\nin order to find\nmolecules you need", labelStyle);
+        Label label1 = new Label("PPiJ 2015 @FER", labelStyle);
         label1.setAlignment(Align.center);
 
         table2.add(label1).expandX();
-        table2.add(image1).width(w * 12 / 48).height(h * 11 / 48).pad(VERTICAL_PADDING,0,VERTICAL_PADDING,HORIZONTAL_PADDING);
         //table2.row();
 
 
+
+        BitmapFont sfont = game.assetManager.get("menufont.ttf", BitmapFont.class);
+
+        Label.LabelStyle labelStyle2 = new Label.LabelStyle(sfont, Color.DARK_GRAY);
+
+
         Table table3 = new Table();
-        Image image2 = new Image(skin.getDrawable("tut3"));
-        Label label2 = new Label("Shake your device\nto get more energy", labelStyle);
+        Label label2 = new Label("Orange Juice font from brittneymurphydesign", labelStyle2);
         label2.setAlignment(Align.center);
 
-        table3.add(image2).width(w * 12/48).height(h * 11 / 48).pad(VERTICAL_PADDING,HORIZONTAL_PADDING,VERTICAL_PADDING,0);
         table3.add(label2).expandX();
         //table3.row();
 
-
-        Table table4 = new Table();
-        Image image3 = new Image(skin.getDrawable("tut4"));
-        Label label3 = new Label("Press the help button\nto get hints", labelStyle);
-        label3.setAlignment(Align.center);
-
-        table4.add(label3).expandX();//.padLeft(w / 28);
-        table4.add(image3).width(w * 12 / 48).height(h * 11 / 48).pad(VERTICAL_PADDING,0,VERTICAL_PADDING,HORIZONTAL_PADDING);
-
         table1.setBackground(skin.getDrawable("panel_top"));
         table2.setBackground(skin.getDrawable("panel_mid"));
-        table3.setBackground(skin.getDrawable("panel_mid"));
-        table4.setBackground(skin.getDrawable("panel_bot"));
+        table3.setBackground(skin.getDrawable("panel_bot"));
 
         table.add(table1).prefWidth(camera.viewportWidth).prefHeight(h * 11 / 48).row();
         table.add(table2).prefWidth(camera.viewportWidth).prefHeight(h * 11 / 48).row();
-        table.add(table3).prefWidth(camera.viewportWidth).prefHeight(h * 11 / 48).row();
-        table.add(table4).prefWidth(camera.viewportWidth).prefHeight(h * 11 / 48);//.row();
+        table.add(table3).prefWidth(camera.viewportWidth).prefHeight(h * 11 / 48);
         table.center();
 
         Gdx.input.setInputProcessor(new InputAdapter() {

@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
 import android.widget.Toast;
 
 import com.badlogic.gdx.Gdx;
@@ -18,8 +17,6 @@ import com.google.android.gms.games.Games;
 import com.google.example.games.basegameutils.GameHelper;
 import com.swag.solutions.AbstractGoogleServices;
 import com.swag.solutions.LabGame;
-import com.swag.solutions.MainGame;
-import com.swag.solutions.AbstractGoogleServices;
 
 public class AndroidLauncher extends AndroidApplication implements AbstractGoogleServices {
     protected LabGame labGame;
